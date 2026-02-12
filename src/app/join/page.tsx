@@ -547,6 +547,15 @@ export default function JoinPage() {
                     Membership Categories
                   </p>
 
+                  {/* Advocate Card */}
+                  <MembershipCard
+                    id="advocate-card"
+                    title="Advocate"
+                    description="As a full advocate, you're part of the community organizing corps — we train you to help us lead petition drives, call campaigns, town halls, and rapid-response moments. We'll plan assignments based on your location, service background, and interests. When we mobilize, you're in the room. When we need voices in a specific district, you'll hear from us directly. This is where membership becomes action."
+                    linkText="Become an Advocate"
+                    onClick={() => handleViewChange("advocate")}
+                  />
+
                   {/* Basic Member Card */}
                   <MembershipCard
                     id="basic-member-card"
@@ -654,15 +663,6 @@ export default function JoinPage() {
                       </p>
                     </form>
                   </MembershipCard>
-
-                  {/* Advocate Card */}
-                  <MembershipCard
-                    id="advocate-card"
-                    title="Advocate"
-                    description="As a full advocate, you're part of the community organizing corps — we train you to help us lead petition drives, call campaigns, town halls, and rapid-response moments. We'll plan assignments based on your location, service background, and interests. When we mobilize, you're in the room. When we need voices in a specific district, you'll hear from us directly. This is where membership becomes action."
-                    linkText="Become an Advocate"
-                    onClick={() => handleViewChange("advocate")}
-                  />
 
                   <p className="text-sm text-gray-400 leading-relaxed">
                     Not sure? Start as a Basic Member.
