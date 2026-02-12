@@ -234,9 +234,9 @@ function CTABox({
   href: string;
 }) {
   return (
-    <div className="border-4 border-black p-8 bg-black text-white">
-      <h3 className="font-display text-2xl font-bold mb-4">{title}</h3>
-      <Button href={href} variant="white" size="lg">
+    <div className="border-4 border-black p-6 md:p-8 bg-black text-white text-center md:text-left">
+      <h3 className="font-display text-xl md:text-2xl font-bold mb-4">{title}</h3>
+      <Button href={href} variant="white" size="md" className="whitespace-normal">
         {buttonText}
       </Button>
     </div>

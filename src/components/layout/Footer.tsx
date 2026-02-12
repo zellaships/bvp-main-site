@@ -123,17 +123,20 @@ export function Footer() {
                 {/* Legal Links */}
                 <div className="flex items-center gap-2 text-sm text-white/80">
                   <Link href="/privacy" className="relative hover:text-white transition-colors group">
-                    Privacy Policy
+                    <span className="sm:hidden">PRIVACY</span>
+                    <span className="hidden sm:inline">Privacy Policy</span>
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FDC500] group-hover:w-full transition-all duration-300" />
                   </Link>
                   <span>|</span>
                   <Link href="/terms" className="relative hover:text-white transition-colors group">
-                    Terms of Use
+                    <span className="sm:hidden">TERMS</span>
+                    <span className="hidden sm:inline">Terms of Use</span>
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FDC500] group-hover:w-full transition-all duration-300" />
                   </Link>
                   <span>|</span>
                   <Link href="/accessibility" className="relative hover:text-white transition-colors group">
-                    Accessibility
+                    <span className="sm:hidden">ACCESSIBILITY</span>
+                    <span className="hidden sm:inline">Accessibility</span>
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FDC500] group-hover:w-full transition-all duration-300" />
                   </Link>
                 </div>
