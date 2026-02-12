@@ -33,12 +33,12 @@ function SocialLink({ platform, handle, href }: SocialLinkProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex justify-between items-center group"
+      className="flex justify-between items-center group min-h-[44px] py-2"
     >
-      <span className="text-sm font-bold uppercase tracking-wide group-hover:text-bvp-gold transition-colors">
+      <span className="text-[17px] font-bold uppercase tracking-wide group-hover:text-bvp-gold transition-colors">
         {platform}
       </span>
-      <span className="text-sm text-gray-400 group-hover:text-white transition-colors">
+      <span className="text-[17px] text-gray-400 group-hover:text-white transition-colors">
         {handle}
       </span>
     </a>

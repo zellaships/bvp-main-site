@@ -104,7 +104,7 @@ function InputField({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         autoComplete={autoComplete}
-        className="w-full bg-white border border-gray-300 text-black font-body text-[15px] px-3.5 py-3 transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
+        className="w-full bg-white border border-gray-300 text-black font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
         aria-required={required}
       />
     </div>
@@ -143,7 +143,7 @@ function SelectField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required={required}
-          className="w-full bg-white border border-gray-300 text-black font-body text-[15px] px-3.5 py-3 appearance-none transition-colors focus:border-black focus:outline-none pr-10"
+          className="w-full bg-white border border-gray-300 text-black font-body text-base px-3.5 py-3 min-h-[44px] appearance-none transition-colors focus:border-black focus:outline-none pr-10"
           aria-required={required}
         >
           <option value="">Select one</option>
@@ -213,7 +213,7 @@ function CheckboxField({ label, checked, onChange, id }: CheckboxFieldProps) {
           )}
         </span>
       </span>
-      <span className="text-sm text-gray-600 leading-snug group-hover:text-gray-800 transition-colors">
+      <span className="text-[17px] text-gray-600 leading-snug group-hover:text-gray-800 transition-colors">
         {label}
       </span>
     </label>
@@ -594,7 +594,7 @@ export default function JoinPage() {
                               }))
                             }
                             autoComplete="given-name"
-                            className="w-full bg-white border border-gray-300 text-black font-body text-[15px] px-3.5 py-3 transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
+                            className="w-full bg-white border border-gray-300 text-black font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
                             required
                           />
                         </div>
@@ -660,7 +660,7 @@ export default function JoinPage() {
 
                       <button
                         type="submit"
-                        className="w-full py-4 bg-black text-white font-bold text-[15px] hover:bg-gray-900 transition-colors focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2"
+                        className="w-full py-4 bg-black text-white font-bold text-[17px] hover:bg-gray-900 transition-colors focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2"
                       >
                         Join BVP →
                       </button>
@@ -707,7 +707,7 @@ export default function JoinPage() {
             <section className="max-w-3xl px-6 md:px-12 py-12">
               <button
                 onClick={() => handleViewChange("main")}
-                className="text-sm font-semibold text-gray-400 hover:text-black transition-colors mb-8 flex items-center gap-1"
+                className="text-[17px] font-semibold text-gray-400 hover:text-black transition-colors mb-8 flex items-center gap-1 min-h-[44px]"
                 type="button"
               >
                 <span aria-hidden="true">←</span> Back to membership options
@@ -1145,13 +1145,13 @@ export default function JoinPage() {
                         interest: e.target.value,
                       }))
                     }
-                    className="w-full bg-white border border-gray-300 text-black font-body text-[15px] px-3.5 py-3 min-h-[120px] resize-y transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
+                    className="w-full bg-white border border-gray-300 text-black font-body text-base px-3.5 py-3 min-h-[120px] resize-y transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-4 bg-black text-white font-bold text-[15px] hover:bg-gray-900 transition-colors focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2 mt-2"
+                  className="w-full py-4 bg-black text-white font-bold text-[17px] hover:bg-gray-900 transition-colors focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2 mt-2"
                 >
                   Join as Advocate →
                 </button>
@@ -1217,7 +1217,7 @@ export default function JoinPage() {
                 </p>
                 <a
                   href="/"
-                  className="inline-flex items-center gap-2 text-[15px] font-bold text-black hover:text-bvp-navy transition-colors"
+                  className="inline-flex items-center gap-2 text-[17px] font-bold text-black hover:text-bvp-navy transition-colors min-h-[44px]"
                 >
                   Return to Homepage
                   <span aria-hidden="true">→</span>

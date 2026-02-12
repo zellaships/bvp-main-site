@@ -444,7 +444,7 @@ export default function AboutPage() {
                         href={member.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-black transition-colors"
+                        className="inline-flex items-center gap-2 text-[17px] font-medium text-gray-500 hover:text-black transition-colors min-h-[44px]"
                       >
                         <LinkedInIcon className="w-4 h-4" />
                         LinkedIn

@@ -107,7 +107,7 @@ function RadioButton({ label, checked, onChange, name, id }: RadioButtonProps) {
           )}
         </span>
       </span>
-      <span className={`text-sm ${checked ? "text-black" : "text-gray-600"}`}>
+      <span className={`text-[17px] ${checked ? "text-black" : "text-gray-600"}`}>
         {label}
       </span>
     </label>
@@ -332,7 +332,7 @@ export default function DonatePage() {
                           onChange={(e) =>
                             handleCustomAmountChange(e.target.value)
                           }
-                          className={`w-full pl-7 pr-3 py-2 border text-sm transition-colors focus:outline-none ${
+                          className={`w-full pl-7 pr-3 py-3 border text-base min-h-[44px] transition-colors focus:outline-none ${
                             showCustom
                               ? "border-black"
                               : "border-gray-300 focus:border-black"
@@ -367,7 +367,7 @@ export default function DonatePage() {
                       />
                       <label
                         htmlFor="round-up-toggle"
-                        className="text-sm text-gray-600 cursor-pointer"
+                        className="text-[17px] text-gray-600 cursor-pointer"
                       >
                         Round up my donation to ${(donationAmount + processingFee).toFixed(2)} so the
                         processing fees are covered.
@@ -447,7 +447,7 @@ export default function DonatePage() {
                                     cardNumber: e.target.value,
                                   }))
                                 }
-                                className="flex-1 text-sm outline-none placeholder:text-gray-400"
+                                className="flex-1 text-base outline-none placeholder:text-gray-400"
                                 aria-label="Credit card number"
                               />
                             </div>
@@ -499,13 +499,13 @@ export default function DonatePage() {
                         <div className="flex gap-3">
                           <button
                             type="button"
-                            className="flex-1 py-3 px-4 border border-gray-300 rounded-md text-sm font-medium hover:border-black transition-colors"
+                            className="flex-1 py-3 px-4 border border-gray-300 rounded-md text-[17px] font-medium hover:border-black transition-colors min-h-[44px]"
                           >
                             Apple Pay
                           </button>
                           <button
                             type="button"
-                            className="flex-1 py-3 px-4 border border-gray-300 rounded-md text-sm font-medium hover:border-black transition-colors"
+                            className="flex-1 py-3 px-4 border border-gray-300 rounded-md text-[17px] font-medium hover:border-black transition-colors min-h-[44px]"
                           >
                             Google Pay
                           </button>
@@ -536,7 +536,7 @@ export default function DonatePage() {
                         }
                         required
                         autoComplete="given-name"
-                        className="w-full border border-gray-300 p-3 text-sm transition-colors focus:border-black focus:outline-none"
+                        className="w-full border border-gray-300 p-3 text-base min-h-[44px] transition-colors focus:border-black focus:outline-none"
                       />
                     </div>
                     <div>
@@ -559,7 +559,7 @@ export default function DonatePage() {
                         }
                         required
                         autoComplete="family-name"
-                        className="w-full border border-gray-300 p-3 text-sm transition-colors focus:border-black focus:outline-none"
+                        className="w-full border border-gray-300 p-3 text-base min-h-[44px] transition-colors focus:border-black focus:outline-none"
                       />
                     </div>
                   </div>
@@ -585,7 +585,7 @@ export default function DonatePage() {
                       }
                       required
                       autoComplete="email"
-                      className="w-full border border-gray-300 p-3 text-sm transition-colors focus:border-black focus:outline-none"
+                      className="w-full border border-gray-300 p-3 text-base min-h-[44px] transition-colors focus:border-black focus:outline-none"
                     />
                   </div>
 

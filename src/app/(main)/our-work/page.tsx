@@ -74,7 +74,7 @@ function StickySubNav({
             key={section.id}
             data-section={section.id}
             onClick={() => onSectionClick(section.id)}
-            className={`relative px-3 lg:px-5 min-h-[56px] text-[13px] lg:text-[14px] font-bold tracking-[0.08em] uppercase whitespace-nowrap transition-colors flex-shrink-0 flex items-center ${
+            className={`relative px-3 lg:px-5 min-h-[56px] text-[17px] lg:text-[15px] font-bold tracking-[0.06em] uppercase whitespace-nowrap transition-colors flex-shrink-0 flex items-center ${
               index === 0 ? 'pl-0' : ''
             } ${activeSection === section.id ? 'text-gray-900' : 'text-gray-400 hover:text-gray-900'}`}
             aria-current={activeSection === section.id ? 'true' : undefined}

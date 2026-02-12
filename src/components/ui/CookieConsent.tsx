@@ -220,7 +220,7 @@ export function CookieConsent() {
                   <button
                     onClick={handleAccept}
                     className={cn(
-                      "px-6 py-3 md:py-2.5 text-sm font-bold tracking-wide rounded-full",
+                      "px-6 py-3 md:py-2.5 text-[17px] md:text-sm font-bold tracking-wide rounded-full",
                       "min-h-[44px] md:min-h-0",
                       "bg-white text-black border-2 border-black",
                       "hover:bg-black hover:border-black hover:text-[#FDC500]",
@@ -375,7 +375,7 @@ export function CookieConsent() {
                     <button
                       onClick={handleRejectAll}
                       className={cn(
-                        "px-6 py-3 md:py-2.5 text-sm font-bold tracking-wide rounded-full",
+                        "px-6 py-3 md:py-2.5 text-[17px] md:text-sm font-bold tracking-wide rounded-full",
                         "min-h-[44px] md:min-h-0",
                         "bg-white text-black border-2 border-black",
                         "hover:bg-black hover:border-black hover:text-[#FDC500]",
@@ -392,7 +392,7 @@ export function CookieConsent() {
                     <button
                       onClick={handleAccept}
                       className={cn(
-                        "px-6 py-3 md:py-2.5 text-sm font-bold tracking-wide rounded-full",
+                        "px-6 py-3 md:py-2.5 text-[17px] md:text-sm font-bold tracking-wide rounded-full",
                         "min-h-[44px] md:min-h-0",
                         "bg-white text-black border-2 border-black",
                         "hover:bg-black hover:border-black hover:text-[#FDC500]",
@@ -409,7 +409,7 @@ export function CookieConsent() {
                     <button
                       onClick={handleSaveChoices}
                       className={cn(
-                        "px-6 py-3 md:py-2.5 text-sm font-bold tracking-wide rounded-full",
+                        "px-6 py-3 md:py-2.5 text-[17px] md:text-sm font-bold tracking-wide rounded-full",
                         "min-h-[44px] md:min-h-0",
                         "bg-[#FDC500] text-black border-2 border-black",
                         "hover:bg-black hover:text-white hover:border-black",

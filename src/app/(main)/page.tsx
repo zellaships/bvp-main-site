@@ -229,7 +229,7 @@ export default function Home() {
                     <p className="text-xs text-gray-400">Jan 15, 2025</p>
                   </div>
                   <div className="flex items-center gap-2 mt-3 text-black/60 group-hover:text-[#FDC500] transition-colors">
-                    <span className="text-sm font-bold">Read More</span>
+                    <span className="text-[17px] font-bold">Read More</span>
                     <svg
                       className="w-4 h-4 -rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
                       fill="none"
@@ -274,7 +274,7 @@ export default function Home() {
                     <p className="text-xs text-gray-400">Jan 8, 2025</p>
                   </div>
                   <div className="flex items-center gap-2 mt-3 text-black/60 group-hover:text-[#FDC500] transition-colors">
-                    <span className="text-sm font-bold">Read More</span>
+                    <span className="text-[17px] font-bold">Read More</span>
                     <svg
                       className="w-4 h-4 -rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
                       fill="none"

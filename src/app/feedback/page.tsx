@@ -121,7 +121,7 @@ export default function FeedbackPage() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <Link href="/" className="text-sm text-gray-500 hover:text-gray-700 mb-1 block">
+              <Link href="/" className="text-[17px] text-gray-500 hover:text-gray-700 mb-1 block min-h-[44px] flex items-center">
                 ← Back to site
               </Link>
               <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
@@ -132,14 +132,14 @@ export default function FeedbackPage() {
               <button
                 onClick={exportToCSV}
                 disabled={feedback.length === 0}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[17px] font-medium min-h-[44px]"
               >
                 Export CSV
               </button>
               <button
                 onClick={clearAll}
                 disabled={feedback.length === 0}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[17px] font-medium min-h-[44px]"
               >
                 Clear All
               </button>
@@ -151,7 +151,7 @@ export default function FeedbackPage() {
             <div className="mt-4 flex gap-2 flex-wrap">
               <button
                 onClick={() => setFilter("all")}
-                className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                className={`px-4 py-2 rounded-full text-[17px] transition-colors min-h-[44px] ${
                   filter === "all"
                     ? "bg-[#FDC500] text-black font-medium"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -163,7 +163,7 @@ export default function FeedbackPage() {
                 <button
                   key={page}
                   onClick={() => setFilter(page)}
-                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                  className={`px-4 py-2 rounded-full text-[17px] transition-colors min-h-[44px] ${
                     filter === page
                       ? "bg-[#FDC500] text-black font-medium"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -240,13 +240,13 @@ export default function FeedbackPage() {
                       <div className="flex flex-col gap-2">
                         <a
                           href={getFeedbackLink(f)}
-                          className="px-4 py-2 bg-[#FDC500] text-black text-sm font-medium rounded-lg hover:bg-[#e6b200] transition-colors text-center"
+                          className="px-4 py-2 bg-[#FDC500] text-black text-[17px] font-medium rounded-lg hover:bg-[#e6b200] transition-colors text-center min-h-[44px] flex items-center justify-center"
                         >
                           View on Page →
                         </a>
                         <button
                           onClick={() => deleteFeedback(f.id)}
-                          className="px-4 py-2 text-red-600 text-sm hover:bg-red-50 rounded-lg transition-colors"
+                          className="px-4 py-2 text-red-600 text-[17px] hover:bg-red-50 rounded-lg transition-colors min-h-[44px]"
                         >
                           Delete
                         </button>

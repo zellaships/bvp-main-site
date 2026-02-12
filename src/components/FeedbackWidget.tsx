@@ -363,15 +363,15 @@ function FeedbackWidgetInner() {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="What's your feedback about this area?"
-              className="w-full h-24 p-3 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#FDC500]"
+              className="w-full h-24 p-3 border border-gray-300 rounded-lg text-base resize-none focus:outline-none focus:ring-2 focus:ring-[#FDC500]"
               autoFocus
             />
             <div className="flex gap-2 mt-3">
-              <button onClick={cancelFeedback} className="flex-1 px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">Cancel</button>
+              <button onClick={cancelFeedback} className="flex-1 px-4 py-2 text-[17px] text-gray-600 hover:bg-gray-100 rounded-lg transition-colors min-h-[44px]">Cancel</button>
               <button
                 onClick={handleSubmit}
                 disabled={!comment.trim() || isSubmitting}
-                className="flex-1 px-4 py-2 text-sm bg-[#FDC500] text-black font-medium rounded-lg hover:bg-[#e6b200] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 text-[17px] bg-[#FDC500] text-black font-medium rounded-lg hover:bg-[#e6b200] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               >
                 {isSubmitting ? "Saving..." : "Submit"}
               </button>
