@@ -37,11 +37,11 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
           {/* About Us */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white/80 mb-4">About Us</h4>
+            <h4 className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-white/60 mb-3">About Us</h4>
             <ul className="space-y-0">
               {footerLinks.aboutUs.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="block py-2 text-sm text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
+                  <Link href={link.href} className="block py-2 text-[17px] text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
                     {link.name}
                   </Link>
                 </li>
@@ -51,11 +51,11 @@ export function Footer() {
 
           {/* Our Work */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white/80 mb-4">Our Work</h4>
+            <h4 className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-white/60 mb-3">Our Work</h4>
             <ul className="space-y-0">
               {footerLinks.ourWork.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="block py-2 text-sm text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
+                  <Link href={link.href} className="block py-2 text-[17px] text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
                     {link.name}
                   </Link>
                 </li>
@@ -65,11 +65,11 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white/80 mb-4">Resources</h4>
+            <h4 className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-white/60 mb-3">Resources</h4>
             <ul className="space-y-0">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="block py-2 text-sm text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
+                  <Link href={link.href} className="block py-2 text-[17px] text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
                     {link.name}
                   </Link>
                 </li>
@@ -79,11 +79,11 @@ export function Footer() {
 
           {/* Take Action */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white/80 mb-4">Take Action</h4>
+            <h4 className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-white/60 mb-3">Take Action</h4>
             <ul className="space-y-0">
               {footerLinks.takeAction.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="block py-2 text-sm text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
+                  <Link href={link.href} className="block py-2 text-[17px] text-white/80 hover:text-white active:text-[#FDC500] transition-colors min-h-[44px] flex items-center">
                     {link.name}
                   </Link>
                 </li>
@@ -96,7 +96,7 @@ export function Footer() {
         <div className="border-t border-white/20 pt-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6">
             {/* Logo + Copyright + 501c3 + Legal */}
-            <div className="flex items-start gap-6">
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
               <Image
                 src="/images/BVP-logo.png"
                 alt="Black Veterans Project"
@@ -104,11 +104,11 @@ export function Footer() {
                 height={80}
                 className="h-14 md:h-[70px] w-auto brightness-0 invert"
               />
-              <div className="space-y-2">
-                <p className="text-sm text-white/80">
+              <div className="space-y-3">
+                <p className="text-[15px] text-white/80">
                   © {new Date().getFullYear()} Black Veterans Project. All rights reserved.
                 </p>
-                <p className="text-sm text-white/80">
+                <p className="text-[15px] text-white/80">
                   Black Veterans Project is a 501(c)(3), find us on{' '}
                   <a
                     href="https://www.guidestar.org"
@@ -121,21 +121,21 @@ export function Footer() {
                   </a>
                 </p>
                 {/* Legal Links */}
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <Link href="/privacy" className="relative hover:text-white transition-colors group">
+                <div className="flex items-center gap-3 text-[15px] text-white/80">
+                  <Link href="/privacy" className="relative hover:text-white transition-colors group min-h-[44px] flex items-center">
                     <span className="sm:hidden">PRIVACY</span>
                     <span className="hidden sm:inline">Privacy Policy</span>
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FDC500] group-hover:w-full transition-all duration-300" />
                   </Link>
-                  <span>|</span>
-                  <Link href="/terms" className="relative hover:text-white transition-colors group">
+                  <span className="text-white/40">|</span>
+                  <Link href="/terms" className="relative hover:text-white transition-colors group min-h-[44px] flex items-center">
                     <span className="sm:hidden">TERMS</span>
                     <span className="hidden sm:inline">Terms of Use</span>
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FDC500] group-hover:w-full transition-all duration-300" />
                   </Link>
-                  <span>|</span>
-                  <Link href="/accessibility" className="relative hover:text-white transition-colors group">
-                    <span className="sm:hidden">ACCESSIBILITY</span>
+                  <span className="text-white/40">|</span>
+                  <Link href="/accessibility" className="relative hover:text-white transition-colors group min-h-[44px] flex items-center">
+                    <span className="sm:hidden">ACCESS</span>
                     <span className="hidden sm:inline">Accessibility</span>
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FDC500] group-hover:w-full transition-all duration-300" />
                   </Link>
