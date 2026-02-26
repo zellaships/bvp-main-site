@@ -7,14 +7,14 @@ import { Button } from '@/components/ui/Button';
 // ============================================
 // OUR WORK PAGE
 // Sections: Hero, Sticky Sub-Nav, Case for Repair (with Venn diagram),
-// Impact Litigation, Narrative Hub, Mobilization
+// Impact Litigation, Narrative Hub, Movement Building
 // ============================================
 
 const sections = [
   { id: 'case-for-repair', label: 'The Case for Repair' },
   { id: 'litigation', label: 'Impact Litigation' },
   { id: 'narrative', label: 'Narrative Hub' },
-  { id: 'mobilization', label: 'Mobilization' },
+  { id: 'movement-building', label: 'Movement Building' },
 ];
 
 // Stats data
@@ -61,9 +61,11 @@ function StickySubNav({
 
   return (
     <nav
-      className="sticky top-12 z-40 bg-white shadow-md flex items-center"
+      className="sticky top-0 z-40 bg-white shadow-md flex flex-col"
       style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)' }}
     >
+      {/* Spacer for header */}
+      <div className="h-12 md:h-[60px] bg-white" />
       <div
         ref={navRef}
         className="max-w-[900px] mx-auto w-full flex px-4 lg:px-6 overflow-x-auto scrollbar-hide"
@@ -114,9 +116,9 @@ function VennDiagram() {
       position: 'bottom-0 left-0',
     },
     {
-      id: 'mobilization',
-      href: '#mobilization',
-      name: 'Mobilization',
+      id: 'movement-building',
+      href: '#movement-building',
+      name: 'Movement\nBuilding',
       description:
         'Organizes communities as stewards of repair, rebuilding collective power into coordinated action.',
       position: 'bottom-0 right-0',
@@ -201,7 +203,7 @@ function VennDiagram() {
           strokeWidth="2"
           strokeDasharray="6 4"
         />
-        {/* Arc from bottom-right circle (mobilization) - top-left portion */}
+        {/* Arc from bottom-right circle (movement building) - top-left portion */}
         <path
           d="M 300 280 A 145 145 0 0 1 250 220"
           fill="none"
@@ -235,18 +237,32 @@ function CTABox({
 }) {
   return (
     <div
-      className="border-4 border-black bg-black text-white"
+      className="relative overflow-hidden text-white"
       style={{ padding: 'clamp(1.5rem, 4vw, 2rem)' }}
     >
-      <h3
-        className="font-display font-bold"
-        style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.5rem)', marginBottom: 'clamp(0.75rem, 2vw, 1rem)' }}
-      >
-        {title}
-      </h3>
-      <Button href={href} variant="white" size="md" className="whitespace-normal">
-        {buttonText}
-      </Button>
+      {/* Gold camo background */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: 'url(/images/camo-gold-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-black/70" />
+      {/* Content */}
+      <div className="relative z-10">
+        <h3
+          className="font-display font-bold"
+          style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.5rem)', marginBottom: 'clamp(0.75rem, 2vw, 1rem)' }}
+        >
+          {title}
+        </h3>
+        <Button href={href} variant="white" size="md" className="whitespace-normal">
+          {buttonText}
+        </Button>
+      </div>
     </div>
   );
 }
@@ -330,10 +346,10 @@ export default function OurWorkPage() {
           >
             <p className="text-sm uppercase tracking-widest mb-4 text-white/60">Our Work</p>
             <h1
-              className="font-display font-bold text-white"
+              className="font-gunterz font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 1rem + 4vw, 3.75rem)' }}
             >
-              Research. Litigation. Narrative. Mobilization.
+              Research. Litigation. Narrative. Movement Building.
             </h1>
           </div>
         </section>
@@ -387,10 +403,10 @@ export default function OurWorkPage() {
                   >
                     <div>
                       <p
-                        className="font-bold"
+                        className="font-gunterz font-black"
                         style={{ fontSize: 'clamp(1.75rem, 1.5rem + 2vw, 3rem)' }}
                       >
-                        <span className="bg-gray-300 px-2">{stat.value}</span> {stat.label}
+                        <span className="bg-[#FDC500] px-2">{stat.value}</span> {stat.label}
                       </p>
                     </div>
                     <div>
@@ -523,7 +539,7 @@ export default function OurWorkPage() {
                   {[
                     { name: 'Narrative Building', href: '#narrative' },
                     { name: 'Impact Litigation', href: '#litigation' },
-                    { name: 'Mobilization', href: '#mobilization' },
+                    { name: 'Movement Building', href: '#movement-building' },
                   ].map((pillar) => (
                     <a
                       key={pillar.name}
@@ -567,7 +583,7 @@ export default function OurWorkPage() {
               >
                 Through collaborative partnerships with Yale Law School, Harvard Law School, and Quinn
                 Emanuel LLP, we help prepare Black veterans to participate in reparative litigation. BVP
-                functions as a hub for community mobilization and uses a membership-based model to
+                functions as a hub for community movement building and uses a membership-based model to
                 organize Black veterans, maximizing their ability to pursue legal recourse.
               </p>
               <p
@@ -589,6 +605,7 @@ export default function OurWorkPage() {
                 buttonText="Become a member →"
                 href="/join"
               />
+
             </div>
 
             {/* ============================================== */}
@@ -632,14 +649,14 @@ export default function OurWorkPage() {
             </div>
 
             {/* ============================================== */}
-            {/* MOBILIZATION */}
+            {/* MOVEMENT BUILDING */}
             {/* ============================================== */}
-            <div id="mobilization" className="scroll-mt-40">
+            <div id="movement-building" className="scroll-mt-40">
               <h2
                 className="font-display font-bold uppercase"
                 style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
               >
-                Mobilization
+                Movement Building
               </h2>
               <p
                 className="leading-relaxed"

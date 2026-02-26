@@ -3,7 +3,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
-import { Button } from '@/components/ui/Button';
 
 /**
  * ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -106,7 +105,7 @@ export function Hero({
             fill
             priority
             quality={85}
-            className="object-cover object-top"
+            className="object-cover object-center md:object-top"
             sizes="100vw"
           />
         )}
@@ -135,10 +134,10 @@ export function Hero({
           flex flex-col justify-end
         "
         style={{
-          paddingLeft: 'clamp(1.5rem, 4vw, 5.75rem)',
-          paddingRight: 'clamp(1.5rem, 4vw, 5.75rem)',
-          paddingTop: 'clamp(6rem, 8vw, 8rem)',
-          paddingBottom: 'clamp(3rem, 6vw, 6rem)',
+          paddingLeft: 'clamp(1rem, 4vw, 5.75rem)',
+          paddingRight: 'clamp(1rem, 4vw, 5.75rem)',
+          paddingTop: 'clamp(5rem, 8vw, 8rem)',
+          paddingBottom: 'clamp(7.5rem, 4vw + 99px, 12rem)',
         }}
       >
         {/* Debug: Show padding markers */}
@@ -187,29 +186,29 @@ export function Hero({
               leading-[1.1]
               max-w-[18ch]
             "
-            style={{ fontSize: 'clamp(1.875rem, 1rem + 4vw, 4.5rem)' }}
+            style={{ fontSize: 'clamp(1.5rem, 1rem + 3.5vw, 4.5rem)' }}
           >
             {headline}
           </h1>
 
-          {/* CTA Buttons */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4"
-            style={{ marginTop: 'clamp(2rem, 4vw, 3rem)' }}
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          {/* CTA Button */}
+          <a
+            href="/join"
+            className="
+              inline-flex items-center gap-3
+              mt-8 md:mt-10
+              px-8 py-4
+              bg-[#FDC500] text-black
+              font-ontika font-medium text-base md:text-lg tracking-wide
+              rounded-full
+              transition-all duration-300
+              hover:bg-black hover:text-[#FDC500] hover:scale-[1.02]
+              active:scale-95
+            "
           >
-            <Button
-              variant="primary"
-              size="lg"
-              href="/join"
-              className="w-auto"
-            >
-              <span className="hidden sm:inline">Help the fight for equity by becoming a member →</span>
-              <span className="sm:hidden">Become a Member →</span>
-            </Button>
-          </motion.div>
+            Help the fight for equity by becoming a member
+            <span className="text-xl">→</span>
+          </a>
 
           {/* Debug: Show content specs */}
           {showDebugSpacing && (
@@ -241,7 +240,7 @@ export function Hero({
       {/* Scroll Indicator — fades out on scroll, stays gone */}
       {!prefersReducedMotion && (
         <motion.div
-          className="absolute z-10 flex flex-col items-center gap-2 pointer-events-none"
+          className="hidden md:flex absolute z-10 flex-col items-center gap-2 pointer-events-none"
           style={{
             bottom: 'calc(clamp(2rem, 4vw, 4rem) + 65px)',
             right: 'clamp(4.75rem, 5vw, 5.125rem)',

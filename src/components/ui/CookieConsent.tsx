@@ -81,19 +81,9 @@ export function CookieConsent() {
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    // Check if user has already made a choice
-    const existingConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
-    if (existingConsent) {
-      // User has already accepted/declined - don't show again
-      return;
-    }
-
-    // Show consent banner after 1 second delay for new visitors
-    const timer = setTimeout(() => {
-      previousFocusRef.current = document.activeElement as HTMLElement;
-      setIsVisible(true);
-    }, 1000);
-    return () => clearTimeout(timer);
+    // FORCE SHOW FOR DEBUG - remove localStorage check
+    console.log("[CookieConsent] FORCE SHOWING BANNER");
+    setIsVisible(true);
   }, []);
 
   // Handle escape key
@@ -476,7 +466,7 @@ function ToggleRow({
           aria-describedby={descriptionId}
           aria-label={`${label} cookies: ${checked ? "enabled" : "disabled"}`}
           className={cn(
-            "relative w-[52px] h-[32px] rounded-full transition-colors duration-200",
+            "relative w-[56px] h-[28px] rounded-full transition-colors duration-200",
             "min-h-[44px] min-w-[44px]", // Apple HIG touch target
             checked ? "bg-[#FDC500]" : "bg-gray-300",
             disabled && "cursor-not-allowed opacity-50",
@@ -486,8 +476,8 @@ function ToggleRow({
         >
           <span
             className={cn(
-              "absolute top-1/2 -translate-y-1/2 left-1 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 border-2",
-              checked ? "translate-x-5 border-[#FDC500]" : "translate-x-0 border-gray-400"
+              "absolute top-1/2 -translate-y-1/2 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 border-2",
+              checked ? "translate-x-[26px] border-[#FDC500]" : "translate-x-0 border-gray-400"
             )}
             aria-hidden="true"
           />

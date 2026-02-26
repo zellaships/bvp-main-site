@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { DebugOverlay } from "@/components/ui/DebugOverlay";
 import { CookieConsent } from "@/components/ui/CookieConsent";
-import FeedbackWidget from "@/components/FeedbackWidget";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 
 export const metadata: Metadata = {
@@ -36,7 +35,6 @@ export default function RootLayout({
         </AnalyticsProvider>
         <CookieConsent />
         <DebugOverlay />
-        <FeedbackWidget />
       </body>
     </html>
   );

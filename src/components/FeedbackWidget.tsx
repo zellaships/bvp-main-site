@@ -298,7 +298,7 @@ function FeedbackWidgetInner() {
             </div>
 
             {viewingFeedback && (
-              <div className="absolute left-14 top-0 bg-white rounded-xl shadow-2xl p-4 w-72 pointer-events-auto">
+              <div className="absolute left-14 top-0 bg-white rounded-2xl shadow-2xl p-4 w-72 pointer-events-auto">
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm text-gray-700 flex-1">{viewingFeedback.comment}</p>
                   <button onClick={cancelFeedback} className="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
@@ -338,7 +338,7 @@ function FeedbackWidgetInner() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="fixed z-[9999] bg-white rounded-xl shadow-2xl p-4 sm:p-5 w-[calc(100%-2rem)] sm:w-80 max-w-80 left-4 sm:left-auto bottom-4 sm:bottom-auto"
+            className="fixed z-[9999] bg-white rounded-2xl shadow-2xl p-4 sm:p-5 w-[calc(100%-2rem)] sm:w-80 max-w-80 left-4 sm:left-auto bottom-4 sm:bottom-auto"
             style={{
               ...(typeof window !== 'undefined' && window.innerWidth >= 640 ? {
                 left: Math.min(clickPosition.x + 30, window.innerWidth - 340),
@@ -350,11 +350,11 @@ function FeedbackWidgetInner() {
             <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">👁️ Leave Feedback</h3>
 
             {isCapturing ? (
-              <div className="mb-3 h-32 bg-gray-100 rounded-lg flex items-center justify-center">
+              <div className="mb-3 h-32 bg-gray-100 rounded-2xl flex items-center justify-center">
                 <span className="text-gray-500 text-sm">Capturing screenshot...</span>
               </div>
             ) : screenshotData ? (
-              <div className="mb-3 rounded-lg overflow-hidden border border-gray-200">
+              <div className="mb-3 rounded-2xl overflow-hidden border border-gray-200">
                 <img src={screenshotData} alt="Screenshot" className="w-full h-32 object-cover" />
               </div>
             ) : null}
@@ -363,15 +363,15 @@ function FeedbackWidgetInner() {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="What's your feedback about this area?"
-              className="w-full h-24 p-3 border border-gray-300 rounded-lg text-base resize-none focus:outline-none focus:ring-2 focus:ring-[#FDC500]"
+              className="w-full h-24 p-3 border border-gray-300 rounded-2xl text-base resize-none focus:outline-none focus:ring-2 focus:ring-[#FDC500]"
               autoFocus
             />
             <div className="flex gap-2 mt-3">
-              <button onClick={cancelFeedback} className="flex-1 px-4 py-2 text-[17px] text-gray-600 hover:bg-gray-100 rounded-lg transition-colors min-h-[44px]">Cancel</button>
+              <button onClick={cancelFeedback} className="flex-1 px-4 py-2 text-[17px] text-gray-600 hover:bg-gray-100 rounded-2xl transition-colors min-h-[44px]">Cancel</button>
               <button
                 onClick={handleSubmit}
                 disabled={!comment.trim() || isSubmitting}
-                className="flex-1 px-4 py-2 text-[17px] bg-[#FDC500] text-black font-medium rounded-lg hover:bg-[#e6b200] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                className="flex-1 px-4 py-2 text-[17px] bg-[#FDC500] text-black font-medium rounded-2xl hover:bg-[#e6b200] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               >
                 {isSubmitting ? "Saving..." : "Submit"}
               </button>
@@ -387,7 +387,7 @@ function FeedbackWidgetInner() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-24 right-6 z-[9999] bg-green-600 text-white px-5 py-3 rounded-lg shadow-xl"
+            className="fixed bottom-24 right-6 z-[9999] bg-green-600 text-white px-5 py-3 rounded-2xl shadow-xl"
             data-feedback-widget
           >
             ✓ Feedback saved!
@@ -403,12 +403,12 @@ function FeedbackWidgetInner() {
               initial={{ opacity: 0, y: 10, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.9 }}
-              className="absolute bottom-16 right-0 bg-white rounded-xl shadow-2xl p-4 w-64 mb-2"
+              className="absolute bottom-16 right-0 bg-white rounded-2xl shadow-2xl p-4 w-64 mb-2"
             >
               <h3 className="font-bold text-gray-900 mb-3">Feedback Tools</h3>
               <button
                 onClick={startFeedbackMode}
-                className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-3"
+                className="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-100 transition-colors flex items-center gap-3"
               >
                 <span className="text-xl">👁️</span>
                 <div>
@@ -416,7 +416,7 @@ function FeedbackWidgetInner() {
                   <div className="text-xs text-gray-500">Mark a spot on the page</div>
                 </div>
               </button>
-              <a href="/feedback" className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-3 mt-1">
+              <a href="/feedback" className="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-100 transition-colors flex items-center gap-3 mt-1">
                 <span className="text-xl">📋</span>
                 <div>
                   <div className="font-medium text-gray-900">View All Feedback</div>

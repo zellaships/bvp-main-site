@@ -16,6 +16,7 @@ const timelineData = [
     year: '2020',
     title: 'Yale Law School collaboration begins',
     summary: 'Yale Law School collaboration begins',
+    image: null, // placeholder for future image
     details: [
       '<strong>Yale Law School</strong> collaboration to obtain decades of data proving sustained and <strong>systemic racial inequities in veterans disability compensation</strong> going since 2001',
     ],
@@ -24,6 +25,7 @@ const timelineData = [
     year: '2021',
     title: 'GAO study & coalition building',
     summary: 'GAO study & coalition building',
+    image: null,
     details: [
       'Advanced a <strong>Government Accountability Office study of racial disparities in disability compensation</strong>',
       'Helped <strong>organize a national coalition of Black veterans organizations</strong> to interface with the 117th Congress',
@@ -33,6 +35,7 @@ const timelineData = [
     year: '2022',
     title: 'Congressional testimony',
     summary: 'Congressional testimony',
+    image: null,
     details: [
       'Raised national visibility on the <strong>Sgt. Isaac Woodard, Jr. and Sgt. Joseph H. Maddox GI Bill Restoration Act</strong> as central to the coalition\'s policy agenda',
       'Testified before the House Veterans Affairs Committee to support the <strong>VA Housing Loan Forever Act</strong>, draft legislation to extend unused VA home loans to descendants',
@@ -42,6 +45,7 @@ const timelineData = [
     year: '2023',
     title: 'Monk v. United States filed',
     summary: 'Monk v. United States filed',
+    image: null,
     details: [
       '<strong>Monk v. United States</strong> is filed, becoming the first landmark case leveraging internal VA data to allege racial discrimination in the allocation of veterans benefits since 1945',
       'Collaborated with <strong>NBC News</strong> on investigative reporting for the <strong>case for reparations for Black veterans</strong>',
@@ -51,6 +55,7 @@ const timelineData = [
     year: '2024',
     title: 'Harvard & Quinn Emanuel partnership',
     summary: 'Harvard & Quinn Emanuel partnership',
+    image: null,
     details: [
       'Established an impact litigation partnership with <strong>Harvard Law School and Quinn Emanuel LLP</strong>',
       'Began working with <strong>Harvard Kennedy School\'s Trotter Collaborative for Social Justice</strong> formulating a repair and reform legislative strategy',
@@ -180,7 +185,7 @@ function Timeline() {
             marginBottom: 'clamp(2rem, 5vw, 4rem)',
           }}
         >
-          Our Work
+          Our History
         </h2>
 
         {/* Mobile Timeline */}
@@ -219,7 +224,7 @@ function Timeline() {
             {timelineData.map((item, index) => (
               <article
                 key={item.year}
-                className="flex-shrink-0 w-[280px] bg-white rounded-lg p-8 shadow-sm snap-start"
+                className="flex-shrink-0 w-[280px] bg-white rounded-2xl p-8 shadow-sm snap-start"
               >
                 <p className="text-4xl font-bold text-black mb-4">{item.year}</p>
                 <p className="text-xl font-bold mb-4">{item.title}</p>
@@ -255,15 +260,31 @@ function Timeline() {
                 <p className="text-2xl font-bold mb-2">{item.year}</p>
                 <p className="text-sm leading-snug text-gray-600">{item.summary}</p>
 
-                {/* Hover Content */}
+                {/* Hover Content - appears ABOVE the timeline */}
                 <div
-                  className={`absolute top-full left-0 mt-6 p-8 bg-white border-l-4 border-black w-[520px] z-20 shadow-lg transition-all duration-200 ${
+                  className={`absolute bottom-full mb-6 bg-white border-l-4 border-black w-[min(520px,calc(100vw-3rem))] z-20 shadow-lg transition-all duration-200 ${
+                    index >= 3 ? 'right-0' : 'left-0'
+                  } ${
                     hoveredIndex === index
                       ? 'opacity-100 translate-y-0 pointer-events-auto'
-                      : 'opacity-0 -translate-y-2 pointer-events-none'
+                      : 'opacity-0 translate-y-2 pointer-events-none'
                   }`}
                 >
-                  <div className="space-y-4">
+                  {/* Image area */}
+                  <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={`${item.year} - ${item.title}`}
+                        width={520}
+                        height={160}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-sm">[IMAGE]</span>
+                    )}
+                  </div>
+                  <div className="p-8 space-y-4">
                     {item.details.map((detail, i) => (
                       <p
                         key={i}
@@ -305,7 +326,7 @@ export default function AboutPage() {
           >
             <p className="text-sm uppercase tracking-widest mb-4 text-white/60">Who We Are</p>
             <h1
-              className="font-display font-bold text-white"
+              className="font-gunterz font-bold text-white"
               style={{ fontSize: 'clamp(2rem, 1.5rem + 4vw, 3.75rem)' }}
             >
               Building the Case for Repair
@@ -357,7 +378,7 @@ export default function AboutPage() {
         <Timeline />
 
         {/* ============================================== */}
-        {/* FOUNDERS */}
+        {/* TEAM */}
         {/* ============================================== */}
         <section
           id="founders"
@@ -369,7 +390,7 @@ export default function AboutPage() {
               className="font-display font-bold uppercase"
               style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1.5rem, 3vw, 2rem)' }}
             >
-              Our Founders
+              Our Team
             </h2>
             <div className="max-w-4xl" style={{ marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
               <p

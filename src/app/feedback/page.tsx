@@ -132,14 +132,14 @@ export default function FeedbackPage() {
               <button
                 onClick={exportToCSV}
                 disabled={feedback.length === 0}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[17px] font-medium min-h-[44px]"
+                className="px-4 py-2 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[17px] font-medium min-h-[44px]"
               >
                 Export CSV
               </button>
               <button
                 onClick={clearAll}
                 disabled={feedback.length === 0}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[17px] font-medium min-h-[44px]"
+                className="px-4 py-2 bg-red-600 text-white rounded-2xl hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-[17px] font-medium min-h-[44px]"
               >
                 Clear All
               </button>
@@ -188,7 +188,7 @@ export default function FeedbackPage() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center px-6 py-3 bg-[#FDC500] text-black font-medium rounded-lg hover:bg-[#e6b200] transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-[#FDC500] text-black font-medium rounded-2xl hover:bg-[#e6b200] transition-colors"
             >
               Go to Homepage
             </Link>
@@ -198,7 +198,7 @@ export default function FeedbackPage() {
             {filteredFeedback.map((f) => (
               <div
                 key={f.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
               >
                 <div className="flex">
                   {/* Screenshot thumbnail */}
@@ -240,13 +240,13 @@ export default function FeedbackPage() {
                       <div className="flex flex-col gap-2">
                         <a
                           href={getFeedbackLink(f)}
-                          className="px-4 py-2 bg-[#FDC500] text-black text-[17px] font-medium rounded-lg hover:bg-[#e6b200] transition-colors text-center min-h-[44px] flex items-center justify-center"
+                          className="px-4 py-2 bg-[#FDC500] text-black text-[17px] font-medium rounded-2xl hover:bg-[#e6b200] transition-colors text-center min-h-[44px] flex items-center justify-center"
                         >
                           View on Page →
                         </a>
                         <button
                           onClick={() => deleteFeedback(f.id)}
-                          className="px-4 py-2 text-red-600 text-[17px] hover:bg-red-50 rounded-lg transition-colors min-h-[44px]"
+                          className="px-4 py-2 text-red-600 text-[17px] hover:bg-red-50 rounded-2xl transition-colors min-h-[44px]"
                         >
                           Delete
                         </button>
@@ -270,7 +270,7 @@ export default function FeedbackPage() {
             <img
               src={expandedImage}
               alt="Screenshot"
-              className="max-w-full max-h-[80vh] rounded-lg shadow-2xl"
+              className="max-w-full max-h-[80vh] rounded-2xl shadow-2xl"
             />
             <button
               onClick={() => setExpandedImage(null)}

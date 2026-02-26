@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { Hero } from '@/components/sections/Hero';
 import PillarsSection from '@/components/sections/PillarsSection';
-import { NewsletterSection } from '@/components/sections/NewsletterSection';
-import { NewsletterBanner } from '@/components/sections/NewsletterBanner';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 /**
@@ -39,6 +37,7 @@ export default function Home() {
     isSuccess: false,
   });
   const showDebug = false;
+  const [showCamo, setShowCamo] = useState(true);
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,34 +110,77 @@ export default function Home() {
     <>
         {/* Hero Section */}
         <Hero
-          headline="Reparative justice for Black veterans through litigation, narrative, and mobilization."
+          headline="Defend the Legacy. Fight for Equity. Protect Democracy."
           showDebugSpacing={showDebug}
         />
 
-        {/* Parallax camo wrapper — news + pillars */}
-        <div className="relative isolate bg-white">
-          {/* Gold camo parallax layer */}
+        {/* Mission Banner */}
+        <section className="relative border-t-4 border-[#FDC500] overflow-hidden">
+          {/* Gold camo background */}
           <div
-            className="absolute inset-0 pointer-events-none -z-10"
+            className="absolute inset-0"
             style={{
-              backgroundImage: 'url(/images/camo-gold-bg.png)',
-              backgroundAttachment: 'fixed',
+              backgroundImage: 'url(/images/mission-gold-camo.png)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              opacity: 0.5,
             }}
           />
-          {/* Grain texture overlay — makes the fade feel textured, not flat */}
           <div
-            className="absolute inset-0 pointer-events-none -z-10"
-            style={{
-              backgroundRepeat: 'repeat',
-              backgroundSize: '512px 512px',
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeDiffuseLighting in='turbulence' lighting-color='%23f8f6f3' surfaceScale='1.5'%3E%3CfeDistantLight azimuth='45' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-              mixBlendMode: 'multiply',
-              opacity: 0.06,
-            }}
-          />
+            className="relative z-10 max-w-[1400px] mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12"
+            style={{ padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 6vw, 5.75rem)' }}
+          >
+            <p
+              className="text-white font-display leading-snug lg:flex-1"
+              style={{ fontSize: 'clamp(1.125rem, 0.75rem + 2vw, 1.75rem)' }}
+            >
+              BVP is the first comprehensive effort to build the collective power to demand federal accountability, advance policy change, and redress America's legacy of racism and discrimination against Black veterans and military families.
+            </p>
+            <div className="lg:flex-shrink-0">
+              <a
+                href="/our-work#case-for-repair"
+                className="
+                  inline-flex items-center justify-center
+                  px-8 py-4 text-lg font-bold tracking-wide
+                  rounded-full bg-[#FDC500] text-black
+                  hover:bg-white hover:text-black transition-colors
+                  whitespace-nowrap
+                "
+              >
+                Learn about our case for repair
+                <span className="ml-2">→</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Parallax camo wrapper — news + pillars */}
+        <div className="relative isolate bg-white">
+          {/* Gold camo parallax layer - conditionally rendered */}
+          {showCamo && (
+            <>
+              <div
+                className="absolute inset-0 pointer-events-none -z-10"
+                style={{
+                  backgroundImage: 'url(/images/camo-gold-bg.png)',
+                  backgroundAttachment: 'fixed',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  opacity: 0.5,
+                }}
+              />
+              {/* Grain texture overlay — makes the fade feel textured, not flat */}
+              <div
+                className="absolute inset-0 pointer-events-none -z-10"
+                style={{
+                  backgroundRepeat: 'repeat',
+                  backgroundSize: '512px 512px',
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeDiffuseLighting in='turbulence' lighting-color='%23f8f6f3' surfaceScale='1.5'%3E%3CfeDistantLight azimuth='45' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+                  mixBlendMode: 'multiply',
+                  opacity: 0.06,
+                }}
+              />
+            </>
+          )}
 
         {/* Media / Stories Section - Compact to fit in viewport */}
         <section
@@ -146,14 +188,14 @@ export default function Home() {
           style={{ padding: 'clamp(3rem, 8vw, 8rem) clamp(1.5rem, 6vw, 5.75rem)' }}
         >
           <div className="max-w-[1400px] mx-auto">
-            {/* Featured Story - Flex layout that stacks smoothly */}
-            <div className="flex flex-col lg:flex-row gap-6 mb-6 lg:items-center">
-              {/* Text Content - full width on mobile, shrinks on desktop */}
-              <div className="flex flex-col justify-center lg:flex-1 lg:max-w-[45%]">
+            {/* Featured Story - Grid layout to match cards below */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-center">
+              {/* Text Content - full width on mobile, left column on desktop */}
+              <div className="flex flex-col justify-center">
                 <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
                   From Our Substack
                 </p>
-                <h2 className="font-display font-bold leading-tight mb-3" style={{ fontSize: 'clamp(1.5rem, 0.75rem + 3vw, 2.5rem)' }}>
+                <h2 className="font-gunterz font-bold leading-tight mb-3" style={{ fontSize: 'clamp(1.5rem, 0.75rem + 3vw, 2.5rem)' }}>
                   Turning Conley Monk's fight into a national reckoning toward repair.
                 </h2>
                 <p className="text-gray-600 mb-4" style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1rem)' }}>
@@ -177,8 +219,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Featured Image - full width on mobile, expands on desktop */}
-              <div className="relative group cursor-pointer lg:flex-1">
+              {/* Featured Image - full width on mobile, right column on desktop */}
+              <div className="relative group cursor-pointer">
                 {/* Image container with shadow and lift */}
                 <div className="relative aspect-[16/10] overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
                   <img
@@ -198,11 +240,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Secondary Stories Grid - auto-fit for fluid columns */}
-            <div
-              className="grid gap-4"
-              style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))' }}
-            >
+            {/* Secondary Stories Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Story Card 1 */}
               <button
                 onClick={() => setSubstackModal({
@@ -210,34 +249,39 @@ export default function Home() {
                   url: 'https://legaldefensefund.substack.com/p/mississippi-workshop',
                   title: 'Historic Workshop in Mississippi'
                 })}
-                className="group bg-white rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.15)] p-5 flex gap-5 transition-all duration-300 text-left"
+                className="group bg-white border border-gray-200 rounded-2xl overflow-hidden text-left transition-all duration-300 hover:shadow-lg"
               >
+                {/* Gold top accent */}
+                <div className="h-1 bg-[#FDC500]" />
+
                 {/* Image */}
-                <div className="w-32 h-32 flex-shrink-0 bg-gray-100 flex items-center justify-center overflow-hidden">
-                  <svg className="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
+                <div className="h-56 overflow-hidden">
+                  <img
+                    src="/images/mississippi-workshop.png"
+                    alt="Historic photo of Black veterans in uniform"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
+
                 {/* Content */}
-                <div className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-[0.1em] text-[#FDC500]">Substack</span>
-                    <h3 className="font-bold text-lg text-black leading-tight mt-2 mb-2 group-hover:text-[#FDC500] transition-colors">
-                      Historic Workshop in Mississippi
-                    </h3>
-                    <p className="text-xs text-gray-400">Jan 15, 2025</p>
-                  </div>
-                  <div className="flex items-center gap-2 mt-3 text-black/60 group-hover:text-[#FDC500] transition-colors">
-                    <span className="text-[17px] font-bold">Read More</span>
-                    <svg
-                      className="w-4 h-4 -rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
+                <div className="p-6">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FDC500]">Substack</span>
+                  <h3 className="font-ontika font-medium text-xl text-black leading-tight mt-3 mb-3 group-hover:text-[#FDC500] transition-colors">
+                    Historic Workshop in Mississippi
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    A gathering of Black veterans and their families in the heart of Mississippi — documenting what repair looks like on the ground.
+                  </p>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                    <span className="text-sm text-gray-400">Jan 15, 2025</span>
+                    <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-black group-hover:text-[#FDC500] transition-colors">
+                      Read More
+                      <svg className="w-4 h-4 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </button>
@@ -249,40 +293,41 @@ export default function Home() {
                   url: 'https://legaldefensefund.substack.com/p/lived-experiences',
                   title: 'Voices of Service'
                 })}
-                className="group bg-white rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.15)] p-5 flex gap-5 transition-all duration-300 text-left"
+                className="group bg-white border border-gray-200 rounded-2xl overflow-hidden text-left transition-all duration-300 hover:shadow-lg"
               >
-                {/* Image - Optimized WebP */}
-                <div className="w-32 h-32 flex-shrink-0 bg-gray-100 overflow-hidden relative">
+                {/* Gold top accent */}
+                <div className="h-1 bg-[#FDC500]" />
+
+                {/* Image */}
+                <div className="h-56 bg-gray-100 overflow-hidden">
                   <img
                     src="/images/optimized/conley-monk.webp"
                     alt="Veteran with American Legion certificate"
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
-                    width={128}
-                    height={128}
                   />
                 </div>
+
                 {/* Content */}
-                <div className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-[0.1em] text-[#FDC500]">Substack</span>
-                    <h3 className="font-bold text-lg text-black leading-tight mt-2 mb-2 group-hover:text-[#FDC500] transition-colors">
-                      Voices of Service
-                    </h3>
-                    <p className="text-xs text-gray-400">Jan 8, 2025</p>
-                  </div>
-                  <div className="flex items-center gap-2 mt-3 text-black/60 group-hover:text-[#FDC500] transition-colors">
-                    <span className="text-[17px] font-bold">Read More</span>
-                    <svg
-                      className="w-4 h-4 -rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
+                <div className="p-6">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FDC500]">Substack</span>
+                  <h3 className="font-ontika font-medium text-xl text-black leading-tight mt-3 mb-3 group-hover:text-[#FDC500] transition-colors">
+                    Voices of Service
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    Portraits and testimonies from veterans navigating a system that was never built to honor them.
+                  </p>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                    <span className="text-sm text-gray-400">Jan 8, 2025</span>
+                    <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-black group-hover:text-[#FDC500] transition-colors">
+                      Read More
+                      <svg className="w-4 h-4 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </button>
@@ -302,12 +347,13 @@ export default function Home() {
           </div>
         </section>
 
-        <PillarsSection />
+        {/* Divider */}
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          <hr className="border-t-2 border-gray-300" />
         </div>
 
-        {/* Newsletter Section */}
-        <NewsletterSection />
-
+        <PillarsSection />
+        </div>
 
       {/* Substack Redirect Modal */}
       <AnimatePresence>
@@ -423,6 +469,33 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floating Camo Toggle Button */}
+      <button
+        onClick={() => setShowCamo(!showCamo)}
+        className="
+          fixed bottom-6 right-6 z-50
+          w-14 h-14
+          bg-black border-2 border-[#FDC500]
+          rounded-full shadow-lg
+          flex items-center justify-center
+          hover:bg-[#FDC500] hover:border-black
+          transition-all duration-300
+          group
+        "
+        title={showCamo ? 'Hide camo background' : 'Show camo background'}
+      >
+        {showCamo ? (
+          <svg className="w-6 h-6 text-[#FDC500] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+          </svg>
+        ) : (
+          <svg className="w-6 h-6 text-[#FDC500] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        )}
+      </button>
     </>
   );
 }

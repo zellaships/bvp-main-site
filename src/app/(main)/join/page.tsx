@@ -268,7 +268,7 @@ function MembershipCard({
       }`}
       aria-expanded={expanded}
     >
-      <h2 className="text-[22px] font-extrabold text-black mb-3 font-display group-hover/card:text-bvp-navy transition-colors">
+      <h2 className="text-[22px] font-bold text-black mb-3 font-gunterz group-hover/card:text-bvp-navy transition-colors">
         {title}
       </h2>
       <p className="text-[15px] leading-relaxed text-gray-600 mb-5">
@@ -512,7 +512,7 @@ export default function JoinPage() {
                   Join the Movement
                 </p>
                 <h1
-                  className="font-display font-bold text-white"
+                  className="font-gunterz font-bold text-white"
                   style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
                 >
                   Why Join BVP as a Member?

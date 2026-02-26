@@ -25,31 +25,26 @@ const faqSections: FAQSection[] = [
     title: "About BVP",
     items: [
       {
-        question: "What is Black Veterans Project?",
+        question: "What is Black Veterans Project (BVP)?",
         answer: (
-          <>
-            <p className="mb-4">
-              Black Veterans Project is a nonprofit organization dedicated to securing reparative justice for Black veterans and military families. We work through impact litigation, narrative storytelling, and movement-building to address systemic inequities in the VA benefits system and military institutions.
-            </p>
-            <p>
-              Founded in 2019, BVP has become a leading voice in the fight for racial equity in veterans' affairs, partnering with legal clinics, advocacy organizations, and grassroots movements to create lasting change.
-            </p>
-          </>
+          <p>
+            Black Veterans Project is the first comprehensive reparative justice effort mobilizing Black veterans and military families. We leverage data-driven research, narrative storytelling, and impact litigation to advance repair and equity.
+          </p>
         ),
       },
       {
         question: "Is BVP a nonprofit?",
         answer: (
           <p>
-            Yes, Black Veterans Project is a registered 501(c)(3) nonprofit organization. Our EIN is publicly available on our financials page, and all donations are tax-deductible to the extent allowed by law.
+            Yes, BVP is a registered 501(c)(3) nonprofit organization.
           </p>
         ),
       },
       {
-        question: "Is it tax-deductible to donate?",
+        question: "Are donations tax-deductible?",
         answer: (
           <p>
-            Yes, all donations to Black Veterans Project are tax-deductible. As a 501(c)(3) nonprofit organization, we provide donation receipts for your tax records. Please consult your tax advisor for specific guidance on your situation.
+            Yes. All donations to Black Veterans Project are tax-deductible to the extent allowed by law.
           </p>
         ),
       },
@@ -57,7 +52,11 @@ const faqSections: FAQSection[] = [
         question: "How is BVP governed?",
         answer: (
           <p>
-            BVP is governed by an independent Board of Directors comprising veterans, legal experts, and community leaders. Our board provides strategic oversight, ensures fiscal responsibility, and guides our mission. You can learn more about our board members on our About page.
+            BVP is governed by an independent Board of Directors. You can learn more about our board members on our{" "}
+            <Link href="/about" className="text-black font-semibold underline underline-offset-2 hover:text-bvp-navy">
+              About page
+            </Link>
+            .
           </p>
         ),
       },
@@ -65,19 +64,11 @@ const faqSections: FAQSection[] = [
         question: "Where can I find BVP's financial information?",
         answer: (
           <p>
-            Our annual reports, Form 990s, and audited financial statements are available on our{" "}
+            Our 990s are available on our{" "}
             <Link href="/financials" className="text-black font-semibold underline underline-offset-2 hover:text-bvp-navy">
               Financials page
             </Link>
             . We believe in full transparency and make all required nonprofit disclosures publicly accessible.
-          </p>
-        ),
-      },
-      {
-        question: "Who are BVP's partners?",
-        answer: (
-          <p>
-            BVP partners with leading legal institutions, advocacy organizations, and research bodies including Yale Law School's Veterans Legal Services Clinic, Harvard Law School, and Quinn Emanuel Urquhart & Sullivan. Our partnerships enable us to pursue impact litigation and advance policy change at the highest levels.
           </p>
         ),
       },
@@ -106,20 +97,18 @@ const faqSections: FAQSection[] = [
             <p className="mb-4">
               BVP focuses on impact litigation and systemic advocacy rather than individual legal representation. However, we work closely with legal partners who can provide direct services.
             </p>
-            <div className="bg-black text-white p-6 rounded-lg">
-              <p className="text-base leading-relaxed">
-                For individual legal assistance with VA benefits claims, please{" "}
-                <a
-                  href="https://law.yale.edu/clinics/veterans-legal-services-clinic"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-bvp-gold underline underline-offset-2 hover:text-white"
-                >
-                  contact the Yale Law School Veterans Legal Services Clinic
-                </a>
-                .
-              </p>
-            </div>
+            <p>
+              For individual legal assistance with VA benefits claims, please contact the{" "}
+              <a
+                href="https://law.yale.edu/clinics/veterans-legal-services-clinic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black font-semibold underline underline-offset-2 hover:text-bvp-navy"
+              >
+                Yale Law School Veterans Legal Services Clinic
+              </a>
+              .
+            </p>
           </>
         ),
       },
@@ -164,7 +153,7 @@ const faqSections: FAQSection[] = [
         question: "How do I appeal a denied VA disability claim?",
         answer: (
           <p>
-            The VA has a multi-step appeals process including Supplemental Claims, Higher-Level Review, and Board of Veterans' Appeals review. Each option has different requirements and timelines. Free assistance is available through Veterans Service Organizations (VSOs), accredited claims agents, and legal aid clinics specializing in veterans' benefits.
+            The VA has a multi-step appeals process, including Supplemental Claims, Higher-Level Review, and Board of Veterans' Appeals review. Each option has different requirements and timelines. Free assistance is available through Veterans Service Organizations (VSOs), accredited claims agents, and legal aid clinics specializing in veterans' benefits.
           </p>
         ),
       },
@@ -185,11 +174,19 @@ const faqSections: FAQSection[] = [
         question: "How do I become a BVP member?",
         answer: (
           <p>
-            Joining BVP is free and open to all supporters of our mission. Visit our{" "}
+            Visit the{" "}
             <Link href="/join" className="text-black font-semibold underline underline-offset-2 hover:text-bvp-navy">
-              Join page
+              Join Us
             </Link>{" "}
-            to sign up as a Basic Member or Advocate. Members receive updates on our work, invitations to events, and opportunities to participate in campaigns.
+            section of our site to sign up as an Affiliate or Advocate. All members receive updates on our work, invitations to events, and opportunities to participate in campaigns. Advocates gain access to training, campaign resources, and opportunities to represent BVP.
+          </p>
+        ),
+      },
+      {
+        question: "Do I have to identify as Black or be a military veteran to become a member of BVP?",
+        answer: (
+          <p>
+            No. Membership is free and open to all supporters of our mission.
           </p>
         ),
       },
@@ -197,7 +194,7 @@ const faqSections: FAQSection[] = [
         question: "What are the benefits of BVP membership?",
         answer: (
           <p>
-            Members receive regular updates on our litigation, narrative projects, and mobilization efforts. Advocates gain access to training, campaign resources, and opportunities to represent BVP at events. Your membership strengthens our voice when we speak before Congress, the courts, and the press.
+            Members receive regular updates on our litigation, narrative projects, and advocacy efforts. Advocates gain access to training, campaign resources, and opportunities to represent BVP.
           </p>
         ),
       },
@@ -205,31 +202,18 @@ const faqSections: FAQSection[] = [
         question: "How can I volunteer with BVP?",
         answer: (
           <p>
-            We welcome volunteers for various roles including event support, community outreach, research assistance, and storytelling projects. Sign up as an Advocate member to be notified of volunteer opportunities, or contact us directly with your interests and skills.
+            We welcome volunteers for a variety of roles, including event support, community outreach, research assistance, and storytelling projects. Sign up as an Advocate member to be notified of volunteer opportunities, or contact us directly with your interests and skills.
           </p>
         ),
       },
       {
-        question: "How can I share my story with BVP?",
+        question: "Can my organization partner with BVP?",
         answer: (
           <p>
-            Your story matters. Veterans and family members can share their experiences through our{" "}
-            <Link href="/contact" className="text-black font-semibold underline underline-offset-2 hover:text-bvp-navy">
-              contact form
-            </Link>
-            . Stories may be used in our narrative projects, advocacy efforts, or legal research — always with your explicit consent and control over how your story is shared.
-          </p>
-        ),
-      },
-      {
-        question: "How can my foundation support BVP?",
-        answer: (
-          <p>
-            We welcome partnerships with foundations, corporations, and institutional donors. Please contact us at{" "}
+            We welcome inquiries about partnerships. If interested, please contact us at{" "}
             <a href="mailto:info@blackveteransproject.org" className="text-black font-semibold underline underline-offset-2 hover:text-bvp-navy">
               info@blackveteransproject.org
-            </a>{" "}
-            to discuss grant opportunities, sponsorships, or strategic partnerships aligned with our mission.
+            </a>
           </p>
         ),
       },

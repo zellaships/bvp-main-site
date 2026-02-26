@@ -13,6 +13,8 @@ interface PillarCardProps {
   accentColor: string;
   camoColors: string[];
   patternImage?: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 const BLOCK_SIZE = 20;
@@ -63,7 +65,7 @@ interface Cell {
   currentOpacity: number;
 }
 
-function PillarCard({ number, title, description, cta, href, bgColor, accentColor, camoColors, patternImage }: PillarCardProps) {
+function PillarCard({ number, title, description, cta, href, bgColor, accentColor, camoColors, patternImage, image, imageAlt }: PillarCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const patternRef = useRef<HTMLDivElement>(null);
@@ -277,14 +279,59 @@ function PillarCard({ number, title, description, cta, href, bgColor, accentColo
     }
   };
 
+  // Touch handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect || !touch) return;
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    if (patternImage && patternRef.current) {
+      patternMouseRef.current = { x, y };
+      isHoveredRef.current = true;
+      patternRef.current.style.opacity = '1';
+      patternAnimRef.current = requestAnimationFrame(renderPattern);
+    } else {
+      mouseRef.current = { x, y };
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect || !touch) return;
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    if (patternImage && patternRef.current) {
+      patternMouseRef.current = { x, y };
+    } else {
+      mouseRef.current = { x, y };
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (patternImage && patternRef.current) {
+      isHoveredRef.current = false;
+      if (patternAnimRef.current) cancelAnimationFrame(patternAnimRef.current);
+      patternRef.current.style.opacity = '0';
+    } else {
+      mouseRef.current = { x: -1000, y: -1000 };
+    }
+  };
+
   return (
     <Link href={href} className="group block">
       <div
         ref={cardRef}
-        className="relative overflow-hidden h-full min-h-[320px] rounded-2xl"
+        className={`relative overflow-hidden h-full rounded-2xl transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-[0_12px_50px_rgba(0,0,0,0.14)] ${image ? '' : 'min-h-[320px]'}`}
         style={{ backgroundColor: bgColor }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {patternImage ? (
           <div
@@ -304,11 +351,23 @@ function PillarCard({ number, title, description, cta, href, bgColor, accentColo
             className="absolute inset-0 pointer-events-none z-[1] rounded-2xl"
           />
         )}
-        <div className="relative z-[2] p-6 lg:p-8 flex flex-col h-full min-h-[320px]">
+
+        {/* Image wrapper - only renders if image prop exists */}
+        {image && (
+          <div className="relative z-[2] overflow-hidden rounded-t-2xl">
+            <img
+              src={image}
+              alt={imageAlt || title}
+              className="w-full h-52 object-cover"
+            />
+          </div>
+        )}
+
+        <div className={`relative z-[2] p-6 lg:p-8 flex flex-col ${image ? 'flex-1' : 'h-full min-h-[320px]'}`}>
           <span className="text-xs font-bold tracking-widest" style={{ color: accentColor }}>
             {number}
           </span>
-          <h3 className="font-display text-2xl lg:text-3xl font-bold text-white mt-3 leading-[1.1]">
+          <h3 className="font-ontika text-2xl lg:text-3xl font-medium text-white mt-3 leading-[1.1]">
             {title}
           </h3>
           <p className="text-base md:text-lg text-white mt-5 leading-relaxed flex-1">
@@ -346,6 +405,8 @@ export default function PillarsSection() {
       accentColor: '#038BFF',
       camoColors: ['#6E7199', '#038BFF', '#9ED3FF', '#1a1c3d'],
       patternImage: '/images/camo-blue.png',
+      image: '/images/impact-litigation.png',
+      imageAlt: 'Speaker presenting to veterans at community meeting',
     },
     {
       number: '02',
@@ -356,16 +417,20 @@ export default function PillarsSection() {
       bgColor: '#143601',
       accentColor: '#56C035',
       camoColors: ['#5A7A45', '#56C035', '#B8E5A8', '#0d2401'],
+      image: '/images/tuskegee-airmen.jpg',
+      imageAlt: 'Narrative Hub',
     },
     {
       number: '03',
-      title: 'Mobilization',
+      title: 'Movement Building',
       description: 'We\u2019re organizing Black veterans and military families into a national network with real power on the Hill. Stories become testimony. Members become advocates.',
       cta: 'See how we organize',
-      href: '/our-work#mobilization',
+      href: '/our-work#movement-building',
       bgColor: '#720C0C',
       accentColor: '#F44708',
       camoColors: ['#C47A7A', '#F44708', '#FCAB8F', '#4a0808'],
+      image: '/images/american-legion.png',
+      imageAlt: 'Movement Building',
     },
   ];
 
@@ -374,14 +439,14 @@ export default function PillarsSection() {
       style={{
         paddingTop: 'clamp(3rem, 5vw, 5rem)',
         paddingBottom: 'clamp(6rem, 10vw, 8.75rem)',
-        paddingLeft: 'clamp(1.5rem, 4vw, 5.75rem)',
-        paddingRight: 'clamp(1.5rem, 4vw, 5.75rem)',
+        paddingLeft: 'clamp(1.5rem, 6vw, 5.75rem)',
+        paddingRight: 'clamp(1.5rem, 6vw, 5.75rem)',
       }}
     >
       <div className="max-w-[1400px] mx-auto">
         {/* Section Title */}
         <h2
-          className="font-display font-bold text-black leading-tight"
+          className="font-gunterz font-bold text-black leading-tight"
           style={{
             fontSize: 'clamp(2rem, 1rem + 4vw, 3.5rem)',
             marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
@@ -399,7 +464,7 @@ export default function PillarsSection() {
             We advance reparative justice through a unified strategy that connects
             <span className="font-bold text-black"> impact litigation</span>,
             <span className="font-bold text-black"> narrative building</span>, and
-            <span className="font-bold text-black"> mobilization</span>.
+            <span className="font-bold text-black"> movement building</span>.
           </p>
         </div>
 

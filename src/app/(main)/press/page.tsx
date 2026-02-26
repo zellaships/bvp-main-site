@@ -17,6 +17,7 @@ interface PressItem {
   type: Exclude<PressType, "all">;
   topics: Exclude<PressTopic, "all">[];
   url?: string;
+  reach?: string; // Audience reach (e.g., "75M+")
 }
 
 // ============================================
@@ -26,180 +27,106 @@ const pressItems: PressItem[] = [
   // 2025
   {
     id: "1",
-    date: { month: "May", day: "29", year: "2025" },
-    source: "The Grio",
-    headline: "Marine Corps' new grooming policy slammed for targeting Black men",
-    author: "By Kyle Bibby",
-    type: "opinion",
-    topics: ["policy"],
-  },
-  {
-    id: "2",
-    date: { month: "May", day: "28", year: "2025" },
-    source: "CNN",
-    headline: "The Pentagon's DEI purge ignores lessons from America's biggest military disasters",
-    author: "By Kyle Bibby",
-    type: "opinion",
-    topics: ["dei"],
-  },
-  {
-    id: "3",
     date: { month: "Apr", day: "05", year: "2025" },
     source: "The Hill",
     headline: "Black veterans sound the alarm over military DEI purge",
-    author: "By Kyle Bibby",
-    type: "opinion",
+    author: "Featuring Kyle Bibby & Gov. Wes Moore",
+    type: "news",
     topics: ["dei"],
+    url: "https://thehill.com/policy/defense/5233381-black-veterans-pentagon-dei-purge/",
   },
   {
-    id: "4",
+    id: "2",
     date: { month: "Mar", day: "21", year: "2025" },
     source: "USA Today",
     headline: "'Appalled': Pentagon restores web pages on Navajo code talkers, Jackie Robinson",
     author: "Featuring Kyle Bibby",
     type: "news",
     topics: ["dei"],
+    url: "https://www.usatoday.com/story/news/politics/2025/03/21/pentagon-restores-navajo-code-talkers-jackie-robinson/82567891007/",
   },
   {
-    id: "5",
+    id: "3",
     date: { month: "Mar", day: "20", year: "2025" },
     source: "CNN",
     headline: "Co-founder of Black Veterans Project slams Trump administration for DEI purge",
-    author: "Featuring Richard Brookshire",
+    author: "Featuring Richard Brookshire · By Pamela Brown",
     type: "broadcast",
     topics: ["dei"],
-  },
-  {
-    id: "6",
-    date: { month: "Mar", day: "11", year: "2025" },
-    source: "ProPublica",
-    headline: "The Office That Investigates Disparities in Veterans' Care Is Being \"Liquidated\"",
-    author: "Featuring Richard Brookshire",
-    type: "news",
-    topics: ["dei", "benefits"],
-  },
-  // 2024
-  {
-    id: "7",
-    date: { month: "May", day: "27", year: "2024" },
-    source: "Yes! Magazine",
-    headline: "The Military's Myth of Black Freedom",
-    author: "By Kyle Bibby",
-    type: "opinion",
-    topics: ["gi-bill"],
+    url: "https://www.cnn.com/2025/03/20/tv/video/sitroom-pamela-brown-veterans-dei-purge-trump",
   },
   // 2023
   {
-    id: "8",
+    id: "4",
     date: { month: "Mar", day: "20", year: "2023" },
-    source: "Meet the Press: Now",
-    headline: "New Report Proves Disparities in PTSD Care for Black Veterans",
+    source: "NBC News",
+    headline: "New report proves disparities in PTSD care for Black veterans",
     author: "By Lucy Bustamante",
     type: "broadcast",
     topics: ["benefits"],
+    url: "https://www.nbcnews.com/meet-the-press/video/new-report-proves-disparities-in-ptsd-care-for-black-veterans-165816389964",
   },
   {
-    id: "9",
-    date: { month: "Mar", day: "17", year: "2023" },
-    source: "NBC News",
-    headline: "Black Veterans Were More Often Denied VA Benefits Than White Veterans",
-    author: "Featuring Richard Brookshire · By Laura Stickler",
+    id: "5",
+    date: { month: "Jan", day: "18", year: "2023" },
+    source: "Military.com",
+    headline: "It's Back: Two Congressmen Want Americans to Thank Troops for Their Freedom",
+    author: "Featuring Kyle Bibby",
     type: "news",
-    topics: ["benefits"],
-  },
-  {
-    id: "10",
-    date: { month: "Mar", day: "03", year: "2023" },
-    source: "Al Jazeera English",
-    headline: "Upfront with Marc Lamont Hill: What Is Behind the US Military's Recruitment Crisis?",
-    author: "Featuring Richard Brookshire · By Marc Lamont Hill",
-    type: "broadcast",
     topics: ["policy"],
-  },
-  {
-    id: "11",
-    date: { month: "Feb", day: "27", year: "2023" },
-    source: "NBC News",
-    headline: "American Vets: Benefits, Race & Inequality",
-    author: "Featuring Richard Brookshire · By Lucy Bustamante",
-    type: "broadcast",
-    topics: ["benefits"],
+    url: "https://www.military.com/daily-news/2023/01/18/its-back-two-congressmen-want-americans-thank-troops-their-freedom.html",
   },
   // 2022
   {
-    id: "12",
+    id: "6",
     date: { month: "Dec", day: "03", year: "2022" },
-    source: "PBS NewsHour",
-    headline: "Black Veterans Sue VA Over Racial Disparities",
+    source: "PBS",
+    headline: "VA denied benefits for Black veterans at higher rate for decades, lawsuit says",
     author: "Featuring Richard Brookshire & Conley Monk · By Geoff Bennett",
     type: "broadcast",
     topics: ["monk-case"],
+    url: "https://www.pbs.org/newshour/show/va-denied-benefits-for-black-veterans-at-higher-rate-for-decades-lawsuit-says",
   },
   {
-    id: "13",
-    date: { month: "Nov", day: "28", year: "2022" },
-    source: "NBC News",
-    headline: "Veterans Affairs Has Denied Benefits to Black People at Higher Rates for Years, Lawsuit Alleges",
-    author: "Featuring Richard Brookshire · By Victoria Ebner",
-    type: "news",
-    topics: ["monk-case", "benefits"],
-  },
-  {
-    id: "14",
-    date: { month: "Oct", day: "18", year: "2022" },
+    id: "7",
+    date: { month: "Oct", day: "26", year: "2022" },
     source: "NPR",
-    headline: "Black Vets Were Excluded from GI Bill Benefits",
+    headline: "Black Vets Were Excluded From G.I. Bill Benefits. Congress Could Fix That",
     author: "Featuring Richard Brookshire · By Quil Lawrence",
     type: "broadcast",
     topics: ["gi-bill"],
+    url: "https://www.npr.org/2022/10/26/1131677540/black-vets-were-excluded-from-g-i-bill-benefits-congress-could-fix-that",
+  },
+  {
+    id: "8",
+    date: { month: "Jun", day: "01", year: "2022" },
+    source: "Washington Post",
+    headline: "Division's blue-gray patch might get the ax",
+    author: "Featuring Richard Brookshire",
+    type: "news",
+    topics: ["policy"],
+    url: "https://www.washingtonpost.com/local/divisions-blue-gray-patch-might-get-the-ax/2022/06/01/54f93c8a-e15c-11ec-9611-6f35e4fddfc3_story.html",
   },
   // 2021
   {
-    id: "15",
-    date: { month: "Oct", day: "21", year: "2021" },
+    id: "9",
+    date: { month: "Dec", day: "03", year: "2021" },
+    source: "Associated Press",
+    headline: "'We just feel it': Racism plagues US military academies",
+    author: "Featuring Kyle Bibby · By Lolita C. Baldor",
+    type: "news",
+    topics: ["policy"],
+    url: "https://apnews.com/article/racism-us-military-academies-4fd04a344d6e8a5cfc7b8b2c76e28383",
+  },
+  {
+    id: "10",
+    date: { month: "Sep", day: "10", year: "2021" },
     source: "New York Times",
     headline: "Veterans Struggle With Issues That Are Often Invisible to Others",
     author: "Featuring Richard Brookshire · By Jennifer Steinhauer",
     type: "news",
     topics: ["benefits"],
-  },
-  {
-    id: "16",
-    date: { month: "Feb", day: "01", year: "2021" },
-    source: "New York Times",
-    headline: "'Mind Boggling' and 'Deadly.' This Is the Trump V.A.'s Racist Legacy.",
-    author: "By Jasper Craven",
-    type: "opinion",
-    topics: ["benefits"],
-  },
-  // 2020
-  {
-    id: "17",
-    date: { month: "Sep", day: "15", year: "2020" },
-    source: "Reuters",
-    headline: "U.S. Troops Battling Racism Report High Barrier to Justice",
-    author: "By Phil Stewart",
-    type: "news",
-    topics: ["policy"],
-  },
-  {
-    id: "18",
-    date: { month: "Jun", day: "04", year: "2020" },
-    source: "New York Times",
-    headline: "Serving in the Army as a Queer Black Man Opened My Eyes to Racism in America",
-    author: "By Richard Brookshire · As told to Jon Ismay",
-    type: "opinion",
-    topics: ["policy"],
-  },
-  // 2019
-  {
-    id: "19",
-    date: { month: "May", day: "27", year: "2019" },
-    source: "BBC",
-    headline: "America's Strained Salute to Its Black Veterans",
-    author: "Featuring Richard Brookshire · By James Jeffrey",
-    type: "news",
-    topics: ["benefits"],
+    url: "https://www.nytimes.com/2021/09/10/us/politics/911-veterans-mental-health.html",
   },
 ];
 
@@ -265,8 +192,8 @@ function PressItemRow({ item }: PressItemRowProps) {
     benefits: "Benefits",
   };
 
-  return (
-    <article className="grid grid-cols-[56px_1fr] md:grid-cols-[80px_1fr] lg:grid-cols-[80px_500px] gap-4 md:gap-7 py-7 border-b border-gray-200 items-start">
+  const content = (
+    <>
       {/* Date */}
       <div>
         <div className="text-xs font-bold uppercase text-gray-400">
@@ -281,7 +208,7 @@ function PressItemRow({ item }: PressItemRowProps) {
         <div className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">
           {item.source}
         </div>
-        <h3 className="text-lg font-bold mb-1 leading-snug">{item.headline}</h3>
+        <h3 className="text-lg font-bold mb-1 leading-snug group-hover:text-[#FDC500] transition-colors">{item.headline}</h3>
         <div className="text-xs text-gray-400">{item.author}</div>
         <div className="flex flex-wrap gap-1 mt-2">
           {item.type !== "news" && <Tag label={typeLabels[item.type]} />}
@@ -290,6 +217,25 @@ function PressItemRow({ item }: PressItemRowProps) {
           ))}
         </div>
       </div>
+    </>
+  );
+
+  if (item.url) {
+    return (
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group grid grid-cols-[56px_1fr] md:grid-cols-[80px_1fr] lg:grid-cols-[80px_1fr] gap-4 md:gap-7 py-7 border-b border-gray-200 items-start hover:bg-gray-50 -mx-4 px-4 transition-colors"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <article className="grid grid-cols-[56px_1fr] md:grid-cols-[80px_1fr] lg:grid-cols-[80px_1fr] gap-4 md:gap-7 py-7 border-b border-gray-200 items-start">
+      {content}
     </article>
   );
 }
@@ -383,20 +329,30 @@ export default function PressPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-white border-b border-gray-200">
-        <div style={{ padding: 'clamp(6rem, 10vw, 6rem) clamp(1.5rem, 5vw, 6rem) clamp(2rem, 5vw, 4rem)' }}>
+      <section className="relative border-b border-gray-200 overflow-hidden">
+        {/* Sand camo background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'url(/images/camo-gold-bg.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.5,
+          }}
+        />
+        <div className="relative z-10" style={{ padding: 'clamp(6rem, 10vw, 6rem) clamp(1.5rem, 5vw, 6rem) clamp(2rem, 5vw, 4rem)' }}>
           <div className="max-w-[1400px] mx-auto">
             <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
               External coverage
             </p>
             <h1
-              className="font-black leading-tight mb-4 font-display"
+              className="font-gunterz font-bold leading-tight mb-4"
               style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
             >
               Archived Press
             </h1>
             <p
-              className="text-gray-500 max-w-2xl"
+              className="text-gray-600 max-w-2xl"
               style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.125rem)' }}
             >
               Coverage of Black Veterans Project's advocacy, litigation, and the

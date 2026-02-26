@@ -59,13 +59,13 @@ function ToggleSwitch({ enabled, onChange, id }: ToggleSwitchProps) {
       id={id}
       aria-checked={enabled}
       onClick={() => onChange(!enabled)}
-      className={`relative w-10 h-6 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2 ${
+      className={`relative w-12 h-[22px] rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2 ${
         enabled ? "bg-bvp-green" : "bg-gray-300"
       }`}
     >
       <span
-        className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-          enabled ? "left-5" : "left-1"
+        className={`absolute top-[3px] w-4 h-4 bg-white rounded-full transition-transform ${
+          enabled ? "left-[29px]" : "left-[3px]"
         }`}
         aria-hidden="true"
       />
