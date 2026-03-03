@@ -3,7 +3,124 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
+
+// ============================================
+// TEAM FLIP CARD COMPONENT
+// ============================================
+interface TeamCardProps {
+  name: string;
+  role: string;
+  bio: string;
+  image: string | null;
+  linkedin?: string;
+}
+
+function TeamCard({ name, role, bio, image, linkedin }: TeamCardProps) {
+  const [showBio, setShowBio] = useState(false);
+
+  return (
+    <article className="group">
+      {/* Card Container */}
+      <div className="bg-white border-2 border-black overflow-hidden" style={{ maxWidth: '340px' }}>
+        {/* Photo / Bio Area */}
+        <div className="relative aspect-square bg-gray-100 overflow-hidden">
+          <AnimatePresence mode="wait">
+            {!showBio ? (
+              <motion.div
+                key="photo"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0"
+              >
+                {image ? (
+                  <Image
+                    src={image}
+                    alt={name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                    <span className="text-gray-400 text-sm">[HEADSHOT]</span>
+                  </div>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="bio"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 p-6 overflow-y-auto bg-gray-50"
+              >
+                <p className="text-[15px] leading-relaxed text-gray-700 whitespace-pre-line">
+                  {bio}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Footer */}
+        <div className="p-4 border-t-2 border-black">
+          <h3 className="font-bold text-lg mb-0.5">{name}</h3>
+          <p className="text-sm text-gray-500 mb-4">{role}</p>
+
+          {/* Actions Row */}
+          <div className="flex items-center justify-between">
+            {/* LinkedIn */}
+            {linkedin ? (
+              <a
+                href={linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-black transition-colors"
+                aria-label={`${name}'s LinkedIn profile`}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </a>
+            ) : (
+              <div className="w-10 h-10" />
+            )}
+
+            {/* Bio Toggle */}
+            <button
+              onClick={() => setShowBio(!showBio)}
+              className={`
+                flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-full
+                transition-all duration-200
+                ${showBio
+                  ? 'bg-[#FDC500] text-black border-2 border-black'
+                  : 'bg-white text-black border-2 border-gray-300 hover:border-black'
+                }
+              `}
+              aria-expanded={showBio}
+              aria-label={showBio ? 'Hide bio' : 'Show bio'}
+            >
+              <svg
+                className={`w-4 h-4 transition-transform duration-300 ${showBio ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Bio
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 // ============================================
 // ABOUT PAGE — WHO WE ARE
@@ -380,50 +497,21 @@ export default function AboutPage() {
             >
               Our Team
             </h2>
-            <div className="max-w-4xl" style={{ marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
-              <p
-                className="leading-relaxed text-gray-500"
-                style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)' }}
-              >
-                Four veterans united by a common mission: to secure reparative justice for Black
-                service members.
-              </p>
-            </div>
-
             <div
               className="grid"
               style={{
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
                 gap: 'clamp(2rem, 4vw, 3rem)',
               }}
             >
               {founders.map((founder) => (
-                <article key={founder.name}>
-                  <div
-                    className="bg-gray-200 flex items-center justify-center aspect-square"
-                    style={{ maxWidth: '300px', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
-                  >
-                    {founder.image ? (
-                      <Image
-                        src={founder.image}
-                        alt={founder.name}
-                        width={300}
-                        height={300}
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <span className="text-gray-500">[HEADSHOT]</span>
-                    )}
-                  </div>
-                  <h3
-                    className="font-bold mb-1"
-                    style={{ fontSize: 'clamp(1.25rem, 1rem + 1vw, 1.5rem)' }}
-                  >
-                    {founder.name}
-                  </h3>
-                  <p className="text-base text-gray-500 mb-4">{founder.role}</p>
-                  <p className="text-base leading-relaxed text-gray-700">{founder.bio}</p>
-                </article>
+                <TeamCard
+                  key={founder.name}
+                  name={founder.name}
+                  role={founder.role}
+                  bio={founder.bio}
+                  image={founder.image}
+                />
               ))}
             </div>
           </div>
