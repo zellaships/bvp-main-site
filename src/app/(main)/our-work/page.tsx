@@ -230,10 +230,12 @@ function CTABox({
   title,
   buttonText,
   href,
+  external,
 }: {
   title: string;
   buttonText: string;
   href: string;
+  external?: boolean;
 }) {
   return (
     <div
@@ -259,9 +261,20 @@ function CTABox({
         >
           {title}
         </h3>
-        <Button href={href} variant="white" size="md" className="whitespace-normal">
-          {buttonText}
-        </Button>
+        {external ? (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block font-bold px-6 py-3 text-base tracking-wide rounded-full border-2 bg-white text-black border-white hover:bg-black hover:text-white transition-all duration-300 active:scale-95 min-h-[44px] whitespace-normal"
+          >
+            {buttonText}
+          </a>
+        ) : (
+          <Button href={href} variant="white" size="md" className="whitespace-normal">
+            {buttonText}
+          </Button>
+        )}
       </div>
     </div>
   );

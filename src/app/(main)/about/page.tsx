@@ -109,7 +109,7 @@ function TeamCard({
       role="button"
       aria-label={`${member.name}, ${member.role} — tap to read full bio`}
       className={`
-        relative aspect-[3/4] md:aspect-[3/4] overflow-hidden cursor-pointer bg-black
+        relative aspect-[2/3] md:aspect-[3/4] overflow-hidden cursor-pointer bg-black
         group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FDC500] focus-visible:ring-inset
         ${isActive ? 'ring-2 ring-[#FDC500] ring-inset' : ''}
       `}
@@ -214,6 +214,10 @@ function TeamDrawer({
   const [isDragging, setIsDragging] = useState(false);
   const dragStartY = useRef(0);
 
+  // Horizontal swipe state
+  const swipeStartX = useRef(0);
+  const swipeStartY = useRef(0);
+
   // Lock body scroll when open
   useEffect(() => {
     if (isOpen) {
@@ -269,6 +273,24 @@ function TeamDrawer({
     setDragY(0);
   }, [isDragging, dragY, onClose]);
 
+  // Horizontal swipe handlers for navigation
+  const handleSwipeStart = useCallback((e: React.TouchEvent) => {
+    if (window.innerWidth >= 768) return;
+    swipeStartX.current = e.touches[0].clientX;
+    swipeStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleSwipeEnd = useCallback((e: React.TouchEvent) => {
+    if (window.innerWidth >= 768) return;
+    const dx = e.changedTouches[0].clientX - swipeStartX.current;
+    const dy = Math.abs(e.changedTouches[0].clientY - swipeStartY.current);
+    // Only horizontal swipes (not vertical scrolling) - dx > 60px, dy < 40px
+    if (Math.abs(dx) > 60 && dy < 40) {
+      if (dx < 0 && index < totalCount - 1) onNext(); // swipe left = next
+      if (dx > 0 && index > 0) onPrev(); // swipe right = prev
+    }
+  }, [index, totalCount, onNext, onPrev]);
+
   if (!member) return null;
 
   const bioParagraphs = member.bio.split('\n\n');
@@ -284,27 +306,27 @@ function TeamDrawer({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/45 md:bg-black/45 backdrop-blur-sm md:backdrop-blur-none"
+            className="fixed inset-0 z-50 bg-black/45 backdrop-blur-[8px] md:backdrop-blur-none"
           />
         )}
       </AnimatePresence>
 
       {/* Drawer */}
-      <motion.div
+      <div
         ref={drawerRef}
-        initial={false}
-        animate={{
-          x: isOpen ? 0 : '110%',
-          y: isOpen ? dragY : 0,
-        }}
-        transition={isDragging ? { duration: 0 } : { type: 'spring', damping: 30, stiffness: 300 }}
-        className="
+        onTouchStart={handleSwipeStart}
+        onTouchEnd={handleSwipeEnd}
+        className={`
           fixed z-[100] bg-black flex flex-col overflow-hidden
+          transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
           md:top-0 md:right-0 md:bottom-0 md:w-[480px] md:max-w-[95vw]
           inset-x-0 bottom-0 h-[88vh] rounded-t-[20px] md:rounded-none
           shadow-[0_-4px_40px_rgba(0,0,0,0.4)] md:shadow-none
-        "
+          ${isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:translate-y-0 md:translate-x-full'}
+        `}
         style={{
+          transform: isDragging ? `translateY(${dragY}px)` : undefined,
+          transition: isDragging ? 'none' : undefined,
           paddingBottom: 'env(safe-area-inset-bottom, 20px)',
         }}
         role="dialog"
@@ -427,15 +449,27 @@ function TeamDrawer({
             </span>
           </div>
 
-          {/* Mobile swipe hint */}
-          <div className="flex md:hidden items-center justify-center gap-1.5 pt-4 text-[10px] uppercase tracking-[0.12em] text-[#2a2a2a] animate-[fadeHint_3s_ease_1s_forwards]">
+          {/* Mobile swipe hint - fades out after 3 seconds */}
+          <div
+            className="flex md:hidden items-center justify-center gap-1.5 pt-4 text-[10px] uppercase tracking-[0.12em] text-[#2a2a2a]"
+            style={{
+              animation: 'fadeHint 3s ease 1s forwards',
+            }}
+          >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
               <path d="M18 8l-6 6-6-6"/>
             </svg>
             Swipe down to close
           </div>
+          <style jsx>{`
+            @keyframes fadeHint {
+              0% { opacity: 1; }
+              70% { opacity: 1; }
+              100% { opacity: 0; }
+            }
+          `}</style>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 }
