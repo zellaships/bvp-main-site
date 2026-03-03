@@ -134,7 +134,7 @@ function TeamCard({
 
       {/* Number */}
       <div className={`
-        absolute top-3 right-3.5 font-gunterz text-[11px] tracking-widest z-10
+        absolute top-3 right-3.5 font-display font-bold text-[11px] tracking-widest z-10
         transition-colors duration-300
         ${isActive ? 'text-[#FDC500]' : 'text-white/20 group-hover:text-[#FDC500]'}
       `}>
@@ -145,14 +145,14 @@ function TeamCard({
       <div className="
         absolute bottom-0 left-0 right-0 bg-black z-10
         p-4 md:p-5
-        md:translate-y-[calc(100%-84px)] md:group-hover:translate-y-0
+        md:translate-y-[calc(100%-110px)] md:group-hover:translate-y-0
         transition-transform duration-500 ease-out
       ">
-        <h3 className="font-gunterz text-white text-[clamp(17px,3.5vw,26px)] tracking-wide leading-none">
+        <h3 className="font-display font-bold text-white text-[clamp(17px,3.5vw,22px)] uppercase tracking-wide leading-tight">
           {member.name}
         </h3>
         <div className="w-6 h-px bg-[#FDC500]/60 my-1.5 md:my-2" />
-        <p className="text-[clamp(7px,1.4vw,9px)] md:text-[9px] uppercase tracking-[0.13em] text-[#FDC500] leading-tight md:mb-3">
+        <p className="text-[clamp(8px,1.6vw,10px)] md:text-[10px] uppercase tracking-[0.13em] text-[#FDC500] leading-tight md:mb-3">
           {member.role}
         </p>
 
@@ -381,10 +381,10 @@ function TeamDrawer({
 
         {/* Header */}
         <div className="px-5 md:px-7 py-4 md:py-5 border-b border-[#1c1c1c] shrink-0">
-          <div className="font-gunterz text-[11px] tracking-[0.16em] text-[#FDC500]/45 mb-1">
+          <div className="font-display text-[11px] tracking-[0.16em] text-[#FDC500]/45 mb-1">
             0{index + 1} / 0{totalCount}
           </div>
-          <h2 className="font-gunterz text-white text-[clamp(28px,6vw,40px)] tracking-wide leading-none mb-2">
+          <h2 className="font-display font-bold text-white text-[clamp(24px,5vw,36px)] uppercase tracking-wide leading-tight mb-2">
             {member.name}
           </h2>
           <p className="text-[10px] uppercase tracking-[0.15em] text-[#FDC500]">
@@ -505,8 +505,11 @@ function TeamSection() {
           <p className="text-[11px] uppercase tracking-[0.22em] text-gray-500 mb-3">
             Black Veterans Project
           </p>
-          <h2 className="font-gunterz text-[clamp(52px,10vw,96px)] tracking-wide text-black leading-[0.9]">
-            The <span className="text-[#FDC500]">Team</span>
+          <h2
+            className="font-display font-bold uppercase text-black"
+            style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)' }}
+          >
+            Our <span className="text-[#FDC500]">Team</span>
           </h2>
         </div>
 
