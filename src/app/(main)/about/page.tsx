@@ -210,31 +210,26 @@ const founders = [
     image: '/images/team/daniele-anderson.jpg',
     linkedin: 'https://www.linkedin.com/in/danieleanderson/',
   },
-];
-
-
-// Board data
-const board = [
   {
     name: 'MaCherie Dunbar',
-    title: '',
+    role: 'Board Member',
     bio: '',
-    linkedin: 'https://www.linkedin.com/in/macheriedunbar/',
     image: '/images/team/macherie-dunbar.jpg',
+    linkedin: 'https://www.linkedin.com/in/macheriedunbar/',
   },
   {
     name: 'Mary L. Tobin',
-    title: '',
+    role: 'Board Member',
     bio: '',
-    linkedin: 'https://www.linkedin.com/in/maryltobin/',
     image: null,
+    linkedin: 'https://www.linkedin.com/in/maryltobin/',
   },
   {
     name: 'Dr. Ravi K. Perry',
-    title: '',
+    role: 'Board Member',
     bio: '',
-    linkedin: 'https://www.linkedin.com/in/ravikperry/',
     image: null,
+    linkedin: 'https://www.linkedin.com/in/ravikperry/',
   },
 ];
 
@@ -247,15 +242,6 @@ const partners = [
   { name: 'Legal Services Corporation', logo: '/images/partners/lsc.png' },
   { name: 'Civil Liberties Coalition', logo: '/images/partners/cvlc.png' },
 ];
-
-// LinkedIn Icon Component
-function LinkedInIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
-  );
-}
 
 // Timeline Component with mobile scroll tracking
 function Timeline() {
@@ -517,80 +503,6 @@ export default function AboutPage() {
                   image={founder.image}
                   linkedin={founder.linkedin}
                 />
-              ))}
-            </div>
-          </div>
-        </section>
-
-
-        {/* ============================================== */}
-        {/* BOARD */}
-        {/* ============================================== */}
-        <section
-          id="board"
-          className="bg-gray-100 scroll-mt-20"
-          style={{ padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 6rem)' }}
-        >
-          <div className="max-w-[1400px] mx-auto">
-            <h2
-              className="font-display font-bold uppercase"
-              style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}
-            >
-              Board of Directors
-            </h2>
-
-            <div
-              className="grid"
-              style={{
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-                gap: 'clamp(1.5rem, 3vw, 2rem)',
-              }}
-            >
-              {board.map((member) => (
-                <article
-                  key={member.name}
-                  className="flex gap-4 items-start border-2 border-black bg-white"
-                  style={{ padding: 'clamp(1rem, 3vw, 1.5rem)' }}
-                >
-                  <div className="w-24 h-24 bg-gray-200 border-2 border-black flex-shrink-0 flex items-center justify-center">
-                    {member.image ? (
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        width={96}
-                        height={96}
-                        className="object-cover"
-                      />
-                    ) : (
-                      <span className="text-gray-500 text-xs">[PHOTO]</span>
-                    )}
-                  </div>
-                  <div>
-                    <h3
-                      className="font-bold mb-1"
-                      style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.25rem)' }}
-                    >
-                      {member.name}
-                    </h3>
-                    {member.title && (
-                      <p className="text-base text-gray-600 mb-2">{member.title}</p>
-                    )}
-                    {member.bio && (
-                      <p className="text-sm leading-relaxed mb-3">{member.bio}</p>
-                    )}
-                    {member.linkedin && (
-                      <a
-                        href={member.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-[17px] font-medium text-gray-500 hover:text-black transition-colors min-h-[44px]"
-                      >
-                        <LinkedInIcon className="w-4 h-4" />
-                        LinkedIn
-                      </a>
-                    )}
-                  </div>
-                </article>
               ))}
             </div>
           </div>
