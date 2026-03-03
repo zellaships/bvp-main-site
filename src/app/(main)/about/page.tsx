@@ -187,24 +187,28 @@ const founders = [
     role: 'Co-CEO + Co-Founder',
     bio: 'Richard Brookshire is a multi-hyphenate storyteller and reparationist working at the intersection of politics and culture. A nationally recognized political communications strategist, writer, director, and filmmaker, he\'s held previous leadership roles in communications strategy at Iraq & Afghanistan Veterans of America, the Human Rights Campaign, and The New School. He is a former U.S. Army Combat Medic and a veteran of the War in Afghanistan. He is an alumnus of Fordham University, Columbia University School of International & Public Affairs, and New York Film Academy\'s Documentary Filmmaking School.',
     image: null,
+    linkedin: 'https://www.linkedin.com/in/richardbrookshire/',
   },
   {
     name: 'Kyle Bibby',
     role: 'Co-CEO + Co-Founder',
     bio: 'Kyle Bibby is one of the co-founders of the Black Veterans Project. He also serves as the Chief of Campaigns at Color of Change, and as a Political Partner with the Truman National Security Project. As a former Marine Corps infantry captain and Afghanistan War veteran, Kyle is a proven leader dedicated to equal rights, social justice, and ending wars. Prior to his role at Color of Change, Kyle served as a Deputy Political Director for Common Defense. Previously, Kyle was a Director at the New Jersey Reentry Corporation (NJRC). He\'s served as a Presidential Management Fellow (PMF) assigned to the Office of Management and Budget (OMB) in the Executive Office of the President during the Obama Administration. Kyle has received a Master in Public Administration from Columbia University\'s School of International and Public Affairs, and a Bachelor of Science in Political Science from the United States Naval Academy.',
     image: null,
+    linkedin: 'https://www.linkedin.com/in/kylebibby/',
   },
   {
     name: 'Zella Vanié',
     role: 'Co-Founder + Board Chair',
     bio: 'Zella Vanié is a multidisciplinary artist and designer whose work is at the intersection of strategy and design. Zella has spent their career helping organizations build inclusive products, craft stories, and push creative ideas to their highest potential. Most recently they worked as a Staff Product Designer at the Chan Zuckerberg Initiative. Zella is a veteran of the U.S. Army and earned an MFA in Interaction Design from the School of Visual Arts.',
     image: null,
+    linkedin: 'https://www.linkedin.com/in/zellavanie/',
   },
   {
     name: 'Daniele Anderson',
     role: 'Co-Founder & Board Member',
     bio: 'Daniele is a nationally recognized strategist, historian, and researcher focused on strengthening healthcare access, data-informed advocacy, and institutional accountability. She is deeply committed to building more humane, effective, and equitable systems, particularly for veterans and historically underserved communities. She has held senior leadership roles in research, policy, and strategy at Color of Change and Black Economic Alliance Foundation, where she helped translate data and community insight into institutional reform and public impact.\n\nA former Surface Warfare Officer, Daniele served five years in the U.S. Navy. She is a graduate of the United States Naval Academy and holds a Master of Arts from Columbia University.',
     image: '/images/team/daniele-anderson.jpg',
+    linkedin: 'https://www.linkedin.com/in/danieleanderson/',
   },
 ];
 
@@ -511,6 +515,7 @@ export default function AboutPage() {
                   role={founder.role}
                   bio={founder.bio}
                   image={founder.image}
+                  linkedin={founder.linkedin}
                 />
               ))}
             </div>
