@@ -154,14 +154,14 @@ function AccordionItem({ item, isOpen, onToggle, index, sectionIndex }: Accordio
           onClick={onToggle}
           className="w-full flex items-center justify-between gap-6 py-6 text-left focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2 group"
         >
-          <span className="text-lg md:text-xl font-bold group-hover:text-bvp-navy transition-colors">
+          <span className="text-lg md:text-xl font-bold group-hover:text-black transition-colors">
             {item.question}
           </span>
           <span
             className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
               isOpen
-                ? "bg-black rotate-180 group-hover:bg-bvp-navy group-active:bg-bvp-gold group-active:text-black"
-                : "bg-gray-500 group-hover:bg-bvp-navy group-active:bg-bvp-gold group-active:text-black"
+                ? "bg-black rotate-180 group-hover:bg-[#FDC500] group-hover:text-black group-active:bg-[#FDC500] group-active:text-black"
+                : "bg-gray-500 group-hover:bg-black group-active:bg-[#FDC500] group-active:text-black"
             }`}
             aria-hidden="true"
           >
