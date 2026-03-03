@@ -192,23 +192,24 @@ export default function DesignSystemPage() {
         {/* ===================== SECTION PADDING ===================== */}
         <section id="section-padding" className="py-12 md:py-16 lg:py-24 px-6 md:px-12 border-b-4 border-black">
           <div className="max-w-[1400px] mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8">Section Padding</h2>
-            
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Section Padding</h2>
+            <p className="text-gray-600 mb-8">Uses fluid <code className="bg-gray-100 px-2 py-1 rounded">clamp()</code> for smooth responsive scaling.</p>
+
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               <div className="bg-white border-4 border-black p-6">
-                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Mobile</p>
-                <p className="text-4xl font-bold">48px</p>
-                <code className="text-sm font-mono text-gray-500">py-12</code>
+                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Small (sm)</p>
+                <p className="text-2xl font-bold">48px → 64px</p>
+                <code className="text-xs font-mono text-gray-500 block mt-2">clamp(3rem, 6vw, 4rem)</code>
               </div>
               <div className="bg-white border-4 border-black p-6">
-                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Tablet (md)</p>
-                <p className="text-4xl font-bold">64px</p>
-                <code className="text-sm font-mono text-gray-500">md:py-16</code>
+                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Medium (md)</p>
+                <p className="text-2xl font-bold">64px → 80px</p>
+                <code className="text-xs font-mono text-gray-500 block mt-2">clamp(4rem, 8vw, 5rem)</code>
               </div>
               <div className="bg-white border-4 border-black p-6 bg-bvp-gold/10">
-                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Desktop (lg+)</p>
-                <p className="text-4xl font-bold text-bvp-gold">96px</p>
-                <code className="text-sm font-mono text-gray-500">lg:py-24</code>
+                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Large (lg)</p>
+                <p className="text-2xl font-bold text-bvp-gold">80px → 128px</p>
+                <code className="text-xs font-mono text-gray-500 block mt-2">clamp(5rem, 10vw, 8rem)</code>
               </div>
             </div>
 
@@ -323,18 +324,24 @@ export default function DesignSystemPage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-8">Typography</h2>
 
             {/* Font Families */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               <div className="bg-white border-4 border-black p-6">
-                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Display / Headlines</p>
+                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Display</p>
+                <p className="text-3xl font-bold font-alverata">Alverata</p>
+                <p className="text-sm text-gray-500 mt-2">Headlines, stats</p>
+                <code className="text-xs font-mono">font-display / font-alverata</code>
+              </div>
+              <div className="bg-white border-4 border-black p-6">
+                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Display Alt</p>
                 <p className="text-3xl font-bold font-gunterz">Gunterz</p>
-                <p className="text-sm text-gray-500 mt-2">Headlines, titles, CTAs</p>
-                <code className="text-xs font-mono">font-display / font-gunterz</code>
+                <p className="text-sm text-gray-500 mt-2">Bold military headlines</p>
+                <code className="text-xs font-mono">font-gunterz</code>
               </div>
               <div className="bg-white border-4 border-black p-6">
                 <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Body</p>
-                <p className="text-3xl">Open Sans</p>
+                <p className="text-3xl font-linear">Linear Grotesk</p>
                 <p className="text-sm text-gray-500 mt-2">Body text, paragraphs</p>
-                <code className="text-xs font-mono">font-body</code>
+                <code className="text-xs font-mono">font-body / font-linear</code>
               </div>
               <div className="bg-white border-4 border-black p-6">
                 <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">CTA / Buttons</p>
@@ -799,65 +806,51 @@ export default function DesignSystemPage() {
 
               {/* Primary - Gold Pill on Light */}
               <div className="bg-gradient-to-b from-[#FEF7E0] to-white border-4 border-black p-8 mb-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Primary — Gold Pill (Light BG)</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Primary Variants (Light BG)</p>
                 <div className="flex flex-wrap gap-4 items-center mb-6">
-                  <button className="font-ontika font-medium px-10 py-4 text-lg tracking-wide rounded-full border-4 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-white active:scale-95">
-                    Donate
+                  <button className="font-bold px-10 py-4 text-xl tracking-wide rounded-full border-2 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-black hover:text-[#FDC500] active:scale-95 min-h-[52px]">
+                    primary (lg)
                   </button>
-                  <button className="font-ontika font-medium px-8 py-3 text-base tracking-wide rounded-full border-4 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-white active:scale-95">
-                    Join Us
+                  <button className="font-bold px-8 py-3.5 text-lg tracking-wide rounded-full border-2 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-white active:scale-95 min-h-[48px]">
+                    primary-light (md)
                   </button>
-                  <button className="font-ontika font-medium px-6 py-2.5 text-base tracking-wide rounded-full border-4 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-white active:scale-95">
-                    Learn More
+                  <button className="font-bold px-6 py-3 text-base tracking-wide rounded-full border-2 border-black bg-black text-white transition-all duration-300 hover:bg-[#FDC500] hover:text-black hover:border-[#FDC500] active:scale-95 min-h-[44px]">
+                    secondary (sm)
                   </button>
-                  {/* Arrow Slide */}
-                  <button className="font-ontika font-medium text-base tracking-wide text-black hover:text-[#FDC500] transition-all duration-300 active:scale-95 group flex items-center gap-3 relative">
-                    <span>Learn More</span>
-                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </span>
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300" />
+                  <button className="font-bold px-6 py-3 text-base tracking-wide rounded-full border-2 border-black bg-transparent text-black transition-all duration-300 hover:bg-black hover:text-white active:scale-95 min-h-[44px]">
+                    outline
                   </button>
                 </div>
               </div>
 
-              {/* Primary - Gold Pill on Dark */}
+              {/* Buttons on Dark BG */}
               <div className="bg-gradient-to-b from-[#1a1a1a] to-black border-4 border-black p-8 mb-6">
-                <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Primary — Gold Pill (Dark BG)</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Button Variants (Dark BG)</p>
                 <div className="flex flex-wrap gap-4 items-center mb-6">
-                  <button className="font-ontika font-medium px-10 py-4 text-lg tracking-wide rounded-full border-4 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-black hover:text-[#FDC500] active:scale-95">
-                    Donate
+                  <button className="font-bold px-8 py-3.5 text-lg tracking-wide rounded-full border-2 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-black hover:text-[#FDC500] active:scale-95 min-h-[48px]">
+                    primary
                   </button>
-                  <button className="font-ontika font-medium px-8 py-3 text-base tracking-wide rounded-full border-4 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-black hover:text-[#FDC500] active:scale-95">
-                    Join Us
+                  <button className="font-bold px-6 py-3 text-base tracking-wide rounded-full border-2 border-[#FDC500] bg-transparent text-white transition-all duration-300 hover:bg-[#FDC500] hover:text-black active:scale-95 min-h-[44px]">
+                    outline-white
                   </button>
-                  <button className="font-ontika font-medium px-6 py-2.5 text-base tracking-wide rounded-full border-4 border-[#FDC500] bg-[#FDC500] text-black transition-all duration-300 hover:bg-black hover:text-[#FDC500] active:scale-95">
-                    Learn More
+                  <button className="font-bold px-6 py-3 text-base tracking-wide rounded-full border-2 border-white bg-white text-black transition-all duration-300 hover:bg-black hover:text-white active:scale-95 min-h-[44px]">
+                    white
                   </button>
-                  {/* Arrow Slide */}
-                  <button className="font-ontika font-medium text-base tracking-wide text-white hover:text-[#FDC500] transition-all duration-300 active:scale-95 group flex items-center gap-3 relative">
-                    <span>Learn More</span>
-                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </span>
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FDC500] group-hover:w-full transition-all duration-300" />
+                  <button className="font-bold px-6 py-3 text-base tracking-wide rounded-full border-2 border-[#F44708] bg-[#F44708] text-white transition-all duration-300 hover:bg-white hover:text-[#F44708] hover:border-white active:scale-95 min-h-[44px]">
+                    accent
                   </button>
                 </div>
               </div>
 
               <div className="font-mono text-sm space-y-1 text-gray-600 bg-white border-4 border-black p-6">
-                <p className="font-bold text-black mb-2">Button Specs:</p>
-                <p>Large: <span className="text-[#FDC500]">px-10 py-4 text-lg</span></p>
-                <p>Medium: <span className="text-[#FDC500]">px-8 py-3 text-base</span></p>
-                <p>Small: <span className="text-[#FDC500]">px-6 py-2.5 text-base</span></p>
-                <p>Border: <span className="text-[#FDC500]">4px solid #FDC500</span></p>
+                <p className="font-bold text-black mb-2">Button Specs (from Button.tsx):</p>
+                <p>Large: <span className="text-[#FDC500]">px-10 py-4 text-xl min-h-[52px]</span></p>
+                <p>Medium: <span className="text-[#FDC500]">px-8 py-3.5 text-lg min-h-[48px]</span></p>
+                <p>Small: <span className="text-[#FDC500]">px-6 py-3 text-base min-h-[44px]</span></p>
+                <p>Border: <span className="text-[#FDC500]">2px solid (border-2)</span></p>
                 <p>Border-radius: <span className="text-[#FDC500]">rounded-full (9999px)</span></p>
-                <p>Hover (Light BG): <span className="text-[#FDC500]">bg-white, keep gold border</span></p>
-                <p>Hover (Dark BG): <span className="text-[#FDC500]">bg-black, gold text, keep gold border</span></p>
+                <p>Font: <span className="text-[#FDC500]">font-bold tracking-wide</span></p>
+                <p>Variants: <span className="text-[#FDC500]">primary, primary-light, secondary, outline, outline-white, white, accent</span></p>
                 <p>Active: <span className="text-[#FDC500]">scale-95</span></p>
               </div>
             </div>

@@ -33,11 +33,12 @@
 ## TYPOGRAPHY
 
 ### Font Stack
-| Role | Font | Fallback | Usage |
-|------|------|----------|-------|
-| **Display** | Alverata | Georgia, serif | Headlines, stats |
-| **Body** | Open Sans | system-ui, sans-serif | Paragraphs, UI |
-| **CTA** | Linear Grotesk | system-ui, sans-serif | Buttons, labels |
+| Role | Font | Fallback | Tailwind Class | Usage |
+|------|------|----------|----------------|-------|
+| **Display** | Alverata | Georgia, serif | `font-display` / `font-alverata` | Headlines, stats |
+| **Display Alt** | Gunterz | Georgia, serif | `font-gunterz` | Bold military-inspired headlines |
+| **Body** | Linear Grotesk | system-ui, sans-serif | `font-body` / `font-linear` | Paragraphs, UI text |
+| **CTA** | Ontika | system-ui, sans-serif | `font-cta` / `font-ontika` | Buttons, labels, CTAs |
 
 ### Type Scale
 
@@ -131,21 +132,27 @@ Non-interactive elements can use smaller sizes:
 | `space-12` | 48px | Section padding (mobile) |
 | `space-24` | 96px | Section padding (desktop) |
 
-### Section Spacing
-- **Desktop:** 96px vertical padding
-- **Mobile:** 48px vertical padding
-- **Horizontal:** 48px desktop, 24px mobile
+### Section Spacing (Fluid with clamp())
+The site uses fluid responsive design with `clamp()` for smooth scaling.
+
+| Size | Clamp Value | Range |
+|------|-------------|-------|
+| `sm` | `clamp(3rem, 6vw, 4rem)` | 48px → 64px |
+| `md` | `clamp(4rem, 8vw, 5rem)` | 64px → 80px |
+| `lg` | `clamp(5rem, 10vw, 8rem)` | 80px → 128px |
+
+**Horizontal Padding:** `clamp(1.5rem, 4vw, 3rem)` → 24px → 48px
 
 ---
 
 ## BORDERS & SHADOWS
 
 ### Borders
-| Style | Value | Usage |
-|-------|-------|-------|
-| Primary | 4px solid black | Cards, buttons, inputs |
-| Secondary | 2px solid black | Dividers, dropdown items |
-| Subtle | 1px solid gray-200 | Light separators |
+| Style | Value | Tailwind | Usage |
+|-------|-------|----------|-------|
+| Heavy | 4px solid black | `border-4` | Cards, section dividers |
+| Primary | 2px solid black | `border-2` | Buttons, inputs |
+| Subtle | 1px solid gray-200 | `border` | Light separators |
 
 ### Shadows
 | Style | Value | Usage |
@@ -189,12 +196,24 @@ easing: cubic-bezier(0.16, 1, 0.3, 1) /* ease-out-expo */
 ## COMPONENT VARIANTS
 
 ### Button
+All buttons use `border-2` (2px), `rounded-full`, and 44px min touch target on mobile.
+
 | Variant | Background | Text | Border | Hover |
 |---------|------------|------|--------|-------|
-| Primary | Gold | Black | Gold | Black bg, white text |
-| Secondary | Black | White | Black | Gold bg, black text |
-| Outline | Transparent | Black | Black | Black bg, white text |
-| Outline White | Transparent | White | White | White bg, black text |
+| `primary` | Gold #FDC500 | Black | Gold | Black bg, gold text |
+| `primary-light` | Gold #FDC500 | Black | Gold | White bg |
+| `secondary` | Black | White | Black | Gold bg, black text |
+| `outline` | Transparent | Black | Black | Black bg, white text |
+| `outline-white` | Transparent | White | Gold | Gold bg, black text |
+| `white` | White | Black | White | Black bg, white text |
+| `accent` | Orange #F44708 | White | Orange | White bg, orange text |
+
+#### Button Sizes
+| Size | Padding | Font Size | Min Height (Mobile) |
+|------|---------|-----------|---------------------|
+| `sm` | px-6 py-3 | text-base (16px) | 44px |
+| `md` | px-8 py-3.5 | text-lg (18px) | 48px |
+| `lg` | px-10 py-4 | text-xl (20px) | 52px |
 
 ### Card
 | Variant | Background | Border | Text |
