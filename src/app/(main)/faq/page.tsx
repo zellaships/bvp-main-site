@@ -271,11 +271,11 @@ export default function FAQPage() {
       <section className="bg-white border-b border-gray-200">
         <div style={{ padding: 'clamp(6rem, 10vw, 6rem) clamp(1.5rem, 5vw, 6rem) clamp(2rem, 5vw, 3rem)' }}>
           <div className="max-w-[1400px] mx-auto">
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
+            <p className="text-sm uppercase tracking-widest text-gray-400 mb-4">
               Frequently Asked Questions
             </p>
             <h1
-              className="font-bold text-black leading-tight font-display max-w-4xl"
+              className="font-gunterz font-bold text-black leading-tight max-w-4xl"
               style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
             >
               Common questions about BVP and how to get involved.

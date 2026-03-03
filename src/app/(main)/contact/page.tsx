@@ -170,12 +170,12 @@ export default function ContactPage() {
         style={{ padding: 'clamp(6rem, 10vw, 8rem) clamp(1.5rem, 5vw, 6rem) clamp(1rem, 2vw, 1.5rem)' }}
       >
         <div className="max-w-[1400px] mx-auto">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">
+          <p className="text-sm uppercase tracking-widest text-gray-400 mb-4">
             Get in touch
           </p>
           <h1
-            className="font-black leading-tight mb-2 font-display"
-            style={{ fontSize: 'clamp(1.5rem, 1rem + 2.5vw, 2.5rem)' }}
+            className="font-gunterz font-bold leading-tight mb-2"
+            style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
           >
             Contact Us
           </h1>
