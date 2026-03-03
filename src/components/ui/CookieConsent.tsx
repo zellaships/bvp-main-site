@@ -363,23 +363,6 @@ export function CookieConsent() {
                     aria-label="Cookie consent actions"
                   >
                     <button
-                      onClick={handleRejectAll}
-                      className={cn(
-                        "px-6 py-3 md:py-2.5 text-[17px] md:text-sm font-bold tracking-wide rounded-full",
-                        "min-h-[44px] md:min-h-0",
-                        "bg-white text-black border-2 border-black",
-                        "hover:bg-black hover:border-black hover:text-[#FDC500]",
-                        "active:bg-black active:text-[#FDC500]",
-                        "transition-all duration-200",
-                        "flex items-center justify-center gap-2"
-                      )}
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                      Reject all
-                    </button>
-                    <button
                       onClick={handleAccept}
                       className={cn(
                         "px-6 py-3 md:py-2.5 text-[17px] md:text-sm font-bold tracking-wide rounded-full",
@@ -395,6 +378,23 @@ export function CookieConsent() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       Accept all
+                    </button>
+                    <button
+                      onClick={handleRejectAll}
+                      className={cn(
+                        "px-6 py-3 md:py-2.5 text-[17px] md:text-sm font-bold tracking-wide rounded-full",
+                        "min-h-[44px] md:min-h-0",
+                        "bg-white text-black border-2 border-black",
+                        "hover:bg-black hover:border-black hover:text-[#FDC500]",
+                        "active:bg-black active:text-[#FDC500]",
+                        "transition-all duration-200",
+                        "flex items-center justify-center gap-2"
+                      )}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      Reject all
                     </button>
                     <button
                       onClick={handleSaveChoices}
