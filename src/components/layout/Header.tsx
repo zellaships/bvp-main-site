@@ -21,8 +21,7 @@ const navigation = [
     href: "/about",
     children: [
       { name: "Mission & Vision", href: "/about#mission" },
-      { name: "Founders", href: "/about#founders" },
-      { name: "Team", href: "/about#team" },
+      { name: "Our Team", href: "/about#founders" },
       { name: "Board", href: "/about#board" },
       { name: "Partners", href: "/about#partners" },
     ],
@@ -34,7 +33,7 @@ const navigation = [
       { name: "The Case for Repair", href: "/our-work#case-for-repair" },
       { name: "Impact Litigation", href: "/our-work#litigation" },
       { name: "Narrative Building", href: "/our-work#narrative" },
-      { name: "Mobilization", href: "/our-work#mobilization" },
+      { name: "Mobilization", href: "/our-work#movement-building" },
     ],
   },
   { name: "Join Us", href: "/join" },
@@ -225,7 +224,10 @@ export function Header() {
         )}
         role="banner"
       >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-[92px] flex items-center justify-between">
+        <div
+          className="max-w-[1400px] mx-auto flex items-center justify-between"
+          style={{ paddingLeft: 'clamp(1rem, 4vw, 5.75rem)', paddingRight: 'clamp(1rem, 4vw, 5.75rem)' }}
+        >
           {/* Logo */}
           <Link
             href="/"
@@ -235,9 +237,9 @@ export function Header() {
             <Image
               src="/images/BVP-logo.png"
               alt="Black Veterans Project"
-              width={132}
-              height={66}
-              className="h-11 md:h-[52px] w-auto brightness-0 invert"
+              width={152}
+              height={76}
+              className="h-[51px] md:h-[60px] w-auto brightness-0 invert"
               priority
             />
           </Link>

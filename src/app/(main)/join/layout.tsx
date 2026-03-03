@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Join | Black Veterans Project",
   description:
-    "Become a member of the Black Veterans Project. Join as a Basic Member or Advocate to support reparative justice for Black veterans and military families.",
+    "Become a member of the Black Veterans Project. Join as an Affiliate or Advocate to support reparative justice for Black veterans and military families.",
   openGraph: {
     title: "Join the Movement | Black Veterans Project",
     description:

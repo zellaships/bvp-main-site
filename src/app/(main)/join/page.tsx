@@ -584,12 +584,12 @@ export default function JoinPage() {
                     onClick={() => handleViewChange("advocate")}
                   />
 
-                  {/* Basic Member Card */}
+                  {/* Affiliate Card */}
                   <MembershipCard
-                    id="basic-member-card"
-                    title="Basic Member"
+                    id="affiliate-card"
+                    title="Affiliate"
                     description="You stand with the movement. Your membership adds to the collective strength BVP represents when we testify before Congress, convene coalitions, or speak to the press. You'll receive updates on the fight: what's happening in the courts, on the Hill, and at the VA."
-                    linkText="Become a Basic Member"
+                    linkText="Become an Affiliate"
                     onClick={() => setBasicExpanded(true)}
                     expanded={basicExpanded}
                   >
@@ -697,7 +697,7 @@ export default function JoinPage() {
                   </MembershipCard>
 
                   <p className="text-sm text-gray-400 leading-relaxed">
-                    Not sure? Start as a Basic Member.
+                    Not sure? Start as an Affiliate.
                   </p>
                 </div>
               </div>

@@ -397,40 +397,40 @@ export default function PillarsSection() {
   const pillars = [
     {
       number: '01',
-      title: 'Impact Litigation',
-      description: 'We partner with Yale Law, Harvard Law, and Quinn Emanuel to turn evidence into legal precedent. Monk v. United States is one of the first reparative justice cases to survive a motion to dismiss.',
-      cta: 'See the legal strategy',
-      href: '/our-work#litigation',
-      bgColor: '#232651',
-      accentColor: '#038BFF',
-      camoColors: ['#6E7199', '#038BFF', '#9ED3FF', '#1a1c3d'],
-      patternImage: '/images/camo-blue.png',
-      image: '/images/impact-litigation.png',
-      imageAlt: 'Speaker presenting to veterans at community meeting',
-    },
-    {
-      number: '02',
       title: 'Narrative Hub',
       description: 'We collect, preserve, and amplify the records that prove what happened\u2014millions of documents spanning decades of exclusion. Scholars, artists, and archivists turn evidence into public memory.',
       cta: 'Learn more about what we\'re preserving',
       href: '/our-work#narrative',
-      bgColor: '#143601',
-      accentColor: '#56C035',
-      camoColors: ['#5A7A45', '#56C035', '#B8E5A8', '#0d2401'],
+      bgColor: '#1a1500',
+      accentColor: '#FDC500',
+      camoColors: ['#8B7500', '#FDC500', '#FEF3C7', '#0d0b00'],
       image: '/images/tuskegee-airmen.jpg',
       imageAlt: 'Narrative Hub',
     },
     {
-      number: '03',
+      number: '02',
       title: 'Movement Building',
       description: 'We\u2019re organizing Black veterans and military families into a national network with real power on the Hill. Stories become testimony. Members become advocates.',
       cta: 'See how we organize',
       href: '/our-work#movement-building',
+      bgColor: '#143601',
+      accentColor: '#56C035',
+      camoColors: ['#5A7A45', '#56C035', '#B8E5A8', '#0d2401'],
+      image: '/images/american-legion.png',
+      imageAlt: 'Movement Building',
+    },
+    {
+      number: '03',
+      title: 'Impact Litigation',
+      description: 'We partner with Yale Law, Harvard Law, and Quinn Emanuel to turn evidence into legal precedent. Monk v. United States is one of the first reparative justice cases to survive a motion to dismiss.',
+      cta: 'See the legal strategy',
+      href: '/our-work#litigation',
       bgColor: '#720C0C',
       accentColor: '#F44708',
       camoColors: ['#C47A7A', '#F44708', '#FCAB8F', '#4a0808'],
-      image: '/images/american-legion.png',
-      imageAlt: 'Movement Building',
+      patternImage: '/images/camo-red.png',
+      image: '/images/impact-litigation.png',
+      imageAlt: 'Speaker presenting to veterans at community meeting',
     },
   ];
 
@@ -439,8 +439,8 @@ export default function PillarsSection() {
       style={{
         paddingTop: 'clamp(3rem, 5vw, 5rem)',
         paddingBottom: 'clamp(6rem, 10vw, 8.75rem)',
-        paddingLeft: 'clamp(1.5rem, 6vw, 5.75rem)',
-        paddingRight: 'clamp(1.5rem, 6vw, 5.75rem)',
+        paddingLeft: 'clamp(1rem, 4vw, 5.75rem)',
+        paddingRight: 'clamp(1rem, 4vw, 5.75rem)',
       }}
     >
       <div className="max-w-[1400px] mx-auto">
@@ -461,10 +461,7 @@ export default function PillarsSection() {
             className="text-black/80 max-w-3xl leading-relaxed"
             style={{ fontSize: 'clamp(1.125rem, 1rem + 1vw, 1.5rem)' }}
           >
-            We advance reparative justice through a unified strategy that connects
-            <span className="font-bold text-black"> impact litigation</span>,
-            <span className="font-bold text-black"> narrative building</span>, and
-            <span className="font-bold text-black"> movement building</span>.
+            BVP is the first comprehensive effort to build the collective power to demand federal accountability, advance policy change, and redress America's legacy of racism and discrimination against Black veterans and military families.
           </p>
         </div>
 

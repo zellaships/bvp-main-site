@@ -206,7 +206,7 @@ export function Hero({
               active:scale-95
             "
           >
-            Help the fight for equity by becoming a member
+            Become a member
             <span className="text-xl">→</span>
           </a>
 

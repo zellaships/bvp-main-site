@@ -86,26 +86,11 @@ const founders = [
   {
     name: 'Daniele Anderson',
     role: 'Co-Founder & Board Member',
-    bio: 'Daniele D. Anderson is the Co-Founder of the Black Veterans Project. A native of Oklahoma City, OK, she graduated from the United States Naval Academy with a Bachelor of Science in 2013. She then commissioned as a Surface Warfare Officer in the United States Navy where she served for over five years serving onboard two guided-missile cruisers, the USS Normandy and USS Leyte Gulf. In 2018 she resigned her commission to pursue an interdisciplinary Master of Arts focusing on issues of race and ethnicity in Latin America and the United States. She is a member of the National Historical Association, National Naval Officers Association, and Black Veterans Project.',
-    image: null,
+    bio: 'Daniele is a nationally recognized strategist, historian, and researcher focused on strengthening healthcare access, data-informed advocacy, and institutional accountability. She is deeply committed to building more humane, effective, and equitable systems, particularly for veterans and historically underserved communities. She has held senior leadership roles in research, policy, and strategy at Color of Change and Black Economic Alliance Foundation, where she helped translate data and community insight into institutional reform and public impact.\n\nA former Surface Warfare Officer, Daniele served five years in the U.S. Navy. She is a graduate of the United States Naval Academy and holds a Master of Arts from Columbia University.',
+    image: '/images/team/daniele-anderson.jpg',
   },
 ];
 
-// Team data
-const team = [
-  {
-    name: 'Brianna Fernandez',
-    role: '',
-    bio: '',
-    image: null,
-  },
-  {
-    name: 'Yolanda Hoskey',
-    role: '',
-    bio: 'Yolanda Hoskey is a Brooklyn-born multidisciplinary artist, storyteller, narrative strategist, and creative producer whose work speaks to the Black experience in America. Across photography, film, and creative production, her practice focuses on shaping and expanding narratives around Black life, identity, and cultural memory, centering stories that are often overlooked, flattened, or misrepresented.\n\nOver the past decade, Yolanda has built a career across the creative arts, working at the intersection of storytelling, cultural production, and visual practice. Her work spans editorial and commercial projects as well as independent artistic practice, moving fluidly between these spaces while bringing culturally grounded, intentional storytelling into every environment she engages.\n\nShe is a Magnum Foundation Fellow (2024), a BRICLab Artist-in-Residence, and the 2025 recipient of the International Photographic Council Rising Star Award, presented at the United Nations.',
-    image: null,
-  },
-];
 
 // Board data
 const board = [
@@ -114,7 +99,7 @@ const board = [
     title: '',
     bio: '',
     linkedin: 'https://www.linkedin.com/in/macheriedunbar/',
-    image: null,
+    image: '/images/team/macherie-dunbar.jpg',
   },
   {
     name: 'Mary L. Tobin',
@@ -134,9 +119,12 @@ const board = [
 
 // Partners data
 const partners = [
-  { name: 'Yale Law School', logo: '/images/yale-bw.png', height: 48 },
-  { name: 'Harvard Law School', logo: '/images/harvard-bw.png', height: 48 },
-  { name: 'Quinn Emanuel', logo: '/images/quinn-emanuel-bw.png', height: 96 },
+  { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png' },
+  { name: 'Levi Strauss Foundation', logo: '/images/partners/lv.png' },
+  { name: 'National Veterans Council for Legal Redress', logo: '/images/partners/nvclr.png' },
+  { name: 'Massachusetts Coalition', logo: '/images/partners/mssct.png' },
+  { name: 'Legal Services Corporation', logo: '/images/partners/lsc.png' },
+  { name: 'Civil Liberties Coalition', logo: '/images/partners/cvlc.png' },
 ];
 
 // LinkedIn Icon Component
@@ -441,73 +429,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ============================================== */}
-        {/* TEAM */}
-        {/* ============================================== */}
-        <section
-          id="team"
-          className="scroll-mt-20"
-          style={{ padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 6rem)' }}
-        >
-          <div className="max-w-[1400px] mx-auto">
-            <h2
-              className="font-display font-bold uppercase"
-              style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(0.75rem, 2vw, 1rem)' }}
-            >
-              Our Team
-            </h2>
-            <p
-              className="text-gray-600"
-              style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}
-            >
-              The people building the case for repair.
-            </p>
-
-            <div
-              className="grid"
-              style={{
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
-                gap: 'clamp(2rem, 4vw, 3rem)',
-              }}
-            >
-              {team.map((member) => (
-                <article key={member.name}>
-                  <div
-                    className="bg-gray-200 flex items-center justify-center aspect-square"
-                    style={{ maxWidth: '300px', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
-                  >
-                    {member.image ? (
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        width={300}
-                        height={300}
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <span className="text-gray-500">[HEADSHOT]</span>
-                    )}
-                  </div>
-                  <h3
-                    className="font-bold mb-1"
-                    style={{ fontSize: 'clamp(1.25rem, 1rem + 1vw, 1.5rem)' }}
-                  >
-                    {member.name}
-                  </h3>
-                  {member.bio && (
-                    <div className="mt-4 space-y-4">
-                      {member.bio.split('\n\n').map((paragraph, i) => (
-                        <p key={i} className="text-base leading-relaxed text-gray-700">
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ============================================== */}
         {/* BOARD */}
@@ -605,18 +526,17 @@ export default function AboutPage() {
             </p>
 
             <div
-              className="flex flex-wrap items-center justify-center"
-              style={{ gap: 'clamp(2rem, 5vw, 4rem)' }}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 items-center justify-items-center"
+              style={{ gap: 'clamp(2rem, 4vw, 3rem)' }}
             >
               {partners.map((partner) => (
                 <div key={partner.name} className="flex items-center justify-center">
                   <Image
                     src={partner.logo}
                     alt={partner.name}
-                    width={200}
-                    height={partner.height}
-                    className="w-auto grayscale opacity-70 hover:opacity-100 transition-opacity"
-                    style={{ height: 'clamp(2.5rem, 4vw, 3rem)' }}
+                    width={160}
+                    height={80}
+                    className="w-auto max-h-[60px] object-contain brightness-[1.08] contrast-[1.1] mix-blend-multiply hover:brightness-100 hover:contrast-100 transition-all duration-300"
                   />
                 </div>
               ))}
@@ -657,23 +577,18 @@ export default function AboutPage() {
                 </Button>
               </div>
               <div>
-                <p className="text-sm uppercase tracking-wide mb-4 opacity-60">Featured In</p>
-                <div
-                  className="grid"
-                  style={{
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(60px, 1fr))',
-                    gap: 'clamp(0.5rem, 1vw, 0.75rem)',
-                  }}
-                >
-                  {['BBC', 'NYT', 'Politico', 'WaPo', 'CBS', 'CNN', 'The Grio', 'Reuters', 'The Root', 'USA Today'].map((outlet) => (
-                    <div
-                      key={outlet}
-                      className="border border-white/30 text-center hover:border-white/60 transition-colors"
-                      style={{ padding: 'clamp(0.5rem, 2vw, 0.75rem)' }}
-                    >
-                      <span className="text-gray-400 text-xs">[{outlet}]</span>
-                    </div>
-                  ))}
+                <p className="text-sm uppercase tracking-wide mb-6 opacity-60">Featured In</p>
+                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+                  <span className="text-white/70 font-bold text-lg tracking-tight">BBC</span>
+                  <span className="text-white/70 font-serif text-xl italic">The New York Times</span>
+                  <span className="text-white/70 font-bold text-lg uppercase tracking-wider">Politico</span>
+                  <span className="text-white/70 font-serif text-lg italic">The Washington Post</span>
+                  <span className="text-white/70 font-bold text-xl">CBS</span>
+                  <span className="text-white/70 font-bold text-xl tracking-tight">CNN</span>
+                  <span className="text-white/70 font-bold text-lg">TheGrio</span>
+                  <span className="text-white/70 font-bold text-lg uppercase tracking-widest">Reuters</span>
+                  <span className="text-white/70 font-bold text-lg italic">The Root</span>
+                  <span className="text-white/70 font-bold text-lg uppercase">USA Today</span>
                 </div>
               </div>
             </div>

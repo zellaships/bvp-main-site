@@ -182,30 +182,30 @@ function VennDiagram() {
         </a>
       ))}
 
-      {/* Center intersection arcs */}
+      {/* Center intersection arcs - forming the "REPAIR" triangle */}
       <svg
         className="absolute inset-0 w-full h-full z-[15] pointer-events-none"
         viewBox="0 0 500 480"
       >
-        {/* Arc from top circle (narrative) - bottom portion in intersection */}
+        {/* Bottom arc: follows Narrative circle's bottom curve (center 250,145 r=145) */}
         <path
-          d="M 200 280 A 145 145 0 0 0 300 280"
+          d="M 220 287 A 145 145 0 0 0 280 287"
           fill="none"
           stroke="#999"
           strokeWidth="2"
           strokeDasharray="6 4"
         />
-        {/* Arc from bottom-left circle (litigation) - top-right portion */}
+        {/* Left arc: follows Litigation circle's right edge (center 145,335 r=145) */}
         <path
-          d="M 200 280 A 145 145 0 0 0 250 220"
+          d="M 220 287 A 145 145 0 0 1 250 235"
           fill="none"
           stroke="#999"
           strokeWidth="2"
           strokeDasharray="6 4"
         />
-        {/* Arc from bottom-right circle (movement building) - top-left portion */}
+        {/* Right arc: follows Movement circle's left edge (center 355,335 r=145) */}
         <path
-          d="M 300 280 A 145 145 0 0 1 250 220"
+          d="M 280 287 A 145 145 0 0 0 250 235"
           fill="none"
           stroke="#999"
           strokeWidth="2"
@@ -215,7 +215,7 @@ function VennDiagram() {
 
       {/* Center label */}
       <div
-        className={`absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none text-[9px] font-extrabold tracking-[0.15em] uppercase transition-colors duration-300 ${
+        className={`absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none text-[13px] font-extrabold tracking-[0.15em] uppercase transition-colors duration-300 ${
           hoveredPillar ? 'text-white' : 'text-[#1a1a1a]'
         }`}
       >
@@ -644,7 +644,8 @@ export default function OurWorkPage() {
               <CTABox
                 title="Connect with stories, research, and dispatches from the movement for reparative justice"
                 buttonText="Explore/Sign up to our Substack →"
-                href="#"
+                href="https://blackveteransproject.substack.com"
+                external
               />
             </div>
 

@@ -75,99 +75,6 @@ const faqSections: FAQSection[] = [
     ],
   },
   {
-    title: "Monk v. United States",
-    items: [
-      {
-        question: "What is Monk v. United States?",
-        answer: (
-          <>
-            <p className="mb-4">
-              Monk v. United States is a landmark federal lawsuit filed by Black Veterans Project and our legal partners challenging systemic racial discrimination in the VA benefits system. The case alleges that the Department of Veterans Affairs has systematically denied or underrated disability benefits claims from Black veterans at higher rates than white veterans.
-            </p>
-            <p>
-              The case seeks both systemic reform of VA practices and compensation for affected veterans. It represents one of the most significant civil rights actions in veterans' affairs history.
-            </p>
-          </>
-        ),
-      },
-      {
-        question: "Does BVP provide direct legal services?",
-        answer: (
-          <>
-            <p className="mb-4">
-              BVP focuses on impact litigation and systemic advocacy rather than individual legal representation. However, we work closely with legal partners who can provide direct services.
-            </p>
-            <p>
-              For individual legal assistance with VA benefits claims, please contact the{" "}
-              <a
-                href="https://law.yale.edu/clinics/veterans-legal-services-clinic"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black font-semibold underline underline-offset-2 hover:text-bvp-navy"
-              >
-                Yale Law School Veterans Legal Services Clinic
-              </a>
-              .
-            </p>
-          </>
-        ),
-      },
-      {
-        question: "Am I eligible to be part of the Monk case?",
-        answer: (
-          <p>
-            Eligibility for the Monk case depends on specific criteria related to denied or underrated VA benefits claims. If you are a Black veteran who has experienced discrimination in the VA benefits process, we encourage you to share your story with us through our contact form. Our legal partners will review potential cases as the litigation proceeds.
-          </p>
-        ),
-      },
-      {
-        question: "What is the current status of the Monk case?",
-        answer: (
-          <p>
-            The Monk case is actively proceeding through the federal court system. For the latest updates on the case, please sign up for our newsletter or follow our press coverage. We provide regular updates to our members and the public as significant developments occur.
-          </p>
-        ),
-      },
-      {
-        question: "How do I file an FTCA claim related to VA discrimination?",
-        answer: (
-          <>
-            <p className="mb-4">
-              Filing a Federal Tort Claims Act (FTCA) claim requires specific procedures and deadlines. You must file an administrative claim with the VA within two years of the alleged harm, and the VA has six months to respond before you can file in federal court.
-            </p>
-            <p>
-              We strongly recommend consulting with a veterans' rights attorney before filing an FTCA claim. Our legal partners at Yale Law School's Veterans Legal Services Clinic may be able to assist with complex cases.
-            </p>
-          </>
-        ),
-      },
-      {
-        question: "What if my late family member was denied benefits — can I file?",
-        answer: (
-          <p>
-            Surviving family members may have standing to pursue certain claims related to denied benefits. The rules depend on factors including the type of benefit, when the denial occurred, and your relationship to the veteran. We recommend consulting with a veterans' benefits attorney to understand your options.
-          </p>
-        ),
-      },
-      {
-        question: "How do I appeal a denied VA disability claim?",
-        answer: (
-          <p>
-            The VA has a multi-step appeals process, including Supplemental Claims, Higher-Level Review, and Board of Veterans' Appeals review. Each option has different requirements and timelines. Free assistance is available through Veterans Service Organizations (VSOs), accredited claims agents, and legal aid clinics specializing in veterans' benefits.
-          </p>
-        ),
-      },
-      {
-        question: "How can I prove a family member was denied GI Bill benefits?",
-        answer: (
-          <p>
-            Documentation may include VA correspondence, application records, military discharge papers (DD-214), and historical records from educational institutions. The National Archives and National Personnel Records Center maintain military records. For descendants seeking to document historical discrimination, our team can provide guidance on research approaches.
-          </p>
-        ),
-      },
-    ],
-  },
-  {
     title: "Get Involved",
     items: [
       {
@@ -371,8 +278,7 @@ export default function FAQPage() {
               className="font-bold text-black leading-tight font-display max-w-4xl"
               style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
             >
-              Common questions about BVP, the Monk case, and how to get
-              involved.
+              Common questions about BVP and how to get involved.
             </h1>
           </div>
         </div>

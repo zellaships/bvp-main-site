@@ -37,7 +37,6 @@ export default function Home() {
     isSuccess: false,
   });
   const showDebug = false;
-  const [showCamo, setShowCamo] = useState(true);
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -114,78 +113,15 @@ export default function Home() {
           showDebugSpacing={showDebug}
         />
 
-        {/* Mission Banner */}
-        <section className="relative border-t-4 border-[#FDC500] overflow-hidden">
-          {/* Gold camo background */}
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: 'url(/images/mission-gold-camo.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          />
-          <div
-            className="relative z-10 max-w-[1400px] mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12"
-            style={{ padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 6vw, 5.75rem)' }}
-          >
-            <p
-              className="text-white font-display leading-snug lg:flex-1"
-              style={{ fontSize: 'clamp(1.125rem, 0.75rem + 2vw, 1.75rem)' }}
-            >
-              BVP is the first comprehensive effort to build the collective power to demand federal accountability, advance policy change, and redress America's legacy of racism and discrimination against Black veterans and military families.
-            </p>
-            <div className="lg:flex-shrink-0">
-              <a
-                href="/our-work#case-for-repair"
-                className="
-                  inline-flex items-center justify-center
-                  px-8 py-4 text-lg font-bold tracking-wide
-                  rounded-full bg-[#FDC500] text-black
-                  hover:bg-white hover:text-black transition-colors
-                  whitespace-nowrap
-                "
-              >
-                Learn about our case for repair
-                <span className="ml-2">→</span>
-              </a>
-            </div>
-          </div>
-        </section>
+        {/* Our Work / Pillars Section - immediately after hero */}
+        <PillarsSection />
 
-        {/* Parallax camo wrapper — news + pillars */}
-        <div className="relative isolate bg-white">
-          {/* Gold camo parallax layer - conditionally rendered */}
-          {showCamo && (
-            <>
-              <div
-                className="absolute inset-0 pointer-events-none -z-10"
-                style={{
-                  backgroundImage: 'url(/images/camo-gold-bg.png)',
-                  backgroundAttachment: 'fixed',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  opacity: 0.5,
-                }}
-              />
-              {/* Grain texture overlay — makes the fade feel textured, not flat */}
-              <div
-                className="absolute inset-0 pointer-events-none -z-10"
-                style={{
-                  backgroundRepeat: 'repeat',
-                  backgroundSize: '512px 512px',
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeDiffuseLighting in='turbulence' lighting-color='%23f8f6f3' surfaceScale='1.5'%3E%3CfeDistantLight azimuth='45' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-                  mixBlendMode: 'multiply',
-                  opacity: 0.06,
-                }}
-              />
-            </>
-          )}
-
+        {/* Content wrapper */}
+        <div className="bg-white">
         {/* Media / Stories Section - Compact to fit in viewport */}
         <section
           className="border-t-4 border-[#FDC500]"
-          style={{ padding: 'clamp(3rem, 8vw, 8rem) clamp(1.5rem, 6vw, 5.75rem)' }}
+          style={{ padding: 'clamp(3rem, 8vw, 8rem) clamp(1rem, 4vw, 5.75rem)' }}
         >
           <div className="max-w-[1400px] mx-auto">
             {/* Featured Story - Grid layout to match cards below */}
@@ -203,7 +139,9 @@ export default function Home() {
                 </p>
                 <div>
                   <a
-                    href="#"
+                    href="https://blackveteransproject.substack.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="
                       inline-flex items-center
                       px-6 py-2.5 text-base font-bold tracking-wide
@@ -347,12 +285,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Divider */}
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-          <hr className="border-t-2 border-gray-300" />
-        </div>
-
-        <PillarsSection />
         </div>
 
       {/* Substack Redirect Modal */}
@@ -470,32 +402,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Floating Camo Toggle Button */}
-      <button
-        onClick={() => setShowCamo(!showCamo)}
-        className="
-          fixed bottom-6 right-6 z-50
-          w-14 h-14
-          bg-black border-2 border-[#FDC500]
-          rounded-full shadow-lg
-          flex items-center justify-center
-          hover:bg-[#FDC500] hover:border-black
-          transition-all duration-300
-          group
-        "
-        title={showCamo ? 'Hide camo background' : 'Show camo background'}
-      >
-        {showCamo ? (
-          <svg className="w-6 h-6 text-[#FDC500] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-          </svg>
-        ) : (
-          <svg className="w-6 h-6 text-[#FDC500] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-        )}
-      </button>
     </>
   );
 }
