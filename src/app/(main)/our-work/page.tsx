@@ -348,7 +348,7 @@ export default function OurWorkPage() {
           style={{ height: 'clamp(50vh, 60vw, 70vh)' }}
         >
           <img
-            src="/images/case-for-repair-hero.jpg"
+            src="/images/our-work-banner.jpg"
             alt="Navy sailors in formation representing the service and sacrifice of Black veterans"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -382,7 +382,7 @@ export default function OurWorkPage() {
             {/* ============================================== */}
             <div id="case-for-repair" className="scroll-mt-40" style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)' }}>
               <h2
-                className="font-display font-bold uppercase"
+                className="font-gunterz font-bold uppercase"
                 style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
               >
                 The Case for Repair
@@ -493,7 +493,7 @@ export default function OurWorkPage() {
               {/* Theory of Change */}
               <div style={{ marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
                 <h3
-                  className="font-display font-bold uppercase"
+                  className="font-gunterz font-bold uppercase"
                   style={{ fontSize: 'clamp(1.25rem, 0.9rem + 1.5vw, 1.5rem)', marginBottom: '0.25rem' }}
                 >
                   How Repair Happens
@@ -576,7 +576,7 @@ export default function OurWorkPage() {
             {/* ============================================== */}
             <div id="litigation" className="scroll-mt-40" style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)' }}>
               <h2
-                className="font-display font-bold uppercase"
+                className="font-gunterz font-bold uppercase"
                 style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
               >
                 Impact Litigation
@@ -626,7 +626,7 @@ export default function OurWorkPage() {
             {/* ============================================== */}
             <div id="narrative" className="scroll-mt-40" style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)' }}>
               <h2
-                className="font-display font-bold uppercase"
+                className="font-gunterz font-bold uppercase"
                 style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
               >
                 Narrative Hub
@@ -667,7 +667,7 @@ export default function OurWorkPage() {
             {/* ============================================== */}
             <div id="movement-building" className="scroll-mt-40">
               <h2
-                className="font-display font-bold uppercase"
+                className="font-gunterz font-bold uppercase"
                 style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
               >
                 Movement Building

@@ -162,8 +162,8 @@ export default function Home() {
                 {/* Image container with shadow and lift */}
                 <div className="relative aspect-[16/10] overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
                   <img
-                    src="/images/optimized/featured-conley-monk.webp"
-                    alt="Conley Monk"
+                    src="/images/monk-hero.jpg"
+                    alt="Conley Monk with veterans"
                     className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
                     loading="eager"
                     decoding="async"

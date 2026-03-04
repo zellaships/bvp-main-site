@@ -339,8 +339,8 @@ function PillarCard({ number, title, description, cta, href, bgColor, accentColo
             className="absolute inset-0 pointer-events-none z-[1] rounded-2xl"
             style={{
               backgroundImage: `url(${patternImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundSize: '150px',
+              backgroundRepeat: 'repeat',
               opacity: 0,
               transition: 'opacity 0.4s ease-out',
             }}
@@ -404,6 +404,7 @@ export default function PillarsSection() {
       bgColor: '#1a1500',
       accentColor: '#FDC500',
       camoColors: ['#8B7500', '#FDC500', '#FEF3C7', '#0d0b00'],
+      patternImage: '/images/camo-yellow.png',
       image: '/images/tuskegee-airmen.jpg',
       imageAlt: 'Narrative Hub',
     },
@@ -416,6 +417,7 @@ export default function PillarsSection() {
       bgColor: '#143601',
       accentColor: '#56C035',
       camoColors: ['#5A7A45', '#56C035', '#B8E5A8', '#0d2401'],
+      patternImage: '/images/camo-green.png',
       image: '/images/american-legion.png',
       imageAlt: 'Movement Building',
     },
@@ -429,7 +431,7 @@ export default function PillarsSection() {
       accentColor: '#F44708',
       camoColors: ['#C47A7A', '#F44708', '#FCAB8F', '#4a0808'],
       patternImage: '/images/camo-red.png',
-      image: '/images/impact-litigation.png',
+      image: '/images/impact-litigation.jpg',
       imageAlt: 'Speaker presenting to veterans at community meeting',
     },
   ];
