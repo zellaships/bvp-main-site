@@ -405,8 +405,8 @@ export default function PillarsSection() {
       accentColor: '#FDC500',
       camoColors: ['#8B7500', '#FDC500', '#FEF3C7', '#0d0b00'],
       patternImage: '/images/camo-yellow.png',
-      image: '/images/tuskegee-airmen.jpg',
-      imageAlt: 'Narrative Hub',
+      image: '/images/narrative-hub.jpg',
+      imageAlt: 'Elderly veteran in conversation',
     },
     {
       number: '02',
@@ -418,8 +418,8 @@ export default function PillarsSection() {
       accentColor: '#56C035',
       camoColors: ['#5A7A45', '#56C035', '#B8E5A8', '#0d2401'],
       patternImage: '/images/camo-green.png',
-      image: '/images/american-legion.png',
-      imageAlt: 'Movement Building',
+      image: '/images/movement-building.jpg',
+      imageAlt: 'Community gathering and organizing',
     },
     {
       number: '03',
@@ -432,7 +432,7 @@ export default function PillarsSection() {
       camoColors: ['#C47A7A', '#F44708', '#FCAB8F', '#4a0808'],
       patternImage: '/images/camo-red.png',
       image: '/images/impact-litigation.jpg',
-      imageAlt: 'Speaker presenting to veterans at community meeting',
+      imageAlt: 'Veterans embracing at community event',
     },
   ];
 
