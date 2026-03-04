@@ -499,7 +499,7 @@ export default function JoinPage() {
               style={{ height: 'clamp(40vh, 50vw, 60vh)' }}
             >
               <img
-                src="/images/join-us-hero.jpg"
+                src="/images/join-banner.jpg"
                 alt="Vietnam veteran and U.S. Army veteran walking together at a parade"
                 className="absolute inset-0 w-full h-full object-cover"
               />

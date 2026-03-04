@@ -52,7 +52,7 @@ interface HeroProps {
 
 export function Hero({
   headline = "We advance reparative justice for Black veterans and military families through litigation, narrative, and mobilization.",
-  backgroundImage = "/images/optimized/hero-bg.webp",
+  backgroundImage = "/images/hero-bg.jpg",
   showDebugSpacing = false,
 }: HeroProps) {
   const containerRef = useRef<HTMLElement>(null);
@@ -105,7 +105,7 @@ export function Hero({
             fill
             priority
             quality={85}
-            className="object-cover object-center md:object-top"
+            className="object-cover object-[center_25%]"
             sizes="100vw"
           />
         )}
@@ -177,18 +177,21 @@ export function Hero({
           animate={{ opacity: 1, y: 0 }}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Headline - Full width, 3 lines */}
+          {/* Headline - Full width, each phrase on its own line */}
           <h1
             className="
-              font-display
+              font-gunterz
               font-bold
               text-white
-              leading-[1.1]
-              max-w-[18ch]
+              leading-[1.15]
             "
-            style={{ fontSize: 'clamp(1.5rem, 1rem + 3.5vw, 4.5rem)' }}
+            style={{ fontSize: 'clamp(1.5rem, 1rem + 3vw, 3.5rem)' }}
           >
-            {headline}
+            {headline.split('. ').map((phrase, i, arr) => (
+              <span key={i} className="block">
+                {phrase}{i < arr.length - 1 ? '.' : ''}
+              </span>
+            ))}
           </h1>
 
           {/* CTA Button */}

@@ -148,7 +148,7 @@ function TeamCard({
         md:translate-y-[calc(100%-110px)] md:group-hover:translate-y-0
         transition-transform duration-500 ease-out
       ">
-        <h3 className="font-display font-bold text-white text-[clamp(17px,3.5vw,22px)] uppercase tracking-wide leading-tight">
+        <h3 className="font-gunterz font-bold text-white text-[clamp(17px,3.5vw,22px)] uppercase tracking-wide leading-tight">
           {member.name}
         </h3>
         <div className="w-6 h-px bg-[#FDC500]/60 my-1.5 md:my-2" />
@@ -500,7 +500,7 @@ function TeamSection() {
         {/* Header */}
         <div className="mb-10 md:mb-12 px-2 md:px-4">
           <h2
-            className="font-display font-bold uppercase"
+            className="font-gunterz font-bold uppercase"
             style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)' }}
           >
             Our Team
@@ -634,7 +634,7 @@ function Timeline() {
     >
       <div className="max-w-[1400px] mx-auto">
         <h2
-          className="font-display font-bold uppercase"
+          className="font-gunterz font-bold uppercase"
           style={{
             fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)',
             marginBottom: 'clamp(2rem, 5vw, 4rem)',
@@ -831,7 +831,7 @@ export default function AboutPage() {
       >
         <div className="max-w-[1400px] mx-auto">
           <h2
-            className="font-display font-bold uppercase text-center"
+            className="font-gunterz font-bold uppercase text-center"
             style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(0.75rem, 2vw, 1rem)' }}
           >
             Our Partners
@@ -881,7 +881,7 @@ export default function AboutPage() {
           >
             <div>
               <h2
-                className="font-display font-bold"
+                className="font-gunterz font-bold"
                 style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
               >
                 Press & Media

@@ -39,7 +39,7 @@ export function NewsletterStrip() {
         <div className="grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 items-start">
           {/* Left: Copy */}
           <div>
-            <h4 className="font-display font-bold text-xl lg:text-2xl text-white mb-2">
+            <h4 className="font-gunterz font-bold text-xl lg:text-2xl text-white mb-2">
               Stay connected to the movement.
             </h4>
             <p className="text-white/70 text-sm lg:text-base">
