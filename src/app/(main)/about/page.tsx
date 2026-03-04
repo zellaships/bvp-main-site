@@ -555,7 +555,7 @@ const timelineData = [
     year: '2021',
     title: 'GAO study & coalition building',
     summary: 'GAO study & coalition building',
-    image: null,
+    image: '/images/timeline-2021.jpg',
     details: [
       'Advanced a <strong>Government Accountability Office study of racial disparities in disability compensation</strong>',
       'Helped <strong>organize a national coalition of Black veterans organizations</strong> to interface with the 117th Congress',
@@ -575,7 +575,7 @@ const timelineData = [
     year: '2023',
     title: 'Monk v. United States filed',
     summary: 'Monk v. United States filed',
-    image: null,
+    image: '/images/timeline-2023.jpg',
     details: [
       '<strong>Monk v. United States</strong> is filed, becoming the first landmark case leveraging internal VA data to allege racial discrimination in the allocation of veterans benefits since 1945',
       'Collaborated with <strong>NBC News</strong> on investigative reporting for the <strong>case for reparations for Black veterans</strong>',
@@ -585,17 +585,26 @@ const timelineData = [
     year: '2024',
     title: 'Harvard & Quinn Emanuel partnership',
     summary: 'Harvard & Quinn Emanuel partnership',
-    image: null,
+    image: '/images/timeline-2024.jpg',
     details: [
       'Established an impact litigation partnership with <strong>Harvard Law School and Quinn Emanuel LLP</strong>',
       'Began working with <strong>Harvard Kennedy School\'s Trotter Collaborative for Social Justice</strong> formulating a repair and reform legislative strategy',
+    ],
+  },
+  {
+    year: '2025',
+    title: 'Continuing the fight',
+    summary: 'Continuing the fight',
+    image: '/images/timeline-2025.jpg',
+    details: [
+      'Continuing to advance <strong>reparative justice for Black veterans</strong> through litigation, narrative, and mobilization',
     ],
   },
 ];
 
 // Partners data
 const partners = [
-  { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png', scale: 1 },
+  { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png', scale: 0.85 },
   { name: 'Liberation Ventures', logo: '/images/partners/lv.png', scale: 1.6 },
   { name: 'National Veterans Council for Legal Redress', logo: '/images/partners/nvclr.png', scale: 1 },
   { name: 'May & Stanley Smith Charitable Trust', logo: '/images/partners/mssct.png', scale: 1 },
@@ -691,9 +700,9 @@ function Timeline() {
 
         {/* Desktop Timeline */}
         <div className="hidden lg:block relative">
-          <div className="absolute top-[6px] left-0 right-0 h-[1px] bg-black" />
+          <div className="absolute top-[6px] left-0 right-0 h-[1px] bg-[#FDC500]" />
 
-          <div className="grid grid-cols-5 gap-8">
+          <div className="grid grid-cols-6 gap-8">
             {timelineData.map((item, index) => (
               <div
                 key={item.year}
@@ -712,7 +721,7 @@ function Timeline() {
                 <p className="text-sm leading-snug text-gray-600">{item.summary}</p>
 
                 <div
-                  className={`absolute bottom-full mb-6 bg-white border-l-4 border-black w-[min(520px,calc(100vw-3rem))] z-20 shadow-lg transition-all duration-200 ${
+                  className={`absolute bottom-full mb-6 bg-white border-t-4 border-[#FDC500] w-[min(520px,calc(100vw-3rem))] z-20 shadow-lg transition-all duration-200 ${
                     index >= 3 ? 'right-0' : 'left-0'
                   } ${
                     hoveredIndex === index
@@ -720,14 +729,14 @@ function Timeline() {
                       : 'opacity-0 translate-y-2 pointer-events-none'
                   }`}
                 >
-                  <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
+                  <div className="w-full h-56 bg-gray-100 flex items-center justify-center overflow-hidden">
                     {item.image ? (
                       <Image
                         src={item.image}
                         alt={`${item.year} - ${item.title}`}
                         width={520}
-                        height={160}
-                        className="w-full h-full object-cover"
+                        height={224}
+                        className="w-full h-full object-cover object-top"
                       />
                     ) : (
                       <span className="text-gray-400 text-sm">[IMAGE]</span>
@@ -854,7 +863,7 @@ export default function AboutPage() {
                   alt={partner.name}
                   width={280}
                   height={120}
-                  className="w-auto object-contain opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 ease-out"
+                  className="w-auto object-contain opacity-60 grayscale mix-blend-multiply group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 ease-out"
                   style={{
                     maxHeight: `${100 * (partner.scale || 1)}px`,
                     maxWidth: `${220 * (partner.scale || 1)}px`

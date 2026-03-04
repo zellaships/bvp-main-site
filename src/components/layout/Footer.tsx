@@ -73,6 +73,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
+      scroll={true}
       className="relative inline-block py-1.5 text-white/60 hover:text-white transition-colors group"
       style={{ fontSize: 'clamp(0.9375rem, 1.5vw, 1.0625rem)' }}
     >

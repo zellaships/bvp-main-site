@@ -76,7 +76,7 @@ function StickySubNav({
             key={section.id}
             data-section={section.id}
             onClick={() => onSectionClick(section.id)}
-            className={`relative px-3 lg:px-5 min-h-[56px] text-[17px] lg:text-[15px] font-bold tracking-[0.06em] uppercase whitespace-nowrap transition-colors flex-shrink-0 flex items-center ${
+            className={`relative px-3 lg:px-5 min-h-[56px] text-[17px] lg:text-[15px] font-gunterz font-bold tracking-[0.06em] uppercase whitespace-nowrap transition-colors flex-shrink-0 flex items-center ${
               index === 0 ? 'pl-0' : ''
             } ${activeSection === section.id ? 'text-gray-900' : 'text-gray-400 hover:text-gray-900'}`}
             aria-current={activeSection === section.id ? 'true' : undefined}
@@ -231,22 +231,24 @@ function CTABox({
   buttonText,
   href,
   external,
+  backgroundImage = '/images/camo-gold-bg.png',
 }: {
   title: string;
   buttonText: string;
   href: string;
   external?: boolean;
+  backgroundImage?: string;
 }) {
   return (
     <div
       className="relative overflow-hidden text-white"
       style={{ padding: 'clamp(1.5rem, 4vw, 2rem)' }}
     >
-      {/* Gold camo background */}
+      {/* Camo background */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: 'url(/images/camo-gold-bg.png)',
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -256,7 +258,7 @@ function CTABox({
       {/* Content */}
       <div className="relative z-10">
         <h3
-          className="font-display font-bold"
+          className="font-gunterz font-bold"
           style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.5rem)', marginBottom: 'clamp(0.75rem, 2vw, 1rem)' }}
         >
           {title}
@@ -345,7 +347,7 @@ export default function OurWorkPage() {
         {/* ============================================== */}
         <section
           className="relative flex items-end"
-          style={{ height: 'clamp(50vh, 60vw, 70vh)' }}
+          style={{ height: 'clamp(55vh, 65vw, 75vh)' }}
         >
           <img
             src="/images/our-work-banner.jpg"
@@ -355,7 +357,7 @@ export default function OurWorkPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70" />
           <div
             className="relative z-10 max-w-[1400px] mx-auto w-full"
-            style={{ padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 6rem)' }}
+            style={{ padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 6rem)' }}
           >
             <p className="text-sm uppercase tracking-widest mb-4 text-white/60">Our Work</p>
             <h1
@@ -617,6 +619,7 @@ export default function OurWorkPage() {
                 title="Are you a veteran who's experienced benefit barriers or delays?"
                 buttonText="Become a member →"
                 href="/join"
+                backgroundImage="/images/cta-camo-red.png"
               />
 
             </div>
@@ -659,6 +662,7 @@ export default function OurWorkPage() {
                 buttonText="Explore/Sign up to our Substack →"
                 href="https://blackveteransproject.substack.com"
                 external
+                backgroundImage="/images/cta-camo-yellow.png"
               />
             </div>
 
@@ -709,6 +713,7 @@ export default function OurWorkPage() {
                 title="Are you a veteran or from a military family?"
                 buttonText="Join the movement →"
                 href="/join"
+                backgroundImage="/images/cta-camo-green.png"
               />
             </div>
           </div>
