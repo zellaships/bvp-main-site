@@ -14,9 +14,9 @@ const GREEN_LIGHT = "#4A8A4A";
 function DarkGreenReportLogo({ size = 56 }: { size?: number }) {
   return (
     <img
-      src="/images/dgr-logo.webp"
+      src="/images/dgr-logo.png"
       alt="Dark Green Report"
-      style={{ width: size, height: 'auto' }}
+      style={{ width: size, height: 'auto', transform: 'rotate(45deg)' }}
       className="object-contain"
     />
   );
