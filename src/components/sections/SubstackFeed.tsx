@@ -241,7 +241,7 @@ export function SubstackFeed() {
                     className="w-full h-full flex flex-col items-center justify-center transition-all duration-700 ease-out group-hover:scale-105"
                     style={{ backgroundColor: CREAM }}
                   >
-                    <DarkGreenReportLogo size={100} />
+                    <DarkGreenReportLogo size={85} />
                     <p
                       className="text-xs tracking-[3px] uppercase font-bold mt-5"
                       style={{ color: GREEN_DARK }}
@@ -283,7 +283,7 @@ export function SubstackFeed() {
                       className="w-full h-full flex flex-col items-center justify-center transition-all duration-500 group-hover:scale-105"
                       style={{ backgroundColor: CREAM }}
                     >
-                      <DarkGreenReportLogo size={80} />
+                      <DarkGreenReportLogo size={68} />
                       <p
                         className="text-[10px] tracking-[2px] uppercase font-bold mt-4"
                         style={{ color: GREEN_DARK }}
@@ -396,7 +396,7 @@ export function SubstackFeed() {
                   transition={{ delay: 0.1, type: "spring", damping: 20 }}
                   className="flex flex-col items-center mb-6"
                 >
-                  <DarkGreenReportLogo size={60} />
+                  <DarkGreenReportLogo size={51} />
                   <p
                     className="text-[11px] tracking-[3px] uppercase font-bold mt-3"
                     style={{ color: GREEN_DARK }}
