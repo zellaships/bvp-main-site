@@ -157,29 +157,37 @@ function TeamCard({
         0{index + 1}
       </div>
 
-      {/* Info Panel - fixed height for consistency */}
+      {/* Info Panel - compact by default, expands on hover */}
       <div className="
         absolute bottom-0 left-0 right-0 bg-black z-10
         p-4 md:p-5
-        h-[55%]
-        flex flex-col
-        transition-transform duration-500 ease-out
+        transition-all duration-500 ease-out
+        group-hover:pb-6
       ">
         <h3 className="font-gunterz font-bold text-white text-[clamp(17px,3.5vw,22px)] uppercase tracking-wide leading-tight">
           {member.name}
         </h3>
         <div className="w-6 h-px bg-[#FDC500]/60 my-1.5 md:my-2" />
-        <p className="text-[clamp(8px,1.6vw,10px)] md:text-[10px] uppercase tracking-[0.13em] text-[#FDC500] leading-tight mb-3">
+        <p className="text-[clamp(8px,1.6vw,10px)] md:text-[10px] uppercase tracking-[0.13em] text-[#FDC500] leading-tight">
           {member.role}
         </p>
 
-        {/* Teaser - grows to fill available space */}
-        <p className="text-[12px] leading-[1.65] text-gray-500 font-light line-clamp-5 flex-1">
-          {teaser}
-        </p>
+        {/* Teaser - hidden by default, shows on hover */}
+        <div className="
+          overflow-hidden transition-all duration-500 ease-out
+          max-h-0 opacity-0 group-hover:max-h-[120px] group-hover:opacity-100 group-hover:mt-3
+        ">
+          <p className="text-[12px] leading-[1.65] text-gray-400 font-light line-clamp-4">
+            {teaser}
+          </p>
+        </div>
 
-        {/* CTA */}
-        <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-[0.14em] text-[#FDC500] mt-3">
+        {/* CTA - hidden by default, shows on hover */}
+        <div className="
+          flex items-center gap-1.5 text-[9px] uppercase tracking-[0.14em] text-[#FDC500]
+          overflow-hidden transition-all duration-500 ease-out
+          max-h-0 opacity-0 group-hover:max-h-[30px] group-hover:opacity-100 group-hover:mt-3
+        ">
           <svg className="w-[11px] h-[11px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6"/>
           </svg>
@@ -376,7 +384,7 @@ function TeamDrawer({
               src={member.image}
               alt={member.name}
               fill
-              className="object-cover object-center"
+              className="object-cover object-top"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
