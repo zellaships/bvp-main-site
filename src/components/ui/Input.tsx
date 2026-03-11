@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, TextareaHTMLAttributes, SelectHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, TextareaHTMLAttributes, useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 // ============================================
@@ -29,7 +29,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           type={type}
           className={cn(
-            "w-full px-6 py-4 border-2 text-base transition-all duration-200",
+            "w-full px-4 py-3 md:px-6 md:py-4 border-2 text-base transition-all duration-200",
             "focus:outline-none focus:border-bvp-gold focus:ring-2 focus:ring-bvp-gold/20",
             variants[variant],
             error && "border-red-500",
@@ -67,7 +67,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           ref={ref}
           className={cn(
-            "w-full px-6 py-4 border-2 text-base transition-all duration-200 min-h-[150px] resize-y",
+            "w-full px-4 py-3 md:px-6 md:py-4 border-2 text-base transition-all duration-200 min-h-[120px] md:min-h-[150px] resize-y",
             "focus:outline-none focus:border-bvp-gold focus:ring-2 focus:ring-bvp-gold/20",
             variants[variant],
             error && "border-red-500",
@@ -83,51 +83,123 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
 Textarea.displayName = "Textarea";
 
-// Select
-export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+// Select - Custom dropdown (not native)
+export interface SelectProps {
   label?: string;
   error?: string;
   options: Array<{ value: string; label: string }>;
   placeholder?: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  className?: string;
 }
 
-const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, label, error, options, placeholder, ...props }, ref) => {
-    return (
-      <div className="w-full">
-        {label && (
-          <label className="block text-sm font-bold mb-2">{label}</label>
-        )}
-        <select
-          ref={ref}
+function Select({ className, label, error, options, placeholder, value, onChange }: SelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find(opt => opt.value === value);
+  const displayText = selectedOption?.label || placeholder || "Select...";
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setIsOpen(false);
+    }
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-bold mb-2">{label}</label>
+      )}
+      <div className="relative" ref={dropdownRef}>
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "w-full px-6 py-4 border-2 border-black bg-white text-base",
-            "transition-all duration-200 cursor-pointer appearance-none",
+            "w-full px-4 py-3 md:px-6 md:py-4 border-2 border-black bg-white text-base text-left",
+            "transition-all duration-200 cursor-pointer",
             "focus:outline-none focus:border-bvp-gold focus:ring-2 focus:ring-bvp-gold/20",
-            "bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')]",
-            "bg-[length:12px] bg-[right_1rem_center] bg-no-repeat",
+            isOpen && "border-bvp-gold ring-2 ring-bvp-gold/20",
+            !value && "text-gray-400",
             error && "border-red-500",
             className
           )}
-          {...props}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
         >
-          {placeholder && (
-            <option value="" disabled>
-              {placeholder}
-            </option>
-          )}
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-      </div>
-    );
-  }
-);
+          {displayText}
+        </button>
 
-Select.displayName = "Select";
+        {/* Dropdown arrow */}
+        <svg
+          className={cn(
+            "absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none transition-transform",
+            isOpen && "rotate-180"
+          )}
+          viewBox="0 0 12 8"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+
+        {isOpen && (
+          <div
+            className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border-2 border-black shadow-lg max-h-60 overflow-y-auto"
+            role="listbox"
+          >
+            {placeholder && (
+              <div
+                className={cn(
+                  "px-6 py-3 cursor-pointer transition-colors hover:bg-gray-100",
+                  !value && "bg-gray-50 font-medium"
+                )}
+                role="option"
+                aria-selected={!value}
+                onClick={() => {
+                  onChange?.("");
+                  setIsOpen(false);
+                }}
+              >
+                {placeholder}
+              </div>
+            )}
+            {options.map((opt) => (
+              <div
+                key={opt.value}
+                className={cn(
+                  "px-6 py-3 cursor-pointer transition-colors hover:bg-gray-100",
+                  value === opt.value && "bg-gray-50 font-medium"
+                )}
+                role="option"
+                aria-selected={value === opt.value}
+                onClick={() => {
+                  onChange?.(opt.value);
+                  setIsOpen(false);
+                }}
+              >
+                {opt.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+    </div>
+  );
+}
 
 export { Input, Textarea, Select };

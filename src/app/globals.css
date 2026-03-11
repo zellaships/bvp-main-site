@@ -5,103 +5,6 @@
    BVP FONT FAMILIES
    ============================================ */
 
-/* Alverata - Primary Display/Headline Font */
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataLt.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataLt-Italic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/Alverata.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/Alverata-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataMd.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataMd-Italic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataSb.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataSb-Italic.ttf') format('truetype');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/Alverata-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/Alverata-BoldItalic.ttf') format('truetype');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataBl.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Alverata';
-  src: url('/fonts/alverata/AlverataBl-Italic.ttf') format('truetype');
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
-
 /* Linear Grotesk - Body/CTA Font */
 @font-face {
   font-family: 'Linear Grotesk';
@@ -301,9 +204,9 @@
 
   /* Headlines default to display font */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Alverata', Georgia, serif;
+    font-family: 'Gunterz', system-ui, sans-serif;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 
   /* Focus states for accessibility */
@@ -492,17 +395,11 @@
     color: #fff;
   }
 
-  /* Stat number styling */
+  /* Stat number styling - fluid responsive */
   .stat-number {
-    font-family: 'Alverata', Georgia, serif;
+    font-family: 'Gunterz', system-ui, sans-serif;
     font-weight: 900;
-    font-size: 3rem;
-  }
-  
-  @media (min-width: 768px) {
-    .stat-number {
-      font-size: 3.75rem;
-    }
+    font-size: clamp(2.25rem, 1.5rem + 3vw, 4rem);
   }
 }
 
