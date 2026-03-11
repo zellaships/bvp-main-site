@@ -30,7 +30,7 @@ const team = [
     name: 'Zella Vanié',
     role: 'Co-Founder + Board Chair',
     bio: 'Zella Vanié is a multidisciplinary artist and designer whose work is at the intersection of strategy and design. Zella has spent their career helping organizations build inclusive products, craft stories, and push creative ideas to their highest potential.\n\nMost recently they worked as a Staff Product Designer at the Chan Zuckerberg Initiative. Zella is a veteran of the U.S. Army and earned an MFA in Interaction Design from the School of Visual Arts.',
-    image: null,
+    image: '/images/team/zella-vanie.png',
     initials: 'ZV',
     linkedin: 'https://www.linkedin.com/in/zellavanie/',
   },
@@ -44,7 +44,7 @@ const team = [
   },
   {
     name: 'Yolanda Hoskey',
-    role: 'Creative Director',
+    role: 'Creative Producer',
     bio: 'Yolanda Hoskey is a Brooklyn-born multidisciplinary artist, storyteller, narrative strategist, and creative producer whose work speaks to the Black experience in America. Across photography, film, and creative production, her practice focuses on shaping and expanding narratives around Black life, identity, and cultural memory, centering stories that are often overlooked, flattened, or misrepresented.\n\nOver the past decade, Yolanda has built a career across the creative arts, working at the intersection of storytelling, cultural production, and visual practice. Her work spans editorial and commercial projects as well as independent artistic practice, moving fluidly between these spaces while bringing culturally grounded, intentional storytelling into every environment she engages.\n\nShe is a Magnum Foundation Fellow (2024), a BRICLab Artist-in-Residence, and the 2025 recipient of the International Photographic Council Rising Star Award, presented at the United Nations.',
     image: '/images/team/yolanda-hoskey.jpg',
     initials: 'YH',
@@ -52,7 +52,7 @@ const team = [
   },
   {
     name: 'Brianna Fernandez',
-    role: 'Operations',
+    role: 'Administrative Manager',
     bio: 'Brianna Fernandez is a NYC born artist and administrative worker deeply committed to building efficient, equitable systems that empower mission-driven work and amplify historically marginalized voices. For the past seven years, she has worked across the arts ecosystem as a curator, arts dealer, and liaison in both the primary and secondary markets, developing a strong foundation in operations, communications, and cross-sector collaboration.\n\nAs the niece of a U.S. Army veteran, Brianna brings a personal understanding of sacrifice, service, and generational impact to her role at Black Veterans Project. This connection fuels her commitment to advancing justice for Black veterans and their families. Through her work, she strives to help build an organization where operational excellence strengthens advocacy, research, and storytelling in pursuit of meaningful structural change.',
     image: '/images/team/brianna-fernandez.jpg',
     initials: 'BF',
@@ -65,14 +65,6 @@ const team = [
     image: '/images/team/macherie-dunbar.jpg',
     initials: 'MD',
     linkedin: 'https://www.linkedin.com/in/macheriedunbar/',
-  },
-  {
-    name: 'Mary L. Tobin',
-    role: 'Board Member',
-    bio: 'Mary L. Tobin is Director of Brickyard Chapters and Programs at More Perfect Union. She previously served in the Biden-Harris administration as Senior Advisor for Wounded Warrior, Veteran, and Military Family Initiatives at AmeriCorps.\n\nA West Point graduate, Mary served 10 years in the United States Army as a communications officer with two combat tours in Iraq. She serves as Vice President of the West Point Women Alumni Organization and Co-Founder of the West Point African-American Alumni Association.',
-    image: null,
-    initials: 'MT',
-    linkedin: 'https://www.linkedin.com/in/maryltobin/',
   },
   {
     name: 'Dr. Ravi K. Perry',
@@ -148,14 +140,6 @@ function TeamCard({
         )}
       </div>
 
-      {/* Number */}
-      <div className={`
-        absolute top-3 right-3.5 font-display font-bold text-[11px] tracking-widest z-10
-        transition-colors duration-300
-        ${isActive ? 'text-[#FDC500]' : 'text-white/20 group-hover:text-[#FDC500]'}
-      `}>
-        0{index + 1}
-      </div>
 
       {/* Info Panel - compact by default, expands on hover */}
       <div className="
@@ -164,8 +148,9 @@ function TeamCard({
         transition-all duration-500 ease-out
         group-hover:pb-6
       ">
-        <h3 className="font-gunterz font-bold text-white text-[clamp(17px,3.5vw,22px)] uppercase tracking-wide leading-tight">
-          {member.name}
+        <h3 className="font-gunterz font-bold text-white text-[clamp(17px,3.5vw,22px)] uppercase tracking-wide leading-tight min-h-[2.4em]">
+          {member.name.split(' ').slice(0, -1).join(' ')}<br/>
+          {member.name.split(' ').slice(-1)[0]}
         </h3>
         <div className="w-6 h-px bg-[#FDC500]/60 my-1.5 md:my-2" />
         <p className="text-[clamp(8px,1.6vw,10px)] md:text-[10px] uppercase tracking-[0.13em] text-[#FDC500] leading-tight">
@@ -371,10 +356,10 @@ function TeamDrawer({
           </svg>
         </button>
 
-        {/* Photo - 75% height */}
+        {/* Photo - reduced height */}
         <div
           className="relative w-full bg-[#181818] shrink-0 overflow-hidden"
-          style={{ height: '75%' }}
+          style={{ height: 'calc(75% - 200px)' }}
           onTouchStart={(e) => handleDragStart(e.touches[0].clientY)}
           onTouchMove={(e) => handleDragMove(e.touches[0].clientY)}
           onTouchEnd={handleDragEnd}
@@ -415,7 +400,7 @@ function TeamDrawer({
         >
           <div className="space-y-4">
             {bioParagraphs.map((p, i) => (
-              <p key={i} className="text-[16px] leading-[1.75] text-gray-400">
+              <p key={i} className="text-[17px] leading-[1.75] text-gray-400">
                 {p}
               </p>
             ))}
@@ -526,16 +511,18 @@ function TeamSection() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0.5">
-          {team.map((member, index) => (
-            <TeamCard
-              key={member.name}
-              member={member}
-              index={index}
-              onClick={() => openDrawer(index)}
-              isActive={activeIndex === index}
-            />
-          ))}
+        <div className="max-w-[1200px] mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
+            {team.map((member, index) => (
+              <TeamCard
+                key={member.name}
+                member={member}
+                index={index}
+                onClick={() => openDrawer(index)}
+                isActive={activeIndex === index}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -562,72 +549,70 @@ function TeamSection() {
 const timelineData = [
   {
     year: '2020',
-    title: 'Yale Law School collaboration begins',
-    summary: 'Yale Law School collaboration begins',
-    image: null,
+    title: 'Obtaining Historical Data',
+    summary: 'Obtaining Historical Data',
+    image: '/images/timeline-2020.jpg',
     details: [
-      '<strong>Yale Law School</strong> collaboration to obtain decades of data proving sustained and <strong>systemic racial inequities in veterans disability compensation</strong> going since 2001',
+      'BVP partners with <strong>Yale Law School Veterans Legal Services Clinic</strong> to obtain decades of government data demonstrating sustained and systemic racial inequities in veterans\' disability rates.',
     ],
   },
   {
     year: '2021',
-    title: 'GAO study & coalition building',
-    summary: 'GAO study & coalition building',
+    title: 'Coalition Building',
+    summary: 'Coalition Building',
     image: '/images/timeline-2021.jpg',
     details: [
-      'Advanced a <strong>Government Accountability Office study of racial disparities in disability compensation</strong>',
-      'Helped <strong>organize a national coalition of Black veterans organizations</strong> to interface with the 117th Congress',
+      'BVP assists in building and convening a <strong>national coalition of Black veterans\' groups</strong> interfacing with the 117th Congress.',
+      'BVP\'s work prompts the passage of a historic <strong>Government Accountability Office study</strong> on racial disparities in disability compensation.',
     ],
   },
   {
     year: '2022',
-    title: 'Congressional testimony',
-    summary: 'Congressional testimony',
-    image: null,
+    title: 'Legislative Reform',
+    summary: 'Legislative Reform',
+    image: '/images/timeline-2022.png',
     details: [
-      'Raised national visibility on the <strong>Sgt. Isaac Woodard, Jr. and Sgt. Joseph H. Maddox GI Bill Restoration Act</strong> as central to the coalition\'s policy agenda',
-      'Testified before the House Veterans Affairs Committee to support the <strong>VA Housing Loan Forever Act</strong>, draft legislation to extend unused VA home loans to descendants',
+      'BVP champions <strong>military justice reform</strong>, the <strong>PACT Act</strong>, and testifying before Congress to support the <strong>Sgt. Isaac Woodard, Jr. and Sgt. Joseph H. Maddox GI Bill Restoration Act</strong>.',
+      'Advocated for iterative redress legislation to <strong>extend unused VA home loans to descendants</strong> of Black veterans denied access to the G.I. Bill.',
     ],
   },
   {
     year: '2023',
-    title: 'Monk v. United States filed',
-    summary: 'Monk v. United States filed',
+    title: 'Monk v. United States is filed',
+    summary: 'Monk v. United States is filed',
     image: '/images/timeline-2023.jpg',
     details: [
-      '<strong>Monk v. United States</strong> is filed, becoming the first landmark case leveraging internal VA data to allege racial discrimination in the allocation of veterans benefits since 1945',
-      'Collaborated with <strong>NBC News</strong> on investigative reporting for the <strong>case for reparations for Black veterans</strong>',
+      '<strong>Monk v. United States</strong> is filed, becoming the first landmark case leveraging internal VA data to allege racial discrimination in the allocation of veterans\' benefits since 1945.',
     ],
   },
   {
     year: '2024',
-    title: 'Harvard & Quinn Emanuel partnership',
-    summary: 'Harvard & Quinn Emanuel partnership',
+    title: 'A New Strategic Vision',
+    summary: 'A New Strategic Vision',
     image: '/images/timeline-2024.jpg',
     details: [
-      'Established an impact litigation partnership with <strong>Harvard Law School and Quinn Emanuel LLP</strong>',
-      'Began working with <strong>Harvard Kennedy School\'s Trotter Collaborative for Social Justice</strong> formulating a repair and reform legislative strategy',
+      'BVP undertakes a <strong>robust strategic planning process</strong> and collaborates with <strong>Harvard Kennedy School\'s Trotter Collaborative for Social Justice</strong> to develop a repair-and-reform strategy.',
     ],
   },
   {
     year: '2025',
-    title: 'Continuing the fight',
-    summary: 'Continuing the fight',
+    title: 'Scaling for Impact',
+    summary: 'Scaling for Impact',
     image: '/images/timeline-2025.jpg',
     details: [
-      'Continuing to advance <strong>reparative justice for Black veterans</strong> through litigation, narrative, and mobilization',
+      'BVP begins <strong>new strategic partnerships to scale impact</strong>, becoming one of the nation\'s preeminent voices on issues facing Black servicemembers, veterans, and military families.',
     ],
   },
 ];
 
 // Partners data
 const partners = [
-  { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png', scale: 0.85 },
-  { name: 'Liberation Ventures', logo: '/images/partners/lv.png', scale: 1.6 },
-  { name: 'National Veterans Council for Legal Redress', logo: '/images/partners/nvclr.png', scale: 1 },
-  { name: 'May & Stanley Smith Charitable Trust', logo: '/images/partners/mssct.png', scale: 1 },
-  { name: 'Legal Services Corporation', logo: '/images/partners/lsc.png', scale: 1.5 },
-  { name: 'Connecticut Veterans Legal Center', logo: '/images/partners/cvlc.png', scale: 1 },
+  { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png', scale: 0.85, url: 'https://www.rwjf.org/' },
+  { name: 'Liberation Ventures', logo: '/images/partners/lv.png', scale: 1.6, url: 'https://www.liberationventures.org/' },
+  { name: 'National Veterans Council for Legal Redress', logo: '/images/partners/nvclr.png', scale: 1, url: 'https://www.nvclr.org/' },
+  { name: 'May & Stanley Smith Charitable Trust', logo: '/images/partners/mssct.png', scale: 1, url: 'https://smithct.org/' },
+  { name: 'Legal Services Corporation', logo: '/images/partners/lsc.png', scale: 1.5, url: 'https://www.lsc.gov/' },
+  { name: 'Connecticut Veterans Legal Center', logo: '/images/partners/cvlc.png', scale: 1, url: 'https://ctveteranslegal.org/' },
 ];
 
 // Timeline Component
@@ -720,7 +705,7 @@ function Timeline() {
         <div className="hidden lg:block relative">
           <div className="absolute top-[6px] left-0 right-0 h-[1px] bg-[#FDC500]" />
 
-          <div className="grid grid-cols-6 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 lg:gap-8">
             {timelineData.map((item, index) => (
               <div
                 key={item.year}
@@ -785,27 +770,41 @@ export default function AboutPage() {
       {/* HERO */}
       <section
         id="mission"
-        className="relative flex items-end scroll-mt-20"
+        className="relative flex items-end scroll-mt-20 overflow-hidden bg-black"
         style={{ height: 'clamp(50vh, 60vw, 70vh)' }}
       >
-        <img
+        {/* Background Image with Entrance Animation */}
+        <motion.img
           src="/images/who-we-are.jpg"
           alt="Black Army veterans proudly waving American flag"
           className="absolute inset-0 w-full h-full object-cover"
+          initial={{ opacity: 0, scale: 1.08 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70" />
-        <div
+        {/* Gradient Overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        />
+        {/* Text Content */}
+        <motion.div
           className="relative z-10 max-w-[1400px] mx-auto w-full"
           style={{ padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 5.75rem)' }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
           <p className="text-sm uppercase tracking-widest mb-4 text-white/60">Who We Are</p>
           <h1
-            className="font-gunterz font-bold text-white"
+            className="font-gunterz font-bold text-white uppercase"
             style={{ fontSize: 'clamp(2rem, 1.5rem + 4vw, 3.75rem)' }}
           >
-            Building the Case for Repair
+            Building a Movement for Repair
           </h1>
-        </div>
+        </motion.div>
       </section>
 
       {/* MISSION */}
@@ -816,23 +815,19 @@ export default function AboutPage() {
               className="leading-relaxed"
               style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
             >
-              The Black Veterans Project leverages research, narrative storytelling, public
-              advocacy, and impact litigation to redress the federal government's long history of
-              racism and discrimination against Black veterans and their families.
+              Founded in 2018, Black Veterans Project (BVP) leverages research, narrative strategies, and impact litigation to mobilize a movement for repair to redress the federal government's long history of discrimination against Black veterans and their families.
             </p>
             <p
               className="leading-relaxed"
               style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
             >
-              BVP represents the first comprehensive effort to pursue reparative justice for Black
-              service members who have been unjustly denied their civil rights and benefits.
+              BVP represents the first comprehensive reparative justice effort for Black veterans and military families systematically denied veterans' benefits during and in the aftermath of Jim Crow segregation and through the persistence of institutionalized racism.
             </p>
             <p
               className="leading-relaxed"
               style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
             >
-              Join us as we build the collective power to demand accountability, advance policy
-              change, and achieve reparations for Black veterans in America.
+              Join us as we build the collective power to demand accountability, advance policy change, and achieve reparations for Black veterans in America.
             </p>
             <p
               className="text-gray-600"
@@ -867,7 +862,7 @@ export default function AboutPage() {
             className="text-gray-600 text-center"
             style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}
           >
-            Along with Yale Law School's, Jerome N. Frank Legal Services Organization, these are the organizations advancing the work alongside us.
+            Organizations advancing the work alongside us.
           </p>
 
           <div
@@ -875,19 +870,25 @@ export default function AboutPage() {
             style={{ gap: 'clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem)' }}
           >
             {partners.map((partner) => (
-              <div key={partner.name} className="flex items-center justify-center h-28 w-full group">
+              <a
+                key={partner.name}
+                href={partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center h-28 w-full group"
+              >
                 <Image
                   src={partner.logo}
                   alt={partner.name}
                   width={280}
                   height={120}
-                  className="w-auto object-contain opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 ease-out"
+                  className="w-auto object-contain opacity-60 grayscale mix-blend-multiply group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 ease-out"
                   style={{
                     maxHeight: `${100 * (partner.scale || 1)}px`,
                     maxWidth: `${220 * (partner.scale || 1)}px`
                   }}
                 />
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -917,7 +918,7 @@ export default function AboutPage() {
                 className="leading-relaxed opacity-80"
                 style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
               >
-                For press inquiries, interview requests, or media resources.
+                For press inquiries, interview requests, or media resources:
               </p>
               <Button href="/contact" variant="white" size="lg">
                 Contact Us →
