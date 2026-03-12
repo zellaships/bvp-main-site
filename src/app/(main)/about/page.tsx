@@ -553,7 +553,7 @@ const timelineData = [
     summary: 'Obtaining Historical Data',
     image: '/images/timeline-2020.jpg',
     details: [
-      'BVP partners with <strong>Yale Law School Veterans Legal Services Clinic</strong> to obtain decades of government data demonstrating sustained and systemic racial inequities in veterans\' disability rates.',
+      'BVP partners with <strong>Yale Law School Jerome N. Franklin Veterans Legal Services Clinic</strong> to obtain decades of government data demonstrating sustained and systemic racial inequities in veterans\' disability rates.',
     ],
   },
   {
@@ -860,9 +860,16 @@ export default function AboutPage() {
           </h2>
           <p
             className="text-gray-600 text-center"
-            style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}
+            style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 2vw, 1.5rem)' }}
           >
             Organizations advancing the work alongside us.
+          </p>
+
+          <p
+            className="text-center text-gray-800"
+            style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.125rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}
+          >
+            <span className="font-medium">Yale</span> Law School Jerome N. Franklin Veterans Legal Services Clinic
           </p>
 
           <div
