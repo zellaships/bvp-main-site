@@ -42,11 +42,9 @@ const config: Config = {
       // BVP TYPOGRAPHY
       // ============================================
       fontFamily: {
-        // Headlines - Alverata (dignity, authority)
-        display: ["Alverata", "Georgia", "serif"],
-        alverata: ["Alverata", "Georgia", "serif"],
-        // Secondary display - Gunterz (bold, military-inspired)
-        gunterz: ["Gunterz", "Georgia", "serif"],
+        // Headlines - Gunterz (bold, military-inspired)
+        display: ["Gunterz", "system-ui", "sans-serif"],
+        gunterz: ["Gunterz", "system-ui", "sans-serif"],
         // Ontika - Semi-display sans for buttons/CTAs
         ontika: ["Ontika", "system-ui", "sans-serif"],
         // Body - Linear Grotesk (clarity, modern)
@@ -62,14 +60,15 @@ const config: Config = {
         "display-lg": ["3.75rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
         "display-md": ["3rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
         "display-sm": ["2.25rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
-        // Body sizes
-        "body-xl": ["1.5rem", { lineHeight: "1.6" }],
-        "body-lg": ["1.25rem", { lineHeight: "1.6" }],
-        "body-md": ["1rem", { lineHeight: "1.6" }],
-        "body-sm": ["0.875rem", { lineHeight: "1.5" }],
-        // Label sizes
-        "label-lg": ["0.875rem", { lineHeight: "1.4", letterSpacing: "0.1em" }],
-        "label-md": ["0.75rem", { lineHeight: "1.4", letterSpacing: "0.1em" }],
+        // Body sizes - WCAG AA compliant (16px+ for body, 14px+ for secondary)
+        "body-xl": ["1.5rem", { lineHeight: "1.6" }],      // 24px
+        "body-lg": ["1.25rem", { lineHeight: "1.6" }],     // 20px
+        "body-md": ["1.0625rem", { lineHeight: "1.6" }],   // 17px (iOS minimum)
+        "body-sm": ["1rem", { lineHeight: "1.5" }],        // 16px (WCAG minimum for body)
+        // Label/UI sizes - WCAG AA compliant (14px minimum)
+        "label-lg": ["1rem", { lineHeight: "1.4", letterSpacing: "0.08em" }],     // 16px
+        "label-md": ["0.875rem", { lineHeight: "1.4", letterSpacing: "0.1em" }],  // 14px (WCAG minimum)
+        "label-sm": ["0.8125rem", { lineHeight: "1.4", letterSpacing: "0.1em" }], // 13px (captions only)
       },
 
       // ============================================

@@ -329,18 +329,8 @@ export default function PressPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative border-b border-gray-200 overflow-hidden">
-        {/* Sand camo background */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: 'url(/images/camo-gold-bg.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.5,
-          }}
-        />
-        <div className="relative z-10" style={{ padding: 'clamp(6rem, 10vw, 6rem) clamp(1rem, 4vw, 5.75rem) clamp(2rem, 5vw, 4rem)' }}>
+      <section className="border-b border-gray-200">
+        <div style={{ padding: 'clamp(6rem, 10vw, 6rem) clamp(1rem, 4vw, 5.75rem) clamp(2rem, 5vw, 4rem)' }}>
           <div className="max-w-[1400px] mx-auto">
             <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
               External coverage

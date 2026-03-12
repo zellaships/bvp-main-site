@@ -378,15 +378,9 @@ export default function DesignSystemPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               <div className="bg-white border-4 border-black p-6">
                 <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Display</p>
-                <p className="text-3xl font-bold font-alverata">Alverata</p>
-                <p className="text-sm text-gray-500 mt-2">Headlines, stats</p>
-                <code className="text-xs font-mono">font-display / font-alverata</code>
-              </div>
-              <div className="bg-white border-4 border-black p-6">
-                <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Display Alt</p>
                 <p className="text-3xl font-bold font-gunterz">Gunterz</p>
-                <p className="text-sm text-gray-500 mt-2">Bold military headlines</p>
-                <code className="text-xs font-mono">font-gunterz</code>
+                <p className="text-sm text-gray-500 mt-2">Headlines, stats</p>
+                <code className="text-xs font-mono">font-display / font-gunterz</code>
               </div>
               <div className="bg-white border-4 border-black p-6">
                 <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">Body</p>

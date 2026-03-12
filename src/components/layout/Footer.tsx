@@ -37,7 +37,7 @@ function SiteSearch() {
           </button>
         </div>
       </form>
-      <p className="text-white/30 text-xs tracking-widest uppercase mt-3">
+      <p className="text-white/30 text-sm tracking-widest uppercase mt-3">
         Powered by Google
       </p>
     </div>
@@ -87,7 +87,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
 function FooterColumn({ title, links }: { title: string; links: { name: string; href: string }[] }) {
   return (
     <div className="min-w-[140px]">
-      <h4 className="text-[11px] font-gunterz font-medium uppercase tracking-[0.2em] text-bvp-gold mb-4">
+      <h4 className="text-sm font-gunterz font-medium uppercase tracking-[0.2em] text-bvp-gold mb-4">
         {title}
       </h4>
       <ul className="space-y-0">
@@ -159,9 +159,9 @@ export function Footer() {
               <Image
                 src="/images/BVP-logo.png"
                 alt="Black Veterans Project"
-                width={100}
-                height={50}
-                className="h-[40px] w-auto brightness-0 invert"
+                width={180}
+                height={90}
+                className="h-[48px] md:h-[56px] w-auto brightness-0 invert"
               />
 
               {/* Copyright & Legal Links */}

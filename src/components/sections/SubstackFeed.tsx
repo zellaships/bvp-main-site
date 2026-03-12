@@ -10,17 +10,6 @@ const GREEN_DARK = "#1A3A1A";
 const GREEN_MID = "#2D5A2D";
 const GREEN_LIGHT = "#4A8A4A";
 
-// Dark Green Report Logo Component
-function DarkGreenReportLogo({ size = 56 }: { size?: number }) {
-  return (
-    <img
-      src="/images/dgr-logo.png"
-      alt="Dark Green Report"
-      style={{ width: size, height: 'auto', transform: 'rotate(45deg)' }}
-      className="object-contain"
-    />
-  );
-}
 
 interface SubstackPost {
   title: string;
@@ -228,7 +217,7 @@ export function SubstackFeed() {
               onClick={() => setModalPost(featured)}
               className="relative group cursor-pointer text-left"
             >
-              <div className="relative aspect-[16/10] overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
                 {featured.imageUrl ? (
                   <img
                     src={featured.imageUrl}
@@ -238,27 +227,15 @@ export function SubstackFeed() {
                   />
                 ) : (
                   <div
-                    className="w-full h-full flex flex-col items-center justify-center transition-all duration-700 ease-out group-hover:scale-105"
-                    style={{ backgroundColor: CREAM }}
+                    className="w-full h-full flex flex-col items-center justify-center transition-all duration-700 ease-out group-hover:scale-105 bg-black"
                   >
-                    <DarkGreenReportLogo size={85} />
-                    <p
-                      className="text-xs tracking-[3px] uppercase font-bold mt-5"
-                      style={{ color: GREEN_DARK }}
-                    >
-                      Dark Green Report
-                    </p>
-                    <p
-                      className="text-[10px] mt-1.5 opacity-50"
-                      style={{ color: GREEN_MID }}
-                    >
-                      by Black Veterans Project
-                    </p>
+                    <p className="text-2xl font-gunterz font-bold text-white tracking-wide">BVP</p>
+                    <p className="text-xs tracking-[2px] uppercase text-[#FDC500] mt-2">News</p>
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#FDC500] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
               </div>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#FDC500] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </button>
           </div>
 
@@ -268,8 +245,9 @@ export function SubstackFeed() {
               <button
                 key={post.link || index}
                 onClick={() => setModalPost(post)}
-                className="group bg-white border border-gray-200 rounded-2xl overflow-hidden text-left transition-all duration-300 hover:shadow-lg"
+                className="group relative bg-white shadow-sm rounded-2xl overflow-hidden text-left transition-all duration-300 hover:shadow-lg"
               >
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FDC500] z-10" />
                 <div className="h-72 overflow-hidden" style={{ backgroundColor: CREAM }}>
                   {getPostImage(post) ? (
                     <img
@@ -279,39 +257,28 @@ export function SubstackFeed() {
                       loading="lazy"
                     />
                   ) : (
-                    <div
-                      className="w-full h-full flex flex-col items-center justify-center transition-all duration-500 group-hover:scale-105"
-                      style={{ backgroundColor: CREAM }}
-                    >
-                      <DarkGreenReportLogo size={68} />
-                      <p
-                        className="text-[10px] tracking-[2px] uppercase font-bold mt-4"
-                        style={{ color: GREEN_DARK }}
-                      >
-                        Dark Green Report
-                      </p>
-                      <p
-                        className="text-[9px] mt-1 opacity-50"
-                        style={{ color: GREEN_MID }}
-                      >
-                        by Black Veterans Project
-                      </p>
+                    <div className="w-full h-full flex flex-col items-center justify-center transition-all duration-500 group-hover:scale-105 bg-black">
+                      <p className="text-xl font-gunterz font-bold text-white tracking-wide">BVP</p>
+                      <p className="text-[10px] tracking-[2px] uppercase text-[#FDC500] mt-2">News</p>
                     </div>
                   )}
                 </div>
                 <div className="p-6">
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FDC500]">
+                  <span
+                    className="inline-block text-[0.55rem] font-bold uppercase tracking-[0.2em] px-2 py-1 rounded-sm"
+                    style={{ backgroundColor: '#0D0D0B', color: '#FFFFFF' }}
+                  >
                     Substack
                   </span>
-                  <h3 className="font-ontika font-medium text-xl text-black leading-tight mt-3 mb-3 group-hover:text-[#FDC500] transition-colors">
+                  <h3 className="font-ontika font-medium text-xl leading-tight mt-3 mb-3" style={{ color: '#0D0D0B' }}>
                     {post.title}
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
                     {post.description}
                   </p>
                   <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
-                    <span className="text-sm text-gray-400">{formatDate(post.pubDate)}</span>
-                    <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-black group-hover:text-[#FDC500] transition-colors">
+                    <span className="text-sm" style={{ color: '#767670' }}>{formatDate(post.pubDate)}</span>
+                    <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide px-3 py-1.5 rounded-sm transition-all duration-200" style={{ color: '#0D0D0B', backgroundColor: 'transparent' }} onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#0D0D0B'; e.currentTarget.style.color = '#FDC500'; }} onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#0D0D0B'; }}>
                       Read More
                       <svg className="w-4 h-4 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -389,26 +356,15 @@ export function SubstackFeed() {
                   </svg>
                 </button>
 
-                {/* Logo + Publication */}
+                {/* Publication Header */}
                 <motion.div
                   initial={prefersReducedMotion ? false : { scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.1, type: "spring", damping: 20 }}
                   className="flex flex-col items-center mb-6"
                 >
-                  <DarkGreenReportLogo size={51} />
-                  <p
-                    className="text-[11px] tracking-[3px] uppercase font-bold mt-3"
-                    style={{ color: GREEN_DARK }}
-                  >
-                    Dark Green Report
-                  </p>
-                  <p
-                    className="text-[11px] mt-1 opacity-60"
-                    style={{ color: GREEN_MID }}
-                  >
-                    by Black Veterans Project
-                  </p>
+                  <p className="text-xl font-gunterz font-bold text-black tracking-wide">BVP</p>
+                  <p className="text-sm tracking-[2px] uppercase text-gray-500 mt-1">News</p>
                 </motion.div>
 
                 {/* Divider */}

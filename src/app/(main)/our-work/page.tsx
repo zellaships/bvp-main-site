@@ -376,14 +376,14 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
           <circle cx="730" cy="210" r="4" fill={colors.narrative.accent} />
           <line x1="730" y1="210" x2="1040" y2="210" stroke={colors.narrative.accent} strokeWidth="1" />
           <line x1="1040" y1="210" x2="1040" y2="230" stroke={colors.narrative.accent} strokeWidth="1" />
-          <foreignObject x="1040" y="235" width="260" height="180">
+          <foreignObject x="1040" y="235" width="280" height="200">
             <div>
-              <p className="leading-relaxed text-gray-600 mb-4" style={{ fontSize: '17px' }}>
+              <p className="leading-[1.6] text-gray-700 mb-5" style={{ fontSize: '19px' }}>
                 {pillars.narrative.description}
               </p>
               <button
                 onClick={(e) => handlePillarClick(e, pillars.narrative.id)}
-                className="text-sm font-bold border-b pb-0.5 transition-colors"
+                className="text-base font-bold border-b-2 pb-1 transition-colors"
                 style={{ color: colors.narrative.accent, borderColor: colors.narrative.accent }}
               >
                 Learn more →
@@ -397,14 +397,14 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
           <circle cx="365" cy="430" r="4" fill={colors.litigation.accent} />
           <line x1="365" y1="430" x2="30" y2="430" stroke={colors.litigation.accent} strokeWidth="1" />
           <line x1="30" y1="430" x2="30" y2="450" stroke={colors.litigation.accent} strokeWidth="1" />
-          <foreignObject x="30" y="455" width="260" height="200">
+          <foreignObject x="30" y="455" width="280" height="220">
             <div>
-              <p className="leading-relaxed text-gray-600 mb-4" style={{ fontSize: '17px' }}>
+              <p className="leading-[1.6] text-gray-700 mb-5" style={{ fontSize: '19px' }}>
                 {pillars.litigation.description}
               </p>
               <button
                 onClick={(e) => handlePillarClick(e, pillars.litigation.id)}
-                className="text-sm font-bold border-b pb-0.5 transition-colors"
+                className="text-base font-bold border-b-2 pb-1 transition-colors"
                 style={{ color: colors.litigation.accent, borderColor: colors.litigation.accent }}
               >
                 Learn more →
@@ -418,14 +418,14 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
           <circle cx="875" cy="430" r="4" fill={colors.movement.accent} />
           <line x1="875" y1="430" x2="1040" y2="430" stroke={colors.movement.accent} strokeWidth="1" />
           <line x1="1040" y1="430" x2="1040" y2="450" stroke={colors.movement.accent} strokeWidth="1" />
-          <foreignObject x="1040" y="455" width="260" height="180">
+          <foreignObject x="1040" y="455" width="280" height="200">
             <div>
-              <p className="leading-relaxed text-gray-600 mb-4" style={{ fontSize: '17px' }}>
+              <p className="leading-[1.6] text-gray-700 mb-5" style={{ fontSize: '19px' }}>
                 {pillars.movement.description}
               </p>
               <button
                 onClick={(e) => handlePillarClick(e, pillars.movement.id)}
-                className="text-sm font-bold border-b pb-0.5 transition-colors"
+                className="text-base font-bold border-b-2 pb-1 transition-colors"
                 style={{ color: colors.movement.accent, borderColor: colors.movement.accent }}
               >
                 Learn more →
@@ -439,13 +439,13 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
           <circle cx="660" cy="415" r="4" fill="#C4985A" />
           <line x1="660" y1="415" x2="1040" y2="415" stroke="#C4985A" strokeWidth="1" />
           <line x1="1040" y1="415" x2="1040" y2="435" stroke="#C4985A" strokeWidth="1" />
-          <foreignObject x="1040" y="440" width="260" height="200">
+          <foreignObject x="1040" y="440" width="280" height="220">
             <div>
-              <p className="font-bold tracking-[0.2em] uppercase text-[#C4985A] mb-2" style={{ fontSize: '14px' }}>Repair</p>
-              <p className="leading-relaxed italic text-black mb-3" style={{ fontSize: '17px' }}>
+              <p className="font-bold tracking-[0.2em] uppercase text-[#C4985A] mb-3" style={{ fontSize: '15px' }}>Repair</p>
+              <p className="leading-[1.6] italic text-black mb-4" style={{ fontSize: '19px' }}>
                 Not a fourth pillar — the reason the other three exist.
               </p>
-              <p className="leading-relaxed text-gray-500" style={{ fontSize: '15px' }}>
+              <p className="leading-[1.6] text-gray-600" style={{ fontSize: '17px' }}>
                 Each alone is insufficient. Repair requires all three working in concert.
               </p>
             </div>
@@ -862,9 +862,9 @@ export default function OurWorkPage() {
               style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
             >
               The outcomes of Monk v. United States could set a precedent for Black veterans impacted by decades of racially-biased policies and practices dating back to World War II.{' '}
-              <Link href="/faq" className="font-bold underline hover:no-underline">
+              <a href="https://blackveteransproject.substack.com/p/the-case-for-repair-for-black-veterans" target="_blank" rel="noopener noreferrer" className="font-bold underline hover:no-underline">
                 Learn More About Monk v. United States →
-              </Link>
+              </a>
             </p>
 
             <CTABox
