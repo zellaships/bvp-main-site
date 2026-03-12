@@ -49,7 +49,7 @@ const Section = forwardRef<HTMLElement, SectionProps>(
 
     return (
       <Component
-        // @ts-ignore - ref typing issue with dynamic component
+        // @ts-expect-error - ref typing issue with dynamic component
         ref={ref}
         className={cn(variants[variant], className)}
         style={paddingStyles[padding]}
