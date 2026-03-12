@@ -26,6 +26,12 @@ interface ActionNetworkFormData {
   experiences?: string[];
   storyTypes?: string[];
   interestStatement?: string;
+  // Veteran-specific fields
+  vaClaimStatus?: string;
+  shareStory?: string;
+  storyBrief?: string;
+  contactForLegal?: string;
+  membershipType?: string;
 }
 
 /**
