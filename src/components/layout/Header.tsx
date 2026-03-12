@@ -147,6 +147,19 @@ function useFocusTrap(isActive: boolean, onEscape?: () => void) {
   return containerRef;
 }
 
+// Pages with light backgrounds that need dark header
+const lightBackgroundPages = [
+  '/contact',
+  '/financials',
+  '/press',
+  '/faq',
+  '/terms',
+  '/privacy',
+  '/accessibility',
+  '/join',
+  '/donate',
+];
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -154,6 +167,9 @@ export function Header() {
   const [atTop, setAtTop] = useState(true);
   const pathname = usePathname();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Determine if current page has light background
+  const isLightBackground = lightBackgroundPages.some(page => pathname?.startsWith(page));
 
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
@@ -219,7 +235,7 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out",
           hidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100",
-          atTop ? "bg-transparent py-6" : "bg-transparent py-6"
+          isLightBackground ? "bg-white py-6" : "bg-transparent py-6"
         )}
         role="banner"
       >
@@ -236,9 +252,12 @@ export function Header() {
             <Image
               src="/images/BVP-logo.png"
               alt="Black Veterans Project"
-              width={152}
-              height={76}
-              className="h-[51px] md:h-[60px] w-auto brightness-0 invert"
+              width={180}
+              height={90}
+              className={cn(
+                "h-[48px] md:h-[56px] w-auto",
+                isLightBackground ? "brightness-0" : "brightness-0 invert"
+              )}
               priority
             />
           </Link>
@@ -255,8 +274,11 @@ export function Header() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "relative px-5 py-3 text-base font-medium text-white hover:text-white/80 transition-colors flex items-center gap-2 group/link focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bvp-gold focus-visible:rounded",
-                    pathname === item.href && "text-white"
+                    "relative px-5 py-3 text-base font-medium transition-colors flex items-center gap-2 group/link focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bvp-gold focus-visible:rounded",
+                    isLightBackground
+                      ? "text-black hover:text-black/70"
+                      : "text-white hover:text-white/80",
+                    pathname === item.href && (isLightBackground ? "text-black" : "text-white")
                   )}
                   aria-current={pathname === item.href ? "page" : undefined}
                   aria-haspopup={item.children ? "true" : undefined}
@@ -348,19 +370,28 @@ export function Header() {
             aria-controls="mobile-menu"
           >
             <motion.span
-              className="absolute block h-[2px] w-6 bg-white rounded-full"
+              className={cn(
+                "absolute block h-[2px] w-6 rounded-full",
+                isLightBackground ? "bg-black" : "bg-white"
+              )}
               animate={mobileMenuOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -7 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
               aria-hidden="true"
             />
             <motion.span
-              className="absolute block h-[2px] w-6 bg-white rounded-full"
+              className={cn(
+                "absolute block h-[2px] w-6 rounded-full",
+                isLightBackground ? "bg-black" : "bg-white"
+              )}
               animate={mobileMenuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
               transition={{ duration: 0.15 }}
               aria-hidden="true"
             />
             <motion.span
-              className="absolute block h-[2px] w-6 bg-white rounded-full"
+              className={cn(
+                "absolute block h-[2px] w-6 rounded-full",
+                isLightBackground ? "bg-black" : "bg-white"
+              )}
               animate={mobileMenuOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 7 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
               aria-hidden="true"

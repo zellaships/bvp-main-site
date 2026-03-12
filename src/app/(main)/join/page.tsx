@@ -3,11 +3,12 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { submitToActionNetwork } from "@/lib/actionNetwork";
+import { Button } from "@/components/ui/Button";
 
 // ============================================
 // TYPES
 // ============================================
-type ViewType = "main" | "advocate" | "success";
+type ViewType = "main" | "veteran" | "advocate" | "success";
 type MemberType = "veteran" | "family" | "descendant" | "ally" | "";
 type SignUpAs = "" | "supporter" | "family" | "veteran" | "active" | "reservist" | "guard";
 type Race = "" | "black" | "indigenous" | "asian" | "pacific" | "white" | "hispanic" | "other" | "prefer-not";
@@ -64,6 +65,25 @@ interface AdvocateFormData {
   interest: string;
 }
 
+interface VeteranFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  zipCode: string;
+  branch: Branch;
+  serviceEra: ServiceEra;
+  payGrade: string;
+  dischargeStatus: DischargeStatus;
+  benefitsBarrier: BenefitsBarrier;
+  vaClaimStatus: "" | "never-filed" | "pending" | "denied" | "approved" | "appealing";
+  shareStory: boolean;
+  storyBrief: string;
+  contactForLegal: boolean;
+  alsoAffiliate: boolean;
+  alsoAdvocate: boolean;
+}
+
 // ============================================
 // FORM FIELD COMPONENTS
 // ============================================
@@ -76,6 +96,7 @@ interface InputFieldProps {
   required?: boolean;
   id: string;
   autoComplete?: string;
+  error?: string;
 }
 
 function InputField({
@@ -87,6 +108,7 @@ function InputField({
   required,
   id,
   autoComplete,
+  error,
 }: InputFieldProps) {
   return (
     <div className="flex flex-col">
@@ -103,11 +125,17 @@ function InputField({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        required={required}
         autoComplete={autoComplete}
-        className="w-full bg-white border border-gray-300 text-black font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
         aria-required={required}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className={`w-full bg-white border text-black font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:outline-none placeholder:text-gray-400 ${
+          error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-black"
+        }`}
       />
+      {error && (
+        <p id={`${id}-error`} className="text-red-500 text-xs mt-1">{error}</p>
+      )}
     </div>
   );
 }
@@ -119,6 +147,7 @@ interface SelectFieldProps {
   options: { value: string; label: string }[];
   required?: boolean;
   id: string;
+  error?: string;
 }
 
 function SelectField({
@@ -128,6 +157,7 @@ function SelectField({
   options,
   required,
   id,
+  error,
 }: SelectFieldProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -170,7 +200,6 @@ function SelectField({
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          required={required}
           className="sr-only"
           aria-hidden="true"
           tabIndex={-1}
@@ -187,8 +216,10 @@ function SelectField({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-full bg-white border text-left font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:outline-none focus:border-black pr-10 ${
-            isOpen ? "border-black" : "border-gray-300"
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={`w-full bg-white border text-left font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:outline-none pr-10 ${
+            error ? "border-red-500 focus:border-red-500" : isOpen ? "border-black" : "border-gray-300 focus:border-black"
           } ${!value ? "text-gray-400" : "text-black"}`}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
@@ -253,6 +284,9 @@ function SelectField({
           </div>
         )}
       </div>
+      {error && (
+        <p id={`${id}-error`} className="text-red-500 text-xs mt-1">{error}</p>
+      )}
     </div>
   );
 }
@@ -347,13 +381,15 @@ function MembershipCard({
             }
           : undefined
       }
-      className={`border-2 border-black p-8 transition-all duration-300 group/card ${
+      className={`relative border-2 border-black rounded-2xl overflow-hidden p-8 transition-all duration-300 group/card ${
         !expanded
           ? "cursor-pointer hover:border-bvp-gold hover:shadow-lg hover:shadow-bvp-gold/10 focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2"
           : "cursor-default border-bvp-gold"
       }`}
       aria-expanded={expanded}
     >
+      {/* Gold bar at top */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FDC500]" />
       <h2 className="text-[22px] font-bold text-black mb-3 font-gunterz group-hover/card:text-bvp-navy transition-colors">
         {title}
       </h2>
@@ -394,11 +430,28 @@ function MembershipCard({
 // ============================================
 // MAIN JOIN PAGE
 // ============================================
+type BasicFormErrors = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+};
+
+type AdvocateFormErrors = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  zipCode?: string;
+  branch?: string;
+  serviceEra?: string;
+};
+
 export default function JoinPage() {
   const [currentView, setCurrentView] = useState<ViewType>("main");
   const [basicExpanded, setBasicExpanded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [basicErrors, setBasicErrors] = useState<BasicFormErrors>({});
+  const [advocateErrors, setAdvocateErrors] = useState<AdvocateFormErrors>({});
   const firstInputRef = useRef<HTMLInputElement>(null);
 
   // Basic member form state
@@ -450,6 +503,36 @@ export default function JoinPage() {
     interest: "",
   });
 
+  // Veteran form state
+  const [veteranForm, setVeteranForm] = useState<VeteranFormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    zipCode: "",
+    branch: "",
+    serviceEra: "",
+    payGrade: "",
+    dischargeStatus: "",
+    benefitsBarrier: "",
+    vaClaimStatus: "",
+    shareStory: false,
+    storyBrief: "",
+    contactForLegal: false,
+    alsoAffiliate: true,
+    alsoAdvocate: false,
+  });
+
+  const [veteranErrors, setVeteranErrors] = useState<Record<string, string>>({});
+
+  const clearVeteranError = (field: string) => {
+    setVeteranErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[field];
+      return newErrors;
+    });
+  };
+
   // Focus first input when basic card expands
   useEffect(() => {
     if (basicExpanded && firstInputRef.current) {
@@ -472,8 +555,38 @@ export default function JoinPage() {
     }
   }, []);
 
+  const validateBasicForm = (): boolean => {
+    const errors: BasicFormErrors = {};
+
+    if (!basicForm.firstName.trim()) {
+      errors.firstName = 'First name is required';
+    }
+    if (!basicForm.lastName.trim()) {
+      errors.lastName = 'Last name is required';
+    }
+    if (!basicForm.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(basicForm.email)) {
+      errors.email = 'Please enter a valid email';
+    }
+
+    setBasicErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const clearBasicError = (field: keyof BasicFormErrors) => {
+    if (basicErrors[field]) {
+      setBasicErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
   const handleBasicSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateBasicForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -487,6 +600,7 @@ export default function JoinPage() {
       });
 
       handleViewChange("success");
+      setBasicErrors({});
     } catch (error) {
       console.error('Action Network submission failed:', error);
       setSubmitError('Something went wrong. Please try again.');
@@ -495,8 +609,52 @@ export default function JoinPage() {
     }
   };
 
+  const validateAdvocateForm = (): boolean => {
+    const errors: AdvocateFormErrors = {};
+
+    if (!advocateForm.firstName.trim()) {
+      errors.firstName = 'First name is required';
+    }
+    if (!advocateForm.lastName.trim()) {
+      errors.lastName = 'Last name is required';
+    }
+    if (!advocateForm.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(advocateForm.email)) {
+      errors.email = 'Please enter a valid email';
+    }
+    if (!advocateForm.zipCode.trim()) {
+      errors.zipCode = 'Zip code is required';
+    }
+
+    // Military-specific validation
+    const isMilitary = ["veteran", "active", "reservist", "guard"].includes(advocateForm.signUpAs);
+    if (isMilitary) {
+      if (!advocateForm.branch) {
+        errors.branch = 'Branch is required';
+      }
+      if (!advocateForm.serviceEra) {
+        errors.serviceEra = 'Service era is required';
+      }
+    }
+
+    setAdvocateErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const clearAdvocateError = (field: keyof AdvocateFormErrors) => {
+    if (advocateErrors[field]) {
+      setAdvocateErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
   const handleAdvocateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateAdvocateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -550,6 +708,69 @@ export default function JoinPage() {
       setIsSubmitting(false);
     }
   };
+
+  // Veteran form validation
+  const validateVeteranForm = () => {
+    const errors: Record<string, string> = {};
+    if (!veteranForm.firstName.trim()) errors.firstName = 'First name is required';
+    if (!veteranForm.lastName.trim()) errors.lastName = 'Last name is required';
+    if (!veteranForm.email.trim()) errors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(veteranForm.email)) errors.email = 'Please enter a valid email';
+    if (!veteranForm.zipCode.trim()) errors.zipCode = 'ZIP code is required';
+    if (!veteranForm.branch) errors.branch = 'Branch is required';
+    if (!veteranForm.serviceEra) errors.serviceEra = 'Service era is required';
+
+    setVeteranErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // Veteran form submission
+  const handleVeteranSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateVeteranForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      await submitToActionNetwork({
+        firstName: veteranForm.firstName,
+        lastName: veteranForm.lastName,
+        email: veteranForm.email,
+        phone: veteranForm.phone,
+        zipCode: veteranForm.zipCode,
+        branch: veteranForm.branch,
+        serviceEra: veteranForm.serviceEra,
+        payGrade: veteranForm.payGrade,
+        dischargeStatus: veteranForm.dischargeStatus,
+        barriers: veteranForm.benefitsBarrier,
+        vaClaimStatus: veteranForm.vaClaimStatus,
+        shareStory: veteranForm.shareStory ? 'Yes' : 'No',
+        storyBrief: veteranForm.storyBrief,
+        contactForLegal: veteranForm.contactForLegal ? 'Yes' : 'No',
+        membershipType: 'Veteran' + (veteranForm.alsoAdvocate ? ', Advocate' : '') + (veteranForm.alsoAffiliate ? ', Affiliate' : ''),
+      });
+
+      handleViewChange("success");
+    } catch (error) {
+      console.error('Action Network submission failed:', error);
+      setSubmitError('Something went wrong. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // VA claim status options
+  const vaClaimStatusOptions = [
+    { value: "never-filed", label: "Never filed a claim" },
+    { value: "pending", label: "Claim pending" },
+    { value: "denied", label: "Claim denied" },
+    { value: "approved", label: "Claim approved" },
+    { value: "appealing", label: "Currently appealing" },
+  ];
 
   // Member type options
   const memberTypeOptions = [
@@ -667,7 +888,7 @@ export default function JoinPage() {
                   Join the Movement
                 </p>
                 <h1
-                  className="font-gunterz font-bold text-white"
+                  className="font-gunterz font-bold text-white uppercase"
                   style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
                 >
                   Join Our Movement
@@ -688,35 +909,16 @@ export default function JoinPage() {
                 >
                   <div className="space-y-5">
                     <p className="text-[17px] leading-relaxed text-gray-700">
-                      BVP is building the first comprehensive movement for
-                      reparative justice for Black veterans and military
-                      families through impact litigation, narrative work, and
-                      movement-building. This work only moves when the people
-                      most affected, and those who stand with them, are
-                      organized.
+                      BVP is building the first comprehensive movement for reparative justice for Black veterans and military families. This work only moves when the people most affected, and those who stand with them, are organized.
                     </p>
                     <p className="text-[17px] leading-relaxed text-gray-700">
-                      Our membership corps is the foundation of that movement: a
-                      growing body of veterans, families, advocates, and allies
-                      whose voices we carry into Congress, into the courts, and
-                      into public memory.
+                      Our membership corps is the foundation of our work: a growing body of veterans, families, advocates, allies, artists, scholars, and content-creators whose voices we carry into Congress, into the courts, and into public memory.
                     </p>
                     <p className="text-[17px] leading-relaxed text-gray-700">
-                      When you join BVP, you are becoming{" "}
-                      <strong>a steward of repair</strong>: someone who helps
-                      safeguard the truth, advance accountability, and ensure
-                      this history cannot be erased or ignored. Together, we're
-                      building the case, telling the story, and organizing the
-                      movement to make repair real. If you're a veteran or
-                      military family member with a story about VA benefits or
-                      discrimination, you may also want to{" "}
-                      <a
-                        href="/contact"
-                        className="text-black font-semibold underline underline-offset-[3px] hover:text-bvp-navy transition-colors"
-                      >
-                        share your story with BVP
-                      </a>{" "}
-                      — that's a separate process from membership.
+                      When you join BVP, you become <strong>a steward of repair</strong>: someone who helps safeguard the truth, advance accountability, and ensure Black history cannot be erased or ignored.
+                    </p>
+                    <p className="text-[17px] leading-relaxed text-gray-700">
+                      Together, we're building the case, telling the story, and organizing to make repair, equity, and democracy real.
                     </p>
                   </div>
                 </div>
@@ -730,15 +932,6 @@ export default function JoinPage() {
                     Membership Categories
                   </p>
 
-                  {/* Advocate Card */}
-                  <MembershipCard
-                    id="advocate-card"
-                    title="Advocate"
-                    description="As a full advocate, you're part of the community organizing corps — we train you to help us lead petition drives, call campaigns, town halls, and rapid-response moments. We'll plan assignments based on your location, service background, and interests. When we mobilize, you're in the room. When we need voices in a specific district, you'll hear from us directly. This is where membership becomes action."
-                    linkText="Become an Advocate"
-                    onClick={() => handleViewChange("advocate")}
-                  />
-
                   {/* Affiliate Card */}
                   <MembershipCard
                     id="affiliate-card"
@@ -750,6 +943,7 @@ export default function JoinPage() {
                   >
                     <form
                       onSubmit={handleBasicSubmit}
+                      noValidate
                       className="flex flex-col gap-5"
                       aria-label="Basic membership form"
                     >
@@ -759,7 +953,7 @@ export default function JoinPage() {
                             htmlFor="basic-firstName"
                             className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-1.5"
                           >
-                            First Name
+                            First Name *
                           </label>
                           <input
                             ref={firstInputRef}
@@ -767,27 +961,36 @@ export default function JoinPage() {
                             id="basic-firstName"
                             placeholder="First name"
                             value={basicForm.firstName}
-                            onChange={(e) =>
+                            onChange={(e) => {
                               setBasicForm((f) => ({
                                 ...f,
                                 firstName: e.target.value,
-                              }))
-                            }
+                              }));
+                              clearBasicError('firstName');
+                            }}
                             autoComplete="given-name"
-                            className="w-full bg-white border border-gray-300 text-black font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:border-black focus:outline-none placeholder:text-gray-400"
-                            required
+                            aria-invalid={!!basicErrors.firstName}
+                            aria-describedby={basicErrors.firstName ? "basic-firstName-error" : undefined}
+                            className={`w-full bg-white border text-black font-body text-base px-3.5 py-3 min-h-[44px] transition-colors focus:outline-none placeholder:text-gray-400 ${
+                              basicErrors.firstName ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-black"
+                            }`}
                           />
+                          {basicErrors.firstName && (
+                            <p id="basic-firstName-error" className="text-red-500 text-xs mt-1">{basicErrors.firstName}</p>
+                          )}
                         </div>
                         <InputField
                           id="basic-lastName"
                           label="Last Name"
                           placeholder="Last name"
                           value={basicForm.lastName}
-                          onChange={(v) =>
-                            setBasicForm((f) => ({ ...f, lastName: v }))
-                          }
+                          onChange={(v) => {
+                            setBasicForm((f) => ({ ...f, lastName: v }));
+                            clearBasicError('lastName');
+                          }}
                           required
                           autoComplete="family-name"
+                          error={basicErrors.lastName}
                         />
                       </div>
 
@@ -797,11 +1000,13 @@ export default function JoinPage() {
                         type="email"
                         placeholder="your@email.com"
                         value={basicForm.email}
-                        onChange={(v) =>
-                          setBasicForm((f) => ({ ...f, email: v }))
-                        }
+                        onChange={(v) => {
+                          setBasicForm((f) => ({ ...f, email: v }));
+                          clearBasicError('email');
+                        }}
                         required
                         autoComplete="email"
+                        error={basicErrors.email}
                       />
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -844,13 +1049,14 @@ export default function JoinPage() {
                         </div>
                       )}
 
-                      <button
+                      <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full py-4 bg-black text-white font-bold text-[17px] hover:bg-gray-900 transition-colors focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        variant="secondary"
+                        fullWidth
                       >
                         {isSubmitting ? 'Submitting...' : 'Join BVP →'}
-                      </button>
+                      </Button>
 
                       <p className="text-[13px] text-gray-400 text-center">
                         We'll never share your information.
@@ -858,8 +1064,26 @@ export default function JoinPage() {
                     </form>
                   </MembershipCard>
 
+                  {/* Advocate Card */}
+                  <MembershipCard
+                    id="advocate-card"
+                    title="Advocate"
+                    description="As a full advocate, you're part of the community organizing corps — we train you to help us lead petition drives, call campaigns, town halls, and rapid-response moments. We'll plan assignments based on your location, service background, and interests. When we mobilize, you're in the room. When we need voices in a specific district, you'll hear from us directly. This is where membership becomes action."
+                    linkText="Become an Advocate"
+                    onClick={() => handleViewChange("advocate")}
+                  />
+
+                  {/* Veteran Card */}
+                  <MembershipCard
+                    id="veteran-card"
+                    title="Veteran"
+                    description="As a Veteran member, your experiences with the VA, your service, and your voice are central to building the case for repair."
+                    linkText="Register as a Veteran"
+                    onClick={() => handleViewChange("veteran")}
+                  />
+
                   <p className="text-sm text-gray-400 leading-relaxed">
-                    Not sure? Start as an Affiliate.
+                    Not sure? Start as an Affiliate. Veterans can join any category — the Veteran path simply streamlines your registration and connects you more directly to potential resources and storytelling opportunities.
                   </p>
                 </div>
               </div>
@@ -917,6 +1141,7 @@ export default function JoinPage() {
 
               <form
                 onSubmit={handleAdvocateSubmit}
+                noValidate
                 className="flex flex-col gap-5"
                 aria-label="Advocate membership form"
               >
@@ -931,22 +1156,26 @@ export default function JoinPage() {
                     label="First Name"
                     placeholder="First name"
                     value={advocateForm.firstName}
-                    onChange={(v) =>
-                      setAdvocateForm((f) => ({ ...f, firstName: v }))
-                    }
+                    onChange={(v) => {
+                      setAdvocateForm((f) => ({ ...f, firstName: v }));
+                      clearAdvocateError('firstName');
+                    }}
                     required
                     autoComplete="given-name"
+                    error={advocateErrors.firstName}
                   />
                   <InputField
                     id="adv-lastName"
                     label="Last Name"
                     placeholder="Last name"
                     value={advocateForm.lastName}
-                    onChange={(v) =>
-                      setAdvocateForm((f) => ({ ...f, lastName: v }))
-                    }
+                    onChange={(v) => {
+                      setAdvocateForm((f) => ({ ...f, lastName: v }));
+                      clearAdvocateError('lastName');
+                    }}
                     required
                     autoComplete="family-name"
+                    error={advocateErrors.lastName}
                   />
                 </div>
 
@@ -967,11 +1196,13 @@ export default function JoinPage() {
                     label="Zip Code"
                     placeholder="00000"
                     value={advocateForm.zipCode}
-                    onChange={(v) =>
-                      setAdvocateForm((f) => ({ ...f, zipCode: v }))
-                    }
+                    onChange={(v) => {
+                      setAdvocateForm((f) => ({ ...f, zipCode: v }));
+                      clearAdvocateError('zipCode');
+                    }}
                     required
                     autoComplete="postal-code"
+                    error={advocateErrors.zipCode}
                   />
                   <InputField
                     id="adv-phone"
@@ -992,11 +1223,13 @@ export default function JoinPage() {
                   type="email"
                   placeholder="your@email.com"
                   value={advocateForm.email}
-                  onChange={(v) =>
-                    setAdvocateForm((f) => ({ ...f, email: v }))
-                  }
+                  onChange={(v) => {
+                    setAdvocateForm((f) => ({ ...f, email: v }));
+                    clearAdvocateError('email');
+                  }}
                   required
                   autoComplete="email"
+                  error={advocateErrors.email}
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1089,24 +1322,28 @@ export default function JoinPage() {
                         id="adv-branch"
                         label="Branch"
                         value={advocateForm.branch}
-                        onChange={(v) =>
-                          setAdvocateForm((f) => ({ ...f, branch: v as Branch }))
-                        }
+                        onChange={(v) => {
+                          setAdvocateForm((f) => ({ ...f, branch: v as Branch }));
+                          clearAdvocateError('branch');
+                        }}
                         options={branchOptions}
                         required
+                        error={advocateErrors.branch}
                       />
                       <SelectField
                         id="adv-serviceEra"
                         label="Service Era"
                         value={advocateForm.serviceEra}
-                        onChange={(v) =>
+                        onChange={(v) => {
                           setAdvocateForm((f) => ({
                             ...f,
                             serviceEra: v as ServiceEra,
-                          }))
-                        }
+                          }));
+                          clearAdvocateError('serviceEra');
+                        }}
                         options={serviceEraOptions}
                         required
+                        error={advocateErrors.serviceEra}
                       />
                     </div>
 
@@ -1360,13 +1597,300 @@ export default function JoinPage() {
                   </div>
                 )}
 
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-black text-white font-bold text-[17px] rounded-full border-2 border-black hover:bg-[#FDC500] hover:text-black hover:border-[#FDC500] transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-bvp-gold focus-visible:ring-offset-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white"
+                  variant="secondary"
+                  fullWidth
+                  className="mt-2"
                 >
                   {isSubmitting ? 'Submitting...' : 'Join as Advocate →'}
-                </button>
+                </Button>
+              </form>
+            </section>
+          </motion.div>
+        )}
+
+        {/* ============================================
+            VIEW: VETERAN FORM
+            ============================================ */}
+        {currentView === "veteran" && (
+          <motion.div
+            key="veteran"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Hero */}
+            <section
+              className="border-b border-gray-200"
+              style={{ padding: 'clamp(6rem, 10vw, 8rem) clamp(1rem, 4vw, 5.75rem) clamp(2rem, 4vw, 3rem)' }}
+            >
+              <div className="max-w-[1400px] mx-auto">
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-4">
+                  Join Us
+                </p>
+                <h1
+                  className="font-gunterz font-bold text-black leading-tight"
+                  style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
+                >
+                  Register as a Veteran
+                </h1>
+              </div>
+            </section>
+
+            {/* Form Container */}
+            <section
+              className="max-w-3xl"
+              style={{ padding: 'clamp(2rem, 5vw, 3rem) clamp(1rem, 4vw, 5.75rem)' }}
+            >
+              <button
+                onClick={() => handleViewChange("main")}
+                className="text-[17px] font-semibold text-gray-400 hover:text-black transition-colors mb-8 flex items-center gap-1 min-h-[44px]"
+                type="button"
+              >
+                <span aria-hidden="true">←</span> Back to membership options
+              </button>
+
+              <p className="text-base text-gray-600 leading-relaxed mb-9">
+                Your service matters. Your story matters. As a Veteran member, you're central to BVP's mission —
+                your experiences help us build the case for repair, shape our Narrative Hub, and inform our legal strategy.
+              </p>
+
+              <form
+                onSubmit={handleVeteranSubmit}
+                noValidate
+                className="flex flex-col gap-5"
+                aria-label="Veteran membership form"
+              >
+                {/* Contact Information */}
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-gray-400">
+                  Contact Information
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField
+                    id="vet-firstName"
+                    label="First Name"
+                    placeholder="First name"
+                    value={veteranForm.firstName}
+                    onChange={(v) => {
+                      setVeteranForm((f) => ({ ...f, firstName: v }));
+                      clearVeteranError('firstName');
+                    }}
+                    required
+                    autoComplete="given-name"
+                    error={veteranErrors.firstName}
+                  />
+                  <InputField
+                    id="vet-lastName"
+                    label="Last Name"
+                    placeholder="Last name"
+                    value={veteranForm.lastName}
+                    onChange={(v) => {
+                      setVeteranForm((f) => ({ ...f, lastName: v }));
+                      clearVeteranError('lastName');
+                    }}
+                    required
+                    autoComplete="family-name"
+                    error={veteranErrors.lastName}
+                  />
+                </div>
+
+                <InputField
+                  id="vet-email"
+                  label="Email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={veteranForm.email}
+                  onChange={(v) => {
+                    setVeteranForm((f) => ({ ...f, email: v }));
+                    clearVeteranError('email');
+                  }}
+                  required
+                  autoComplete="email"
+                  error={veteranErrors.email}
+                />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField
+                    id="vet-phone"
+                    label="Phone"
+                    type="tel"
+                    placeholder="(555) 555-5555"
+                    value={veteranForm.phone}
+                    onChange={(v) => setVeteranForm((f) => ({ ...f, phone: v }))}
+                    autoComplete="tel"
+                  />
+                  <InputField
+                    id="vet-zipCode"
+                    label="ZIP Code"
+                    placeholder="12345"
+                    value={veteranForm.zipCode}
+                    onChange={(v) => {
+                      setVeteranForm((f) => ({ ...f, zipCode: v }));
+                      clearVeteranError('zipCode');
+                    }}
+                    required
+                    autoComplete="postal-code"
+                    error={veteranErrors.zipCode}
+                  />
+                </div>
+
+                <div className="h-px bg-gray-200 my-2" aria-hidden="true" />
+
+                {/* Military Service */}
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-gray-400">
+                  Military Service
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <SelectField
+                    id="vet-branch"
+                    label="Branch"
+                    value={veteranForm.branch}
+                    onChange={(v) => {
+                      setVeteranForm((f) => ({ ...f, branch: v as Branch }));
+                      clearVeteranError('branch');
+                    }}
+                    options={branchOptions}
+                    required
+                    error={veteranErrors.branch}
+                  />
+                  <SelectField
+                    id="vet-serviceEra"
+                    label="Service Era"
+                    value={veteranForm.serviceEra}
+                    onChange={(v) => {
+                      setVeteranForm((f) => ({ ...f, serviceEra: v as ServiceEra }));
+                      clearVeteranError('serviceEra');
+                    }}
+                    options={serviceEraOptions}
+                    required
+                    error={veteranErrors.serviceEra}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField
+                    id="vet-payGrade"
+                    label="Pay Grade at Separation"
+                    placeholder="e.g., E-5, O-3"
+                    value={veteranForm.payGrade}
+                    onChange={(v) => setVeteranForm((f) => ({ ...f, payGrade: v }))}
+                  />
+                  <SelectField
+                    id="vet-dischargeStatus"
+                    label="Discharge Status"
+                    value={veteranForm.dischargeStatus}
+                    onChange={(v) => setVeteranForm((f) => ({ ...f, dischargeStatus: v as DischargeStatus }))}
+                    options={dischargeStatusOptions}
+                  />
+                </div>
+
+                <div className="h-px bg-gray-200 my-2" aria-hidden="true" />
+
+                {/* VA Experience */}
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-gray-400">
+                  VA Benefits Experience
+                </p>
+
+                <SelectField
+                  id="vet-benefitsBarrier"
+                  label="Barriers to Accessing Veterans Benefits"
+                  value={veteranForm.benefitsBarrier}
+                  onChange={(v) => setVeteranForm((f) => ({ ...f, benefitsBarrier: v as BenefitsBarrier }))}
+                  options={benefitsBarrierOptions}
+                />
+
+                <SelectField
+                  id="vet-vaClaimStatus"
+                  label="VA Claim Status"
+                  value={veteranForm.vaClaimStatus}
+                  onChange={(v) => setVeteranForm((f) => ({ ...f, vaClaimStatus: v as VeteranFormData['vaClaimStatus'] }))}
+                  options={vaClaimStatusOptions}
+                />
+
+                <div className="h-px bg-gray-200 my-2" aria-hidden="true" />
+
+                {/* Story & Legal */}
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-gray-400">
+                  Share Your Story
+                </p>
+
+                <CheckboxField
+                  id="vet-shareStory"
+                  label="I'm interested in sharing my story for BVP's Narrative Hub"
+                  checked={veteranForm.shareStory}
+                  onChange={(v) => setVeteranForm((f) => ({ ...f, shareStory: v }))}
+                />
+
+                {veteranForm.shareStory && (
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="vet-storyBrief"
+                      className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-1.5"
+                    >
+                      Brief description of your story (optional)
+                    </label>
+                    <textarea
+                      id="vet-storyBrief"
+                      placeholder="Tell us briefly about your experience..."
+                      value={veteranForm.storyBrief}
+                      onChange={(e) => setVeteranForm((f) => ({ ...f, storyBrief: e.target.value }))}
+                      className="w-full bg-white border border-gray-300 text-black font-body text-base px-3.5 py-3 min-h-[100px] transition-colors focus:outline-none focus:border-black placeholder:text-gray-400 resize-y"
+                    />
+                  </div>
+                )}
+
+                <CheckboxField
+                  id="vet-contactForLegal"
+                  label="I'd like to be contacted about potential legal resources or the Monk v. United States case"
+                  checked={veteranForm.contactForLegal}
+                  onChange={(v) => setVeteranForm((f) => ({ ...f, contactForLegal: v }))}
+                />
+
+                <div className="h-px bg-gray-200 my-2" aria-hidden="true" />
+
+                {/* Additional Membership */}
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-gray-400">
+                  Additional Membership Options
+                </p>
+                <p className="text-sm text-gray-500 -mt-2">
+                  You can also participate as an Affiliate or Advocate alongside your Veteran membership.
+                </p>
+
+                <CheckboxField
+                  id="vet-alsoAffiliate"
+                  label="Also sign me up as an Affiliate (receive updates on the fight)"
+                  checked={veteranForm.alsoAffiliate}
+                  onChange={(v) => setVeteranForm((f) => ({ ...f, alsoAffiliate: v }))}
+                />
+
+                <CheckboxField
+                  id="vet-alsoAdvocate"
+                  label="I'm also interested in becoming an Advocate (active organizing)"
+                  checked={veteranForm.alsoAdvocate}
+                  onChange={(v) => setVeteranForm((f) => ({ ...f, alsoAdvocate: v }))}
+                />
+
+                {/* Error Message */}
+                {submitError && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    {submitError}
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  variant="secondary"
+                  fullWidth
+                  className="mt-2"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Join as Veteran →'}
+                </Button>
               </form>
             </section>
           </motion.div>

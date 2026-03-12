@@ -2,6 +2,12 @@
 
 import { useState } from 'react';
 
+type FieldErrors = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+};
+
 export function NewsletterStrip() {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -11,9 +17,34 @@ export function NewsletterStrip() {
     substack: false,
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errors, setErrors] = useState<FieldErrors>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: FieldErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    }
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setStatus('loading');
 
     try {
@@ -21,6 +52,7 @@ export function NewsletterStrip() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setStatus('success');
       setFormData({ firstName: '', lastName: '', email: '', zipCode: '', substack: false });
+      setErrors({});
       setTimeout(() => setStatus('idle'), 3000);
     } catch {
       setStatus('error');
@@ -28,62 +60,101 @@ export function NewsletterStrip() {
     }
   };
 
+  const clearError = (field: keyof FieldErrors) => {
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const inputBaseClass = "px-5 py-4 min-h-[56px] bg-white/10 border rounded-2xl text-white placeholder:text-white/50 text-base focus:outline-none transition-colors";
+  const inputNormalClass = "border-white/20 focus:border-[#FDC500]";
+  const inputErrorClass = "border-[#F87171] focus:border-[#F87171]";
+
   return (
     <section className="bg-black text-white">
       <div
         className="max-w-[1400px] mx-auto"
         style={{
-          padding: 'clamp(2rem, 4vw, 3rem) clamp(1rem, 4vw, 5.75rem)',
+          padding: 'clamp(3.5rem, 8vw, 6rem) clamp(1rem, 4vw, 5.75rem)',
         }}
       >
         <div className="grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 items-start">
           {/* Left: Copy */}
-          <div>
-            <h4 className="font-gunterz font-bold text-xl lg:text-2xl text-white mb-2">
+          <div className="lg:pt-2">
+            <h4 className="font-gunterz font-bold text-2xl lg:text-3xl text-white mb-3">
               Stay connected to the movement.
             </h4>
-            <p className="text-white/70 text-sm lg:text-base">
+            <p className="text-white/70 text-base lg:text-lg">
               Updates on the case, the archive, and the organizing.
             </p>
           </div>
 
           {/* Right: Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} noValidate className="space-y-4">
             {/* Input Fields */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <input
-                type="text"
-                placeholder="First name"
-                value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                required
-                className="px-4 py-3 min-h-[44px] bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 text-base focus:outline-none focus:border-[#FDC500] transition-colors"
-              />
-              <input
-                type="text"
-                placeholder="Last name"
-                value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                required
-                className="px-4 py-3 min-h-[44px] bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 text-base focus:outline-none focus:border-[#FDC500] transition-colors"
-              />
-              <input
-                type="email"
-                placeholder="Email address"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                className="px-4 py-3 min-h-[44px] bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 text-base focus:outline-none focus:border-[#FDC500] transition-colors"
-              />
-              <input
-                type="text"
-                placeholder="Zip code"
-                inputMode="numeric"
-                maxLength={10}
-                value={formData.zipCode}
-                onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-                className="px-4 py-3 min-h-[44px] bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/50 text-base focus:outline-none focus:border-[#FDC500] transition-colors"
-              />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1">
+              <div className="space-y-1">
+                <input
+                  type="text"
+                  placeholder="First name"
+                  value={formData.firstName}
+                  onChange={(e) => {
+                    setFormData({ ...formData, firstName: e.target.value });
+                    clearError('firstName');
+                  }}
+                  aria-invalid={!!errors.firstName}
+                  aria-describedby={errors.firstName ? 'firstName-error' : undefined}
+                  className={`w-full ${inputBaseClass} ${errors.firstName ? inputErrorClass : inputNormalClass}`}
+                />
+                {errors.firstName && (
+                  <p id="firstName-error" className="text-[#F87171] text-xs pl-1">{errors.firstName}</p>
+                )}
+              </div>
+              <div className="space-y-1">
+                <input
+                  type="text"
+                  placeholder="Last name"
+                  value={formData.lastName}
+                  onChange={(e) => {
+                    setFormData({ ...formData, lastName: e.target.value });
+                    clearError('lastName');
+                  }}
+                  aria-invalid={!!errors.lastName}
+                  aria-describedby={errors.lastName ? 'lastName-error' : undefined}
+                  className={`w-full ${inputBaseClass} ${errors.lastName ? inputErrorClass : inputNormalClass}`}
+                />
+                {errors.lastName && (
+                  <p id="lastName-error" className="text-[#F87171] text-xs pl-1">{errors.lastName}</p>
+                )}
+              </div>
+              <div className="space-y-1">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={formData.email}
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value });
+                    clearError('email');
+                  }}
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
+                  className={`w-full ${inputBaseClass} ${errors.email ? inputErrorClass : inputNormalClass}`}
+                />
+                {errors.email && (
+                  <p id="email-error" className="text-[#F87171] text-xs pl-1">{errors.email}</p>
+                )}
+              </div>
+              <div className="space-y-1">
+                <input
+                  type="text"
+                  placeholder="Zip code"
+                  inputMode="numeric"
+                  maxLength={10}
+                  value={formData.zipCode}
+                  onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
+                  className={`w-full ${inputBaseClass} ${inputNormalClass}`}
+                />
+              </div>
             </div>
 
             {/* Footer Row */}
@@ -114,7 +185,7 @@ export function NewsletterStrip() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="px-8 py-3 min-h-[44px] bg-[#FDC500] text-black font-bold rounded-full hover:bg-white transition-colors disabled:opacity-50 whitespace-nowrap"
+                className="px-10 py-4 min-h-[56px] bg-[#FDC500] text-black text-lg font-bold rounded-full hover:bg-white transition-colors disabled:opacity-50 whitespace-nowrap"
               >
                 {status === 'loading' ? 'Subscribing...' : status === 'success' ? 'Subscribed!' : 'Subscribe →'}
               </button>

@@ -52,7 +52,7 @@ interface HeroProps {
 
 export function Hero({
   headline = "We advance reparative justice for Black veterans and military families through litigation, narrative, and mobilization.",
-  backgroundImage = "/images/veteran-hero.jpg",
+  backgroundImage = "/images/hero-home.png",
   showDebugSpacing = false,
 }: HeroProps) {
   const containerRef = useRef<HTMLElement>(null);
@@ -104,10 +104,13 @@ export function Hero({
         paddingRight: 'clamp(1rem, 4vw, 5.75rem)',
       }}
     >
-      {/* Background Image with Parallax */}
+      {/* Background Image with Parallax + Entrance Animation */}
       <motion.div
         className="absolute inset-0 z-0 will-change-transform"
         style={{ y: backgroundY }}
+        initial={prefersReducedMotion ? false : { opacity: 0, scale: 1.08 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* Next.js Image for better loading */}
         {backgroundImage && (
@@ -127,12 +130,15 @@ export function Hero({
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-bvp-navy" />
         )}
 
-        {/* Gradient Overlay */}
-        <div
+        {/* Gradient Overlay - fades in slightly after image */}
+        <motion.div
           className="absolute inset-0"
           style={{
             background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.05) 100%)',
           }}
+          initial={prefersReducedMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.3 }}
         />
       </motion.div>
 
@@ -182,10 +188,10 @@ export function Hero({
 
         {/* Main Content - Full width */}
         <motion.div
-          className="w-full"
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
+          className="w-full mt-[40px]"
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Headline - Full width, each phrase on its own line */}
           <h1

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 
 // ============================================
@@ -46,6 +46,108 @@ function SocialLink({ platform, handle, href }: SocialLinkProps) {
 }
 
 // ============================================
+// CUSTOM DROPDOWN COMPONENT
+// ============================================
+interface TopicDropdownProps {
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+}
+
+function TopicDropdown({ value, onChange, options }: TopicDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find(opt => opt.value === value);
+  const displayText = selectedOption?.label || "Select a topic";
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setIsOpen(false);
+    }
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
+  return (
+    <div>
+      <label
+        htmlFor="contact-topic"
+        className="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2"
+      >
+        I'm reaching out about
+      </label>
+      <div className="relative" ref={dropdownRef}>
+        <button
+          type="button"
+          id="contact-topic"
+          onClick={() => setIsOpen(!isOpen)}
+          className={`w-full py-3 bg-transparent border-b text-left text-base transition-colors focus:outline-none ${
+            isOpen ? "border-black" : "border-gray-300"
+          } ${!value ? "text-gray-400" : "text-black"}`}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+        >
+          {displayText}
+        </button>
+
+        <svg
+          className={`absolute right-0 top-1/2 -translate-y-1/2 w-3 h-2 pointer-events-none transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          viewBox="0 0 12 8"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path d="M1 1.5L6 6.5L11 1.5" stroke="#999" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+
+        {isOpen && (
+          <div
+            className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border border-gray-200 shadow-lg max-h-60 overflow-y-auto"
+            role="listbox"
+          >
+            {options.map((opt) => (
+              <div
+                key={opt.value}
+                className={`px-4 py-3 cursor-pointer transition-colors hover:bg-gray-100 ${
+                  value === opt.value ? "bg-gray-50 font-medium" : ""
+                }`}
+                role="option"
+                aria-selected={value === opt.value}
+                onClick={() => {
+                  onChange(opt.value);
+                  setIsOpen(false);
+                }}
+              >
+                {opt.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// TYPES FOR VALIDATION
+// ============================================
+type ContactFormErrors = {
+  email?: string;
+};
+
+// ============================================
 // MAIN CONTACT PAGE
 // ============================================
 export default function ContactPage() {
@@ -60,6 +162,7 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<ContactFormErrors>({});
 
   const topicOptions: { value: ContactTopic; label: string }[] = [
     { value: "", label: "Select a topic" },
@@ -70,8 +173,31 @@ export default function ContactPage() {
     { value: "other", label: "Other" },
   ];
 
+  const validateForm = (): boolean => {
+    const newErrors: ContactFormErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const clearError = (field: keyof ContactFormErrors) => {
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     // Honeypot check - if filled, silently reject (bot detected)
     if (formData.website) {
@@ -90,6 +216,7 @@ export default function ContactPage() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setIsSubmitting(false);
+    setErrors({});
     setSubmitted(true);
   };
 
@@ -201,7 +328,7 @@ export default function ContactPage() {
               Send a Message
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} noValidate className="space-y-4">
               {/* Honeypot field - hidden from humans, bots will fill it */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <label htmlFor="website">Website</label>
@@ -272,42 +399,29 @@ export default function ContactPage() {
                   type="email"
                   id="contact-email"
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData((f) => ({ ...f, email: e.target.value }))
-                  }
-                  required
+                  onChange={(e) => {
+                    setFormData((f) => ({ ...f, email: e.target.value }));
+                    clearError('email');
+                  }}
                   autoComplete="email"
-                  className="w-full py-3 bg-transparent border-b border-gray-300 text-base transition-colors focus:border-black focus:outline-none"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "contact-email-error" : undefined}
+                  className={`w-full py-3 bg-transparent border-b text-base transition-colors focus:outline-none ${
+                    errors.email ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-black"
+                  }`}
                   placeholder="you@email.com"
                 />
+                {errors.email && (
+                  <p id="contact-email-error" className="text-red-500 text-xs mt-1">{errors.email}</p>
+                )}
               </div>
 
               {/* Topic */}
-              <div>
-                <label
-                  htmlFor="contact-topic"
-                  className="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2"
-                >
-                  I'm reaching out about
-                </label>
-                <select
-                  id="contact-topic"
-                  value={formData.topic}
-                  onChange={(e) =>
-                    setFormData((f) => ({
-                      ...f,
-                      topic: e.target.value as ContactTopic,
-                    }))
-                  }
-                  className="w-full py-3 bg-transparent border-b border-gray-300 text-base transition-colors focus:border-black focus:outline-none"
-                >
-                  {topicOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <TopicDropdown
+                value={formData.topic}
+                onChange={(value) => setFormData((f) => ({ ...f, topic: value as ContactTopic }))}
+                options={topicOptions}
+              />
 
               {/* Message */}
               <div>
@@ -335,7 +449,7 @@ export default function ContactPage() {
                   type="submit"
                   variant="primary"
                   size="lg"
-                  disabled={isSubmitting || !formData.email}
+                  disabled={isSubmitting}
                 >
                   {isSubmitting ? "Sending..." : "Submit →"}
                 </Button>
@@ -371,7 +485,7 @@ export default function ContactPage() {
 
             {/* Main Text */}
             <div className="mb-4">
-              <h2 className="text-xl md:text-2xl font-bold leading-tight mb-4">
+              <h2 className="text-xl md:text-2xl font-bold leading-tight mb-4 font-body">
                 For press, partnerships, and general inquiries:
               </h2>
               <a

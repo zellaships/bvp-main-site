@@ -339,7 +339,7 @@ function PillarCard({ number, title, description, cta, href, bgColor, accentColo
             className="absolute inset-0 pointer-events-none z-[1] rounded-2xl"
             style={{
               backgroundImage: `url(${patternImage})`,
-              backgroundSize: '150px',
+              backgroundSize: '300px',
               backgroundRepeat: 'repeat',
               opacity: 0,
               transition: 'opacity 0.4s ease-out',
@@ -358,16 +358,13 @@ function PillarCard({ number, title, description, cta, href, bgColor, accentColo
             <img
               src={image}
               alt={imageAlt || title}
-              className="w-full h-52 object-cover"
+              className="w-full h-52 object-cover block"
             />
           </div>
         )}
 
         <div className={`relative z-[2] p-6 lg:p-8 flex flex-col ${image ? 'flex-1' : 'h-full min-h-[320px]'}`}>
-          <span className="text-xs font-bold tracking-widest" style={{ color: accentColor }}>
-            {number}
-          </span>
-          <h3 className="font-ontika text-2xl lg:text-3xl font-medium text-white mt-3 leading-[1.1]">
+          <h3 className="font-ontika text-2xl lg:text-3xl font-medium text-white leading-[1.1]">
             {title}
           </h3>
           <p className="text-base md:text-lg text-white mt-5 leading-relaxed flex-1">
