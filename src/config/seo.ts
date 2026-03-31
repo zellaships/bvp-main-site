@@ -10,7 +10,7 @@ export const siteConfig = {
   description:
     "Advancing reparative justice for Black veterans and military families through litigation, narrative, and mobilization.",
   twitter: "@BlackVetProject",
-  ogImage: "/images/hero-home.png", // Default OG image
+  ogImage: "/images/hero-home.jpg", // Default OG image
 };
 
 export interface PageSEO {
