@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   title: "Black Veterans Project — Reparative Justice for Black Veterans",
   description:
     "Advancing reparative justice for Black veterans and military families through litigation, narrative, and mobilization.",
-  metadataBase: new URL("https://bvp-main-site.vercel.app"),
+  metadataBase: new URL("https://blackveteransproject.org"),
   openGraph: {
     title: "Black Veterans Project",
     description: "Advancing reparative justice for Black veterans and military families.",
     type: "website",
-    url: "https://bvp-main-site.vercel.app",
+    url: "https://blackveteransproject.org",
     siteName: "Black Veterans Project",
     images: [
       {

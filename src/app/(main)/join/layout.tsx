@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "Join the Movement | Black Veterans Project",
     description:
       "Become a member of the Black Veterans Project. Support the fight for reparative justice for Black veterans.",
-    url: "https://bvp-main-site.vercel.app/join",
+    url: "https://blackveteransproject.org/join",
     siteName: "Black Veterans Project",
     type: "website",
     images: [

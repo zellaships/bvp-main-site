@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "Accessibility Statement | Black Veterans Project",
     description:
       "Our commitment to digital accessibility for people with disabilities.",
-    url: "https://bvp-main-site.vercel.app/accessibility",
+    url: "https://blackveteransproject.org/accessibility",
     siteName: "Black Veterans Project",
     type: "website",
     images: [

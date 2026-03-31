@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "Frequently Asked Questions | Black Veterans Project",
     description:
       "Get answers to common questions about BVP's mission, membership, and advocacy work.",
-    url: "https://bvp-main-site.vercel.app/faq",
+    url: "https://blackveteransproject.org/faq",
     siteName: "Black Veterans Project",
     type: "website",
     images: [

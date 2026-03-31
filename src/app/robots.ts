@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin', '/api/', '/dev', '/buttons', '/design-system', '/feedback'],
       },
     ],
-    sitemap: 'https://bvp-main-site.vercel.app/sitemap.xml',
+    sitemap: 'https://blackveteransproject.org/sitemap.xml',
   };
 }
