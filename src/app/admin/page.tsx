@@ -32,9 +32,9 @@ const MOCK_METRICS = {
 };
 
 const MOCK_DEPLOYMENTS = [
-  { id: "d1", status: "READY", environment: "production", commitMessage: "added SEO meta tags to all pages", branch: "main", url: "bvp-main-site.vercel.app", createdAt: new Date(Date.now() - 1800000) },
-  { id: "d2", status: "READY", environment: "production", commitMessage: "accessibility fixes - footer contrast", branch: "main", url: "bvp-main-site.vercel.app", createdAt: new Date(Date.now() - 2 * 3600000) },
-  { id: "d3", status: "READY", environment: "production", commitMessage: "added admin hub dashboard", branch: "main", url: "bvp-main-site.vercel.app", createdAt: new Date(Date.now() - 86400000) },
+  { id: "d1", status: "READY", environment: "production", commitMessage: "added SEO meta tags to all pages", branch: "main", url: "blackveteransproject.org", createdAt: new Date(Date.now() - 1800000) },
+  { id: "d2", status: "READY", environment: "production", commitMessage: "accessibility fixes - footer contrast", branch: "main", url: "blackveteransproject.org", createdAt: new Date(Date.now() - 2 * 3600000) },
+  { id: "d3", status: "READY", environment: "production", commitMessage: "added admin hub dashboard", branch: "main", url: "blackveteransproject.org", createdAt: new Date(Date.now() - 86400000) },
 ];
 
 const MOCK_COMMITS = [
