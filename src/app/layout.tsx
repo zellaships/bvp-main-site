@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "Black Veterans Project",
     images: [
       {
-        url: "/images/hero-home.png",
+        url: "/images/hero-home.jpg",
         width: 1200,
         height: 630,
         alt: "Black Veterans Project",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Black Veterans Project",
     description: "Advancing reparative justice for Black veterans and military families.",
-    images: ["/images/hero-home.png"],
+    images: ["/images/hero-home.jpg"],
   },
   // Preconnect to CDN for faster resource loading
   other: {
