@@ -584,7 +584,7 @@ export default function OurWorkPage() {
         <img
           src="/images/our-work-banner.jpg"
           alt="Navy sailors in formation representing the service and sacrifice of Black veterans"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70" />
         <div
