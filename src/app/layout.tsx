@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { DebugOverlay } from "@/components/ui/DebugOverlay";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
@@ -54,6 +55,7 @@ export default function RootLayout({
         <CookieConsent />
         <DebugOverlay />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
