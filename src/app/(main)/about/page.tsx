@@ -40,7 +40,7 @@ const team = [
     bio: 'Daniele is a nationally recognized strategist, historian, and researcher focused on strengthening healthcare access, data-informed advocacy, and institutional accountability. She is deeply committed to building more humane, effective, and equitable systems, particularly for veterans and historically underserved communities.\n\nShe has held senior leadership roles in research, policy, and strategy at Color of Change and Black Economic Alliance Foundation, where she helped translate data and community insight into institutional reform and public impact.\n\nA former Surface Warfare Officer, Daniele served five years in the U.S. Navy. She is a graduate of the United States Naval Academy and holds a Master of Arts from Columbia University.',
     image: '/images/team/daniele-anderson.jpg',
     initials: 'DA',
-    linkedin: 'https://www.linkedin.com/in/danieleanderson/',
+    linkedin: 'https://www.linkedin.com/in/daniele-anderson/',
   },
   {
     name: 'Yolanda Hoskey',

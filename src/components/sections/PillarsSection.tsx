@@ -358,7 +358,7 @@ function PillarCard({ number, title, description, cta, href, bgColor, accentColo
             <img
               src={image}
               alt={imageAlt || title}
-              className="w-full h-52 object-cover block"
+              className="w-full h-52 object-cover object-top block"
             />
           </div>
         )}

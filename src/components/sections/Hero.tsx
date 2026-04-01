@@ -116,7 +116,7 @@ export function Hero({
             fill
             priority
             quality={85}
-            className="object-cover object-bottom"
+            className="object-cover object-[35%_bottom] md:object-bottom"
             sizes="100vw"
           />
         )}
