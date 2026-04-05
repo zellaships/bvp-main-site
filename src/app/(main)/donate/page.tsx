@@ -1,4 +1,10 @@
+"use client";
+
+import { useState } from "react";
+
 export default function DonatePage() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -29,8 +35,40 @@ export default function DonatePage() {
                 gap: 'clamp(2rem, 5vw, 4rem)',
               }}
             >
-              {/* Left Column: Copy */}
-              <div>
+              {/* Donately Form - First on mobile */}
+              <div className="order-1 md:order-2">
+                <div className="relative min-h-[600px]">
+                  {/* Loading skeleton */}
+                  {!isLoaded && (
+                    <div className="absolute inset-0 bg-gray-100 animate-pulse flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin mx-auto mb-3" />
+                        <p className="text-sm text-gray-500">Loading donation form...</p>
+                      </div>
+                    </div>
+                  )}
+                  <iframe
+                    src="https://cdn.donately.com/core/6.0/donate-form.html?form_id=frm_17bf7d7efced&account_id=act_1c9da0501869&stripe_key=pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd"
+                    width="100%"
+                    height="1335"
+                    frameBorder="0"
+                    allow="payment *"
+                    title="Donation Form"
+                    loading="eager"
+                    onLoad={() => setIsLoaded(true)}
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      overflow: "hidden",
+                      opacity: isLoaded ? 1 : 0,
+                      transition: "opacity 0.3s ease",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Copy - Second on mobile */}
+              <div className="order-2 md:order-1">
                 <div className="space-y-6">
                   <p className="text-lg leading-relaxed text-gray-700">
                     Your donation helps Black Veterans Project's mission to
@@ -60,23 +98,6 @@ export default function DonatePage() {
                     tax-deductible to the extent allowed by law.
                   </p>
                 </div>
-              </div>
-
-              {/* Right Column: Donately Form */}
-              <div>
-                <iframe
-                  src="https://cdn.donately.com/core/6.0/donate-form.html?form_id=frm_17bf7d7efced&account_id=act_1c9da0501869&stripe_key=pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd"
-                  width="100%"
-                  height="1335"
-                  frameBorder="0"
-                  allow="payment *"
-                  title="Donation Form"
-                  style={{
-                    backgroundColor: "transparent",
-                    border: "none",
-                    overflow: "hidden",
-                  }}
-                />
               </div>
             </div>
           </div>
