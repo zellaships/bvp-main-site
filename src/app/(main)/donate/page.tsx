@@ -1,7 +1,3 @@
-"use client";
-
-import Script from "next/script";
-
 export default function DonatePage() {
   return (
     <div className="min-h-screen bg-white">
@@ -67,28 +63,17 @@ export default function DonatePage() {
               </div>
 
               {/* Right Column: Donately Form */}
-              <div>
+              <div className="min-h-[500px]">
                 <div
-                  id="donately-form-container"
-                  className="min-h-[500px]"
-                >
-                  {/* Donately form will render here */}
-                </div>
+                  dangerouslySetInnerHTML={{
+                    __html: `<script src="https://cdn.donately.com/core/6.0/donately.min.js" data-donately-id="act_1c9da0501869" data-stripe-publishable-key="pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd" data-donately-form-id="frm_17bf7d7efced" data-donately-fetch-config="true" async="async"></script>`
+                  }}
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Donately Script */}
-      <Script
-        src="https://cdn.donately.com/core/6.0/donately.min.js"
-        data-donately-id="act_1c9da0501869"
-        data-stripe-publishable-key="pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd"
-        data-donately-form-id="frm_17bf7d7efced"
-        data-donately-fetch-config="true"
-        strategy="afterInteractive"
-      />
     </div>
   );
 }
