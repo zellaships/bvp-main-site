@@ -443,6 +443,14 @@ export default function ContactPage() {
                 />
               </div>
 
+              {/* Privacy Notice */}
+              <p className="text-xs text-gray-500 leading-relaxed">
+                By submitting this form, you agree to our{' '}
+                <a href="/privacy" className="underline hover:text-black transition-colors">
+                  Privacy Policy
+                </a>. We'll use your information only to respond to your inquiry.
+              </p>
+
               {/* Submit */}
               <div className="pt-2">
                 <Button
