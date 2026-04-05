@@ -4,19 +4,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useCookieConsent, type ConsentPreferences } from "@/components/providers/CookieConsentContext";
 
 // ============================================
 // BVP COOKIE CONSENT BANNER + PREFERENCES DRAWER
 // Full ARIA support + Focus Trap for iOS Accessibility
+// Now integrated with CookieConsentContext for legal compliance
 // ============================================
-
-const COOKIE_CONSENT_KEY = "bvp-cookie-consent";
-
-type ConsentPreferences = {
-  necessary: boolean;
-  analytics: boolean;
-  marketing: boolean;
-};
 
 // Focus Trap Hook for modals
 function useFocusTrap(isActive: boolean) {
@@ -68,16 +62,17 @@ function useFocusTrap(isActive: boolean) {
 }
 
 export function CookieConsent() {
-  const [isVisible, setIsVisible] = useState(false);
+  const { showBanner, setShowBanner, savePreferences: contextSavePreferences } = useCookieConsent();
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [preferences, setPreferences] = useState<ConsentPreferences>({
     necessary: true,
-    analytics: true,
+    analytics: false,  // GDPR: Must default to OFF (opt-in required)
     marketing: false,
   });
 
-  const focusTrapRef = useFocusTrap(isVisible);
+  const focusTrapRef = useFocusTrap(showBanner);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const announcementTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -90,11 +85,13 @@ export function CookieConsent() {
     };
   }, []);
 
+  // Reset expanded state when banner is shown
   useEffect(() => {
-    // FORCE SHOW FOR DEBUG - remove localStorage check
-    console.log("[CookieConsent] FORCE SHOWING BANNER");
-    setIsVisible(true);
-  }, []);
+    if (showBanner) {
+      setIsExpanded(false);
+      setIsClosing(false);
+    }
+  }, [showBanner]);
 
   // Handle escape key
   useEffect(() => {
@@ -108,14 +105,14 @@ export function CookieConsent() {
 
   // Return focus when modal closes
   useEffect(() => {
-    if (!isVisible && previousFocusRef.current) {
+    if (!showBanner && previousFocusRef.current) {
       previousFocusRef.current.focus();
     }
-  }, [isVisible]);
+  }, [showBanner]);
 
   // Announce to screen readers when modal opens
   useEffect(() => {
-    if (isVisible) {
+    if (showBanner) {
       const announcement = document.createElement("div");
       announcement.setAttribute("role", "status");
       announcement.setAttribute("aria-live", "polite");
@@ -125,31 +122,28 @@ export function CookieConsent() {
       document.body.appendChild(announcement);
       announcementTimeoutRef.current = setTimeout(() => announcement.remove(), 1000);
     }
-  }, [isVisible]);
+  }, [showBanner]);
 
   const handleAccept = useCallback(() => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({ ...preferences, analytics: true, marketing: true }));
-    setIsVisible(false);
-  }, [preferences]);
+    contextSavePreferences({ necessary: true, analytics: true, marketing: true });
+  }, [contextSavePreferences]);
 
   const handleRejectAll = useCallback(() => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({ necessary: true, analytics: false, marketing: false }));
-    setIsVisible(false);
-  }, []);
+    contextSavePreferences({ necessary: true, analytics: false, marketing: false });
+  }, [contextSavePreferences]);
 
   const handleSaveChoices = useCallback(() => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(preferences));
-    setIsVisible(false);
-  }, [preferences]);
+    contextSavePreferences(preferences);
+  }, [contextSavePreferences, preferences]);
 
   const handleClose = useCallback(() => {
     setIsClosing(true);
     closeTimeoutRef.current = setTimeout(() => {
-      localStorage.setItem(COOKIE_CONSENT_KEY, "declined");
-      setIsVisible(false);
+      // When user dismisses without choosing, save as declined (no tracking)
+      contextSavePreferences({ necessary: true, analytics: false, marketing: false });
       setIsClosing(false);
     }, 300);
-  }, []);
+  }, [contextSavePreferences]);
 
   const togglePreference = useCallback((key: keyof ConsentPreferences) => {
     if (key === "necessary") return;
@@ -160,7 +154,7 @@ export function CookieConsent() {
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {showBanner && (
         <motion.div
           ref={focusTrapRef}
           initial={{ y: "100%" }}

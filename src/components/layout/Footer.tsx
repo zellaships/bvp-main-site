@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
+import { useCookieConsent } from "@/components/providers/CookieConsentContext";
 
 function SiteSearch() {
   const [query, setQuery] = useState('');
@@ -80,6 +81,21 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
       {children}
       <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-bvp-gold group-hover:w-full transition-all duration-300" />
     </Link>
+  );
+}
+
+// Cookie Settings button
+function CookieSettingsButton() {
+  const { openPreferences } = useCookieConsent();
+
+  return (
+    <button
+      onClick={openPreferences}
+      className="relative hover:text-white transition-colors group"
+    >
+      Cookie Settings
+      <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-bvp-gold group-hover:w-full transition-all duration-300" />
+    </button>
   );
 }
 
@@ -187,6 +203,8 @@ export function Footer() {
                     Design
                     <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-bvp-gold group-hover:w-full transition-all duration-300" />
                   </Link>
+                  <span className="text-white/20">·</span>
+                  <CookieSettingsButton />
                 </div>
               </div>
             </div>

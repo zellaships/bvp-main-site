@@ -112,6 +112,23 @@ export function NewsletterBanner() {
             {isSubmitting ? '...' : isSuccess ? 'Subscribed!' : 'Sign up'}
           </button>
         </form>
+
+        {/* Privacy Disclosure - GDPR Compliance */}
+        <p className="text-xs text-black/60 mt-4 max-w-md mx-auto">
+          Your email will be shared with{' '}
+          <a
+            href="https://actionnetwork.org/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-black transition-colors"
+          >
+            Action Network
+          </a>{' '}
+          for newsletter delivery. Unsubscribe anytime.{' '}
+          <a href="/privacy" className="underline hover:text-black transition-colors">
+            Privacy Policy
+          </a>
+        </p>
       </div>
     </section>
   );

@@ -25,6 +25,7 @@ interface BasicFormData {
   zipCode: string;
   memberType: MemberType;
   receiveUpdates: boolean;
+  dataConsent: boolean;  // GDPR: Explicit consent for Action Network data sharing
 }
 
 interface AdvocateFormData {
@@ -63,6 +64,7 @@ interface AdvocateFormData {
     other: boolean;
   };
   interest: string;
+  dataConsent: boolean;  // GDPR: Explicit consent for sensitive data & Action Network
 }
 
 interface VeteranFormData {
@@ -82,6 +84,7 @@ interface VeteranFormData {
   contactForLegal: boolean;
   alsoAffiliate: boolean;
   alsoAdvocate: boolean;
+  dataConsent: boolean;  // GDPR: Explicit consent for sensitive veteran data
 }
 
 // ============================================
@@ -434,6 +437,7 @@ type BasicFormErrors = {
   firstName?: string;
   lastName?: string;
   email?: string;
+  dataConsent?: string;
 };
 
 type AdvocateFormErrors = {
@@ -443,6 +447,7 @@ type AdvocateFormErrors = {
   zipCode?: string;
   branch?: string;
   serviceEra?: string;
+  dataConsent?: string;
 };
 
 export default function JoinPage() {
@@ -462,6 +467,7 @@ export default function JoinPage() {
     zipCode: "",
     memberType: "",
     receiveUpdates: true,
+    dataConsent: false,  // GDPR: Must default to unchecked
   });
 
   // Advocate form state
@@ -501,6 +507,7 @@ export default function JoinPage() {
       other: false,
     },
     interest: "",
+    dataConsent: false,  // GDPR: Must default to unchecked
   });
 
   // Veteran form state
@@ -521,6 +528,7 @@ export default function JoinPage() {
     contactForLegal: false,
     alsoAffiliate: true,
     alsoAdvocate: false,
+    dataConsent: false,  // GDPR: Must default to unchecked
   });
 
   const [veteranErrors, setVeteranErrors] = useState<Record<string, string>>({});
@@ -568,6 +576,9 @@ export default function JoinPage() {
       errors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(basicForm.email)) {
       errors.email = 'Please enter a valid email';
+    }
+    if (!basicForm.dataConsent) {
+      errors.dataConsent = 'You must consent to data processing to join';
     }
 
     setBasicErrors(errors);
@@ -636,6 +647,11 @@ export default function JoinPage() {
       if (!advocateForm.serviceEra) {
         errors.serviceEra = 'Service era is required';
       }
+    }
+
+    // GDPR: Consent required for sensitive data processing
+    if (!advocateForm.dataConsent) {
+      errors.dataConsent = 'You must consent to data processing to join';
     }
 
     setAdvocateErrors(errors);
@@ -719,6 +735,8 @@ export default function JoinPage() {
     if (!veteranForm.zipCode.trim()) errors.zipCode = 'ZIP code is required';
     if (!veteranForm.branch) errors.branch = 'Branch is required';
     if (!veteranForm.serviceEra) errors.serviceEra = 'Service era is required';
+    // GDPR: Consent required for sensitive veteran data
+    if (!veteranForm.dataConsent) errors.dataConsent = 'You must consent to data processing to join';
 
     setVeteranErrors(errors);
     return Object.keys(errors).length === 0;
@@ -1050,6 +1068,62 @@ export default function JoinPage() {
                           setBasicForm((f) => ({ ...f, receiveUpdates: v }))
                         }
                       />
+
+                      {/* GDPR Consent Checkbox */}
+                      <div className="border-t border-gray-200 pt-4 mt-2">
+                        <label
+                          htmlFor="basic-dataConsent"
+                          className="flex items-start gap-2.5 cursor-pointer group"
+                        >
+                          <span className="relative flex-shrink-0 mt-0.5">
+                            <input
+                              type="checkbox"
+                              id="basic-dataConsent"
+                              checked={basicForm.dataConsent}
+                              onChange={(e) => {
+                                setBasicForm((f) => ({ ...f, dataConsent: e.target.checked }));
+                                if (basicErrors.dataConsent) {
+                                  setBasicErrors((prev) => ({ ...prev, dataConsent: undefined }));
+                                }
+                              }}
+                              className="sr-only peer"
+                              aria-required="true"
+                              aria-invalid={!!basicErrors.dataConsent}
+                              aria-describedby="basic-dataConsent-desc basic-dataConsent-error"
+                            />
+                            <span
+                              className={`block w-[18px] h-[18px] border bg-white peer-checked:bg-black peer-checked:border-black transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-bvp-gold peer-focus-visible:ring-offset-2 ${
+                                basicErrors.dataConsent ? 'border-red-500' : 'border-gray-300'
+                              }`}
+                              aria-hidden="true"
+                            >
+                              {basicForm.dataConsent && (
+                                <svg className="w-full h-full text-white p-0.5" viewBox="0 0 14 14" fill="none">
+                                  <path d="M3 7L6 10L11 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                              )}
+                            </span>
+                          </span>
+                          <span id="basic-dataConsent-desc" className="text-[15px] text-gray-600 leading-snug group-hover:text-gray-800 transition-colors">
+                            I consent to Black Veterans Project sharing my information with{' '}
+                            <a href="https://actionnetwork.org/privacy" target="_blank" rel="noopener noreferrer" className="underline text-black hover:text-bvp-gold">
+                              Action Network
+                            </a>{' '}
+                            for membership management and communications. I understand I can withdraw consent at any time by emailing{' '}
+                            <a href="mailto:privacy@blackveteransproject.org" className="underline text-black hover:text-bvp-gold">
+                              privacy@blackveteransproject.org
+                            </a>.{' '}
+                            <a href="/privacy" className="underline text-black hover:text-bvp-gold">
+                              Privacy Policy
+                            </a>
+                          </span>
+                        </label>
+                        {basicErrors.dataConsent && (
+                          <p id="basic-dataConsent-error" className="text-red-500 text-xs mt-2 ml-[26px]">
+                            {basicErrors.dataConsent}
+                          </p>
+                        )}
+                      </div>
 
                       {submitError && (
                         <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-sm">
@@ -1589,6 +1663,62 @@ export default function JoinPage() {
                   />
                 </div>
 
+                {/* GDPR Consent Checkbox - Required for sensitive data */}
+                <div className="border-t border-gray-200 pt-4 mt-2">
+                  <label
+                    htmlFor="adv-dataConsent"
+                    className="flex items-start gap-2.5 cursor-pointer group"
+                  >
+                    <span className="relative flex-shrink-0 mt-0.5">
+                      <input
+                        type="checkbox"
+                        id="adv-dataConsent"
+                        checked={advocateForm.dataConsent}
+                        onChange={(e) => {
+                          setAdvocateForm((f) => ({ ...f, dataConsent: e.target.checked }));
+                          if (advocateErrors.dataConsent) {
+                            setAdvocateErrors((prev) => ({ ...prev, dataConsent: undefined }));
+                          }
+                        }}
+                        className="sr-only peer"
+                        aria-required="true"
+                        aria-invalid={!!advocateErrors.dataConsent}
+                        aria-describedby="adv-dataConsent-desc adv-dataConsent-error"
+                      />
+                      <span
+                        className={`block w-[18px] h-[18px] border bg-white peer-checked:bg-black peer-checked:border-black transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-bvp-gold peer-focus-visible:ring-offset-2 ${
+                          advocateErrors.dataConsent ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {advocateForm.dataConsent && (
+                          <svg className="w-full h-full text-white p-0.5" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 7L6 10L11 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        )}
+                      </span>
+                    </span>
+                    <span id="adv-dataConsent-desc" className="text-[15px] text-gray-600 leading-snug group-hover:text-gray-800 transition-colors">
+                      I consent to Black Veterans Project collecting and sharing my information—including sensitive data such as race, military history, and personal experiences—with{' '}
+                      <a href="https://actionnetwork.org/privacy" target="_blank" rel="noopener noreferrer" className="underline text-black hover:text-bvp-gold">
+                        Action Network
+                      </a>{' '}
+                      for membership management and advocacy communications. I understand I can withdraw consent at any time by emailing{' '}
+                      <a href="mailto:privacy@blackveteransproject.org" className="underline text-black hover:text-bvp-gold">
+                        privacy@blackveteransproject.org
+                      </a>.{' '}
+                      <a href="/privacy" className="underline text-black hover:text-bvp-gold">
+                        Privacy Policy
+                      </a>
+                    </span>
+                  </label>
+                  {advocateErrors.dataConsent && (
+                    <p id="adv-dataConsent-error" className="text-red-500 text-xs mt-2 ml-[26px]">
+                      {advocateErrors.dataConsent}
+                    </p>
+                  )}
+                </div>
+
                 {/* Error Message */}
                 {submitError && (
                   <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
@@ -1873,6 +2003,66 @@ export default function JoinPage() {
                   checked={veteranForm.alsoAdvocate}
                   onChange={(v) => setVeteranForm((f) => ({ ...f, alsoAdvocate: v }))}
                 />
+
+                {/* GDPR Consent Checkbox - Required for sensitive veteran data */}
+                <div className="border-t border-gray-200 pt-4 mt-2">
+                  <label
+                    htmlFor="vet-dataConsent"
+                    className="flex items-start gap-2.5 cursor-pointer group"
+                  >
+                    <span className="relative flex-shrink-0 mt-0.5">
+                      <input
+                        type="checkbox"
+                        id="vet-dataConsent"
+                        checked={veteranForm.dataConsent}
+                        onChange={(e) => {
+                          setVeteranForm((f) => ({ ...f, dataConsent: e.target.checked }));
+                          if (veteranErrors.dataConsent) {
+                            setVeteranErrors((prev) => {
+                              const newErrors = { ...prev };
+                              delete newErrors.dataConsent;
+                              return newErrors;
+                            });
+                          }
+                        }}
+                        className="sr-only peer"
+                        aria-required="true"
+                        aria-invalid={!!veteranErrors.dataConsent}
+                        aria-describedby="vet-dataConsent-desc vet-dataConsent-error"
+                      />
+                      <span
+                        className={`block w-[18px] h-[18px] border bg-white peer-checked:bg-black peer-checked:border-black transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-bvp-gold peer-focus-visible:ring-offset-2 ${
+                          veteranErrors.dataConsent ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {veteranForm.dataConsent && (
+                          <svg className="w-full h-full text-white p-0.5" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 7L6 10L11 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        )}
+                      </span>
+                    </span>
+                    <span id="vet-dataConsent-desc" className="text-[15px] text-gray-600 leading-snug group-hover:text-gray-800 transition-colors">
+                      I consent to Black Veterans Project collecting and sharing my information—including military service history, VA claim status, discharge status, and personal story—with{' '}
+                      <a href="https://actionnetwork.org/privacy" target="_blank" rel="noopener noreferrer" className="underline text-black hover:text-bvp-gold">
+                        Action Network
+                      </a>{' '}
+                      for membership management, advocacy, and potential legal resources. I understand I can withdraw consent at any time by emailing{' '}
+                      <a href="mailto:privacy@blackveteransproject.org" className="underline text-black hover:text-bvp-gold">
+                        privacy@blackveteransproject.org
+                      </a>.{' '}
+                      <a href="/privacy" className="underline text-black hover:text-bvp-gold">
+                        Privacy Policy
+                      </a>
+                    </span>
+                  </label>
+                  {veteranErrors.dataConsent && (
+                    <p id="vet-dataConsent-error" className="text-red-500 text-xs mt-2 ml-[26px]">
+                      {veteranErrors.dataConsent}
+                    </p>
+                  )}
+                </div>
 
                 {/* Error Message */}
                 {submitError && (

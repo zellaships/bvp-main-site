@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { DebugOverlay } from "@/components/ui/DebugOverlay";
 import { CookieConsent } from "@/components/ui/CookieConsent";
-import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
+import { CookieConsentProvider } from "@/components/providers/CookieConsentContext";
+import { ConsentAwareAnalytics } from "@/components/providers/ConsentAwareAnalytics";
 
 export const metadata: Metadata = {
   title: "Black Veterans Project — Reparative Justice for Black Veterans",
@@ -49,13 +48,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased bg-white text-black">
-        <AnalyticsProvider>
+        <CookieConsentProvider>
           {children}
-        </AnalyticsProvider>
-        <CookieConsent />
+          <CookieConsent />
+          <ConsentAwareAnalytics />
+        </CookieConsentProvider>
         <DebugOverlay />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

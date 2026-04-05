@@ -607,7 +607,7 @@ const timelineData = [
 
 // Partners data
 const partners = [
-  { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png', scale: 0.85, url: 'https://www.rwjf.org/' },
+  { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png', scale: 0.68, url: 'https://www.rwjf.org/' },
   { name: 'Liberation Ventures', logo: '/images/partners/lv.png', scale: 1.6, url: 'https://www.liberationventures.org/' },
   { name: 'National Veterans Council for Legal Redress', logo: '/images/partners/nvclr.png', scale: 1, url: 'https://www.nvclr.org/' },
   { name: 'May & Stanley Smith Charitable Trust', logo: '/images/partners/mssct.png', scale: 1, url: 'https://smithct.org/' },
