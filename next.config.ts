@@ -47,8 +47,8 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com data:",
       // Connect: self + analytics + Vercel
       "connect-src 'self' https://www.google-analytics.com https://vitals.vercel-insights.com https://*.vercel.app",
-      // Frames: allow YouTube and Vimeo embeds
-      "frame-src 'self' https://www.youtube.com https://youtube.com https://player.vimeo.com",
+      // Frames: allow YouTube, Vimeo, and Donately embeds
+      "frame-src 'self' https://www.youtube.com https://youtube.com https://player.vimeo.com https://cdn.donately.com",
       // Form actions: self only
       "form-action 'self'",
       // Base URI: self only
