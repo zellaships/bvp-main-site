@@ -1,4 +1,28 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 export default function DonatePage() {
+  const donatelyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!donatelyRef.current) return;
+
+    // Check if script already exists
+    const existingScript = document.querySelector('script[src*="donately.min.js"]');
+    if (existingScript) return;
+
+    const script = document.createElement("script");
+    script.src = "https://cdn.donately.com/core/6.0/donately.min.js";
+    script.setAttribute("data-donately-id", "act_1c9da0501869");
+    script.setAttribute("data-stripe-publishable-key", "pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd");
+    script.setAttribute("data-donately-form-id", "frm_17bf7d7efced");
+    script.setAttribute("data-donately-fetch-config", "true");
+    script.async = true;
+
+    donatelyRef.current.appendChild(script);
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -63,13 +87,7 @@ export default function DonatePage() {
               </div>
 
               {/* Right Column: Donately Form */}
-              <div className="min-h-[500px]">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: `<script src="https://cdn.donately.com/core/6.0/donately.min.js" data-donately-id="act_1c9da0501869" data-stripe-publishable-key="pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd" data-donately-form-id="frm_17bf7d7efced" data-donately-fetch-config="true" async="async"></script>`
-                  }}
-                />
-              </div>
+              <div ref={donatelyRef} className="min-h-[500px]" />
             </div>
           </div>
         </div>
