@@ -54,7 +54,7 @@ export default function DonatePage() {
                     frameBorder="0"
                     allow="payment *"
                     title="Donation Form"
-                    loading="eager"
+                    loading="lazy"
                     onLoad={() => setIsLoaded(true)}
                     style={{
                       backgroundColor: "transparent",
