@@ -58,8 +58,8 @@ function StickySubNav({
               onClick={() => onSectionClick(section.id)}
               className={`relative px-3 lg:px-4 min-h-[56px] text-[13px] lg:text-[14px] font-gunterz font-bold tracking-[0.05em] uppercase whitespace-nowrap transition-colors flex-shrink-0 flex items-center ${
                 index === 0 ? 'pl-0' : ''
-              } ${activeSection === section.id ? 'text-gray-900' : 'text-gray-400 hover:text-gray-900'}`}
-              aria-current={activeSection === section.id ? 'true' : undefined}
+              } ${activeSection === section.id ? 'text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
+              aria-current={activeSection === section.id ? 'page' : undefined}
             >
               {section.label}
               <span
@@ -201,7 +201,8 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
       className="w-full max-w-[1400px] mx-auto my-12"
       onMouseLeave={resetState}
     >
-      <svg viewBox="-120 0 1520 760" className="w-full h-auto">
+      <svg viewBox="-120 0 1520 760" className="w-full h-auto" role="img" aria-label="Interactive diagram showing three pillars of our work: Narrative Hub, Impact Litigation, and Mobilization, which together create Repair">
+        <title>Our Work: Three Pillars for Repair</title>
         <defs>
           <pattern id="camo-yellow-venn" patternUnits="userSpaceOnUse" width="200" height="200">
             <image href="/images/camo-yellow.png" width="200" height="200" preserveAspectRatio="xMidYMid slice" />
@@ -227,6 +228,9 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
         {/* NARRATIVE CIRCLE */}
         <g
           className="cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="Narrative Hub - Click to learn more about our storytelling and documentation work"
           style={{
             opacity: getPillarOpacity('narrative'),
             transform: getPillarScale('narrative'),
@@ -235,6 +239,7 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
           }}
           onMouseEnter={() => { setActiveKey('narrative'); setRepairActive(false); }}
           onClick={(e) => handlePillarClick(e, pillars.narrative.id)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePillarClick(e as unknown as React.MouseEvent, pillars.narrative.id); }}
         >
           <circle cx={centers.narrative.cx} cy={centers.narrative.cy} r={R} fill={colors.narrative.bg} />
           <circle
@@ -253,6 +258,9 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
         {/* MOVEMENT CIRCLE */}
         <g
           className="cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="Mobilization - Click to learn more about our community organizing work"
           style={{
             opacity: getPillarOpacity('movement'),
             transform: getPillarScale('movement'),
@@ -261,6 +269,7 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
           }}
           onMouseEnter={() => { setActiveKey('movement'); setRepairActive(false); }}
           onClick={(e) => handlePillarClick(e, pillars.movement.id)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePillarClick(e as unknown as React.MouseEvent, pillars.movement.id); }}
         >
           <circle cx={centers.movement.cx} cy={centers.movement.cy} r={R} fill={colors.movement.bg} />
           <circle
@@ -278,6 +287,9 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
         {/* LITIGATION CIRCLE */}
         <g
           className="cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="Impact Litigation - Click to learn more about our legal advocacy work"
           style={{
             opacity: getPillarOpacity('litigation'),
             transform: getPillarScale('litigation'),
@@ -286,6 +298,7 @@ function VennDiagram({ onSectionClick }: { onSectionClick: (id: string) => void 
           }}
           onMouseEnter={() => { setActiveKey('litigation'); setRepairActive(false); }}
           onClick={(e) => handlePillarClick(e, pillars.litigation.id)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePillarClick(e as unknown as React.MouseEvent, pillars.litigation.id); }}
         >
           <circle cx={centers.litigation.cx} cy={centers.litigation.cy} r={R} fill={colors.litigation.bg} />
           <circle
@@ -591,7 +604,7 @@ export default function OurWorkPage() {
           className="relative z-10 max-w-[1400px] mx-auto w-full"
           style={{ padding: 'clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 5.75rem)' }}
         >
-          <p className="text-sm uppercase tracking-widest mb-4 text-white/60">Our Work</p>
+          <p className="text-sm uppercase tracking-widest mb-4 text-white/80">Our Work</p>
           <h1
             className="font-gunterz font-bold text-white uppercase"
             style={{ fontSize: 'clamp(1.75rem, 1rem + 4vw, 3.75rem)' }}

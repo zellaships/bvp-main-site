@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import Image from 'next/image';
 
 // Dark Green Report brand colors
 const CREAM = "#F0E8D0";
@@ -237,11 +238,13 @@ export function SubstackFeed() {
             >
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
                 {featured.imageUrl ? (
-                  <img
+                  <Image
                     src={featured.imageUrl}
                     alt={featured.title}
-                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
-                    loading="eager"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-all duration-700 ease-out group-hover:scale-105"
+                    priority
                   />
                 ) : (
                   <div
@@ -272,12 +275,16 @@ export function SubstackFeed() {
                 <div className="relative overflow-hidden rounded-t-2xl shadow-lg group-hover:shadow-2xl transition-shadow duration-500">
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FDC500] z-10" />
                   {getPostImage(post) ? (
-                    <img
-                      src={getPostImage(post)!}
-                      alt={post.title}
-                      className="w-full h-72 object-cover object-top transition-transform duration-500 group-hover:scale-105 block"
-                      loading="lazy"
-                    />
+                    <div className="relative w-full h-72">
+                      <Image
+                        src={getPostImage(post)!}
+                        alt={post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
                   ) : (
                     <div className="w-full h-72 flex flex-col items-center justify-center bg-black">
                       <p className="text-xl font-gunterz font-bold text-white tracking-wide">BVP</p>

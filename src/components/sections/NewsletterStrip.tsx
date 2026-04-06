@@ -66,7 +66,7 @@ export function NewsletterStrip() {
     }
   };
 
-  const inputBaseClass = "px-5 py-4 min-h-[56px] bg-white/10 border rounded-2xl text-white placeholder:text-white/50 text-base focus:outline-none transition-colors";
+  const inputBaseClass = "px-5 py-4 min-h-[56px] bg-white/10 border rounded-2xl text-white placeholder:text-white/70 text-base focus:outline-none transition-colors";
   const inputNormalClass = "border-white/20 focus:border-[#FDC500]";
   const inputErrorClass = "border-[#F87171] focus:border-[#F87171]";
 
@@ -81,9 +81,9 @@ export function NewsletterStrip() {
         <div className="grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 items-start">
           {/* Left: Copy */}
           <div className="lg:pt-2">
-            <h4 className="font-gunterz font-bold text-2xl lg:text-3xl text-white mb-3">
+            <h2 className="font-gunterz font-bold text-2xl lg:text-3xl text-white mb-3">
               Stay connected to the movement.
-            </h4>
+            </h2>
             <p className="text-white/70 text-base lg:text-lg">
               Updates on the case, the archive, and the organizing.
             </p>
@@ -97,6 +97,7 @@ export function NewsletterStrip() {
                 <input
                   type="text"
                   placeholder="First name"
+                  aria-label="First name"
                   value={formData.firstName}
                   onChange={(e) => {
                     setFormData({ ...formData, firstName: e.target.value });
@@ -114,6 +115,7 @@ export function NewsletterStrip() {
                 <input
                   type="text"
                   placeholder="Last name"
+                  aria-label="Last name"
                   value={formData.lastName}
                   onChange={(e) => {
                     setFormData({ ...formData, lastName: e.target.value });
@@ -131,6 +133,7 @@ export function NewsletterStrip() {
                 <input
                   type="email"
                   placeholder="Email address"
+                  aria-label="Email address"
                   value={formData.email}
                   onChange={(e) => {
                     setFormData({ ...formData, email: e.target.value });
@@ -148,6 +151,7 @@ export function NewsletterStrip() {
                 <input
                   type="text"
                   placeholder="Zip code"
+                  aria-label="Zip code"
                   inputMode="numeric"
                   maxLength={10}
                   value={formData.zipCode}
@@ -172,10 +176,10 @@ export function NewsletterStrip() {
                 </label>
 
                 {/* Legal */}
-                <p className="text-white/50 text-xs leading-relaxed max-w-md">
+                <p className="text-white/70 text-xs leading-relaxed max-w-md">
                   By signing up, you agree to receive email updates from Black Veterans Project.
                   Unsubscribe anytime.{' '}
-                  <a href="/privacy" className="underline hover:text-white/70">
+                  <a href="/privacy" className="underline hover:text-white">
                     Privacy Policy
                   </a>
                 </p>

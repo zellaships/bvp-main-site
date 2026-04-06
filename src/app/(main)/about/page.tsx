@@ -30,7 +30,7 @@ const team = [
     name: 'Zella Vanié',
     role: 'Co-Founder + Board Chair',
     bio: 'Zella Vanié is a multidisciplinary artist and designer whose work is at the intersection of strategy and design. Zella has spent their career helping organizations build inclusive products, craft stories, and push creative ideas to their highest potential.\n\nMost recently they worked as a Staff Product Designer at the Chan Zuckerberg Initiative. Zella is a veteran of the U.S. Army and earned an MFA in Interaction Design from the School of Visual Arts.',
-    image: '/images/team/zella-vanie.png',
+    image: '/images/team/zella-vanie.webp',
     initials: 'ZV',
     linkedin: 'https://www.linkedin.com/in/zellavanie/',
   },
@@ -153,7 +153,7 @@ function TeamCard({
           {member.name.split(' ').slice(-1)[0]}
         </h3>
         <div className="w-6 h-px bg-[#FDC500]/60 my-1.5 md:my-2" />
-        <p className="text-[clamp(8px,1.6vw,10px)] md:text-[10px] uppercase tracking-[0.13em] text-[#FDC500] leading-tight">
+        <p className="text-[clamp(11px,1.6vw,12px)] md:text-xs uppercase tracking-[0.13em] text-[#FDC500] leading-tight">
           {member.role}
         </p>
 
@@ -169,7 +169,7 @@ function TeamCard({
 
         {/* CTA - hidden by default, shows on hover */}
         <div className="
-          flex items-center gap-1.5 text-[9px] uppercase tracking-[0.14em] text-[#FDC500]
+          flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-[#FDC500]
           overflow-hidden transition-all duration-500 ease-out
           max-h-0 opacity-0 group-hover:max-h-[30px] group-hover:opacity-100 group-hover:mt-3
         ">
@@ -451,7 +451,7 @@ function TeamDrawer({
 
           {/* Mobile swipe hint - fades out after 3 seconds */}
           <div
-            className="flex md:hidden items-center justify-center gap-1.5 pt-4 text-[10px] uppercase tracking-[0.12em] text-[#2a2a2a]"
+            className="flex md:hidden items-center justify-center gap-1.5 pt-4 text-[11px] uppercase tracking-[0.12em] text-[#2a2a2a]"
             style={{
               animation: 'fadeHint 3s ease 1s forwards',
             }}
@@ -570,7 +570,7 @@ const timelineData = [
     year: '2022',
     title: 'Legislative Reform',
     summary: 'Legislative Reform',
-    image: '/images/timeline-2022.png',
+    image: '/images/timeline-2022.webp',
     details: [
       'BVP champions <strong>military justice reform</strong>, the <strong>PACT Act</strong>, and testifying before Congress to support the <strong>Sgt. Isaac Woodard, Jr. and Sgt. Joseph H. Maddox GI Bill Restoration Act</strong>.',
       'Advocated for iterative redress legislation to <strong>extend unused VA home loans to descendants</strong> of Black veterans denied access to the G.I. Bill.',
@@ -609,7 +609,7 @@ const timelineData = [
 const partners = [
   { name: 'Robert Wood Johnson Foundation', logo: '/images/partners/rwjf.png', scale: 0.68, url: 'https://www.rwjf.org/' },
   { name: 'Liberation Ventures', logo: '/images/partners/lv.png', scale: 1.6, url: 'https://www.liberationventures.org/' },
-  { name: 'National Veterans Council for Legal Redress', logo: '/images/partners/nvclr.png', scale: 1, url: 'https://www.nvclr.org/' },
+  { name: 'National Veterans Council for Legal Redress', logo: '/images/partners/nvclr.webp', scale: 1, url: 'https://www.nvclr.org/' },
   { name: 'May & Stanley Smith Charitable Trust', logo: '/images/partners/mssct.png', scale: 1, url: 'https://smithct.org/' },
   { name: 'Legal Services Corporation', logo: '/images/partners/lsc.png', scale: 1.5, url: 'https://www.lsc.gov/' },
   { name: 'Connecticut Veterans Legal Center', logo: '/images/partners/cvlc.png', scale: 1, url: 'https://ctveteranslegal.org/' },
@@ -931,18 +931,18 @@ export default function AboutPage() {
               </Button>
             </div>
             <div>
-              <p className="text-sm uppercase tracking-wide mb-6 opacity-60">Featured In</p>
+              <h3 className="text-sm uppercase tracking-wide mb-6 opacity-70">Featured In</h3>
               <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                <span className="text-white/70 font-bold text-lg tracking-tight">BBC</span>
-                <span className="text-white/70 font-serif text-xl italic">The New York Times</span>
-                <span className="text-white/70 font-bold text-lg uppercase tracking-wider">Politico</span>
-                <span className="text-white/70 font-serif text-lg italic">The Washington Post</span>
-                <span className="text-white/70 font-bold text-xl">CBS</span>
-                <span className="text-white/70 font-bold text-xl tracking-tight">CNN</span>
-                <span className="text-white/70 font-bold text-lg">TheGrio</span>
-                <span className="text-white/70 font-bold text-lg uppercase tracking-widest">Reuters</span>
-                <span className="text-white/70 font-bold text-lg italic">The Root</span>
-                <span className="text-white/70 font-bold text-lg uppercase">USA Today</span>
+                <span className="text-white/80 font-bold text-lg tracking-tight">BBC</span>
+                <span className="text-white/80 font-serif text-xl italic">The New York Times</span>
+                <span className="text-white/80 font-bold text-lg uppercase tracking-wider">Politico</span>
+                <span className="text-white/80 font-serif text-lg italic">The Washington Post</span>
+                <span className="text-white/80 font-bold text-xl">CBS</span>
+                <span className="text-white/80 font-bold text-xl tracking-tight">CNN</span>
+                <span className="text-white/80 font-bold text-lg">TheGrio</span>
+                <span className="text-white/80 font-bold text-lg uppercase tracking-widest">Reuters</span>
+                <span className="text-white/80 font-bold text-lg italic">The Root</span>
+                <span className="text-white/80 font-bold text-lg uppercase">USA Today</span>
               </div>
             </div>
           </div>

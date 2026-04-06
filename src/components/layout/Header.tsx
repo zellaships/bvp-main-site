@@ -250,7 +250,7 @@ export function Header() {
           >
             <Image
               src="/images/BVP-logo.png"
-              alt="Black Veterans Project"
+              alt=""
               width={180}
               height={90}
               className={cn(

@@ -93,6 +93,7 @@ export function NewsletterBanner() {
           <input
             type="email"
             placeholder="Your email address"
+            aria-label="Your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             onFocus={handleFocus}

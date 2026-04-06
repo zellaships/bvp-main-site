@@ -441,14 +441,15 @@ function ToggleRow({
   onChange?: () => void;
   disabled?: boolean;
 }) {
+  const labelId = `${id}-label`;
   const descriptionId = `${id}-description`;
 
   return (
     <div className="flex items-center justify-between gap-4 py-4 border-b border-black/10">
       <div className="flex-1">
-        <label htmlFor={id} className="text-base font-bold text-black cursor-pointer">
+        <span id={labelId} className="text-base font-bold text-black">
           {label}
-        </label>
+        </span>
         <p id={descriptionId} className="text-sm text-black/50">{description}</p>
       </div>
       <div className="flex items-center gap-3">
@@ -467,8 +468,8 @@ function ToggleRow({
           disabled={disabled}
           role="switch"
           aria-checked={checked}
+          aria-labelledby={labelId}
           aria-describedby={descriptionId}
-          aria-label={`${label} cookies: ${checked ? "enabled" : "disabled"}`}
           className={cn(
             "relative w-[56px] h-[28px] rounded-full transition-colors duration-200",
             "min-h-[44px] min-w-[44px]", // Apple HIG touch target

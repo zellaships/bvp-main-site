@@ -5,42 +5,11 @@
    BVP FONT FAMILIES
    ============================================ */
 
-/* Linear Grotesk - Body/CTA Font */
+/* Linear Grotesk - Body/CTA Font (WOFF2 optimized) */
 @font-face {
   font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-Thin.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-ThinItalic.ttf') format('truetype');
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-Regular.ttf') format('truetype');
+  src: url('/fonts/linear-grotesk/LinearGrotesk-Regular.woff2') format('woff2'),
+       url('/fonts/linear-grotesk/LinearGrotesk-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -48,15 +17,8 @@
 
 @font-face {
   font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-Medium.ttf') format('truetype');
+  src: url('/fonts/linear-grotesk/LinearGrotesk-Medium.woff2') format('woff2'),
+       url('/fonts/linear-grotesk/LinearGrotesk-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -64,40 +26,28 @@
 
 @font-face {
   font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-SemiBold.ttf') format('truetype');
+  src: url('/fonts/linear-grotesk/LinearGrotesk-SemiBold.woff2') format('woff2'),
+       url('/fonts/linear-grotesk/LinearGrotesk-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
+/* Light weight - only load if needed */
 @font-face {
   font-family: 'Linear Grotesk';
-  src: url('/fonts/linear-grotesk/LinearGrotesk-SemiBoldItalic.ttf') format('truetype');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Ontika - Button/CTA Font Option */
-@font-face {
-  font-family: 'Ontika';
-  src: url('/fonts/ontika/TBJOntika-Regular.ttf') format('truetype');
-  font-weight: 400;
+  src: url('/fonts/linear-grotesk/LinearGrotesk-Light.woff2') format('woff2'),
+       url('/fonts/linear-grotesk/LinearGrotesk-Light.ttf') format('truetype');
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
+/* Ontika - Button/CTA Font Option (WOFF2 optimized) */
 @font-face {
   font-family: 'Ontika';
-  src: url('/fonts/ontika/TBJOntika-Medium.ttf') format('truetype');
+  src: url('/fonts/ontika/TBJOntika-Medium.woff2') format('woff2'),
+       url('/fonts/ontika/TBJOntika-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -105,48 +55,18 @@
 
 @font-face {
   font-family: 'Ontika';
-  src: url('/fonts/ontika/TBJOntika-ExtraBold.ttf') format('truetype');
+  src: url('/fonts/ontika/TBJOntika-ExtraBold.woff2') format('woff2'),
+       url('/fonts/ontika/TBJOntika-ExtraBold.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
-/* Gunterz - Secondary Display Font */
+/* Gunterz - Secondary Display Font (WOFF2 optimized) */
 @font-face {
   font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-Bold.ttf') format('truetype');
+  src: url('/fonts/gunterz/Gunterz-Bold.woff2') format('woff2'),
+       url('/fonts/gunterz/Gunterz-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -154,25 +74,19 @@
 
 @font-face {
   font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-BoldItalic.ttf') format('truetype');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-Black.ttf') format('truetype');
-  font-weight: 900;
+  src: url('/fonts/gunterz/Gunterz-Medium.woff2') format('woff2'),
+       url('/fonts/gunterz/Gunterz-Medium.ttf') format('truetype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Gunterz';
-  src: url('/fonts/gunterz/Gunterz-BlackItalic.ttf') format('truetype');
-  font-weight: 900;
-  font-style: italic;
+  src: url('/fonts/gunterz/Gunterz-Regular.woff2') format('woff2'),
+       url('/fonts/gunterz/Gunterz-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
