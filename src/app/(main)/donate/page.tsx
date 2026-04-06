@@ -11,7 +11,7 @@ export default function DonatePage() {
       <section className="bg-white border-b border-gray-200">
         <div style={{ padding: 'clamp(6rem, 10vw, 8rem) clamp(1rem, 4vw, 5.75rem) clamp(2rem, 5vw, 3rem)' }}>
           <div className="max-w-[1400px] mx-auto">
-            <p className="text-sm uppercase tracking-widest text-gray-400 mb-4">
+            <p className="text-sm uppercase tracking-widest text-gray-600 mb-4">
               Support Our Mission
             </p>
             <h1
@@ -40,10 +40,15 @@ export default function DonatePage() {
                 <div className="relative min-h-[600px]">
                   {/* Loading skeleton */}
                   {!isLoaded && (
-                    <div className="absolute inset-0 bg-gray-100 animate-pulse flex items-center justify-center">
+                    <div
+                      className="absolute inset-0 bg-gray-100 flex items-center justify-center"
+                      role="status"
+                      aria-live="polite"
+                      aria-busy="true"
+                    >
                       <div className="text-center">
-                        <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin mx-auto mb-3" />
-                        <p className="text-sm text-gray-500">Loading donation form...</p>
+                        <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full motion-safe:animate-spin mx-auto mb-3" aria-hidden="true" />
+                        <p className="text-sm text-gray-600">Loading donation form...</p>
                       </div>
                     </div>
                   )}
@@ -69,6 +74,7 @@ export default function DonatePage() {
 
               {/* Copy - Second on mobile */}
               <div className="order-2 md:order-1">
+                <h2 className="sr-only">Why Your Donation Matters</h2>
                 <div className="space-y-6">
                   <p className="text-lg leading-relaxed text-gray-700">
                     Your donation helps Black Veterans Project's mission to
@@ -98,6 +104,24 @@ export default function DonatePage() {
                     tax-deductible to the extent allowed by law.
                   </p>
                 </div>
+
+                {/* Privacy Notice */}
+                <p className="mt-4 text-xs text-gray-500 leading-relaxed">
+                  By making a donation, you agree to our{' '}
+                  <a href="/privacy" className="underline hover:text-black transition-colors">
+                    Privacy Policy
+                  </a>. Your payment is processed securely via Stripe through Donately.
+                </p>
+
+                {/* Recurring Donation Terms */}
+                <p className="mt-3 text-xs text-gray-500 leading-relaxed">
+                  <strong>Recurring Donations:</strong> Monthly donations will be charged on the same date each month until cancelled.
+                  To cancel or modify your recurring donation, email{' '}
+                  <a href="mailto:info@blackveteransproject.org" className="underline hover:text-black transition-colors">
+                    info@blackveteransproject.org
+                  </a>{' '}
+                  or manage your subscription through Donately.
+                </p>
               </div>
             </div>
           </div>

@@ -330,6 +330,16 @@ export default function PrivacyPage() {
                     <td className="border border-gray-300 p-3">Name, email, payment information</td>
                     <td className="border border-gray-300 p-3">United States</td>
                   </tr>
+                  <tr>
+                    <td className="border border-gray-300 p-3 font-medium">
+                      <a href="https://substack.com/privacy" target="_blank" rel="noopener noreferrer" className="text-black underline hover:text-bvp-gold">
+                        Substack
+                      </a>
+                    </td>
+                    <td className="border border-gray-300 p-3">Newsletter publishing and distribution</td>
+                    <td className="border border-gray-300 p-3">Email address</td>
+                    <td className="border border-gray-300 p-3">United States</td>
+                  </tr>
                 </tbody>
               </table>
             </div>

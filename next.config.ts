@@ -62,6 +62,38 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Image optimization configuration
+  images: {
+    // Enable modern image formats
+    formats: ['image/avif', 'image/webp'],
+    // Allow remote images from these domains
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'substackcdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.substackcdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'substack-post-media.s3.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'substack-video.s3.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com',
+      },
+    ],
+    // Device sizes for responsive images
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    // Image sizes for smaller images
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
   // Apply security headers to all routes
   async headers() {
     return [
