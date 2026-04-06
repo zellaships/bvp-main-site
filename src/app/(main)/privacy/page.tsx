@@ -84,8 +84,7 @@ export default function PrivacyPage() {
               For all privacy-related inquiries, data subject requests, or concerns about how we handle your data, contact our designated privacy contact:
             </p>
             <div className="bg-gray-50 p-4 rounded-lg text-gray-700">
-              <p className="font-bold">Privacy Team</p>
-              <p>Black Veterans Project</p>
+              <p className="font-bold">Black Veterans Project</p>
               <p className="mt-2">
                 Email:{' '}
                 <a href="mailto:info@blackveteransproject.org" className="text-black underline hover:text-bvp-gold">
@@ -700,8 +699,7 @@ export default function PrivacyPage() {
               If you have questions, concerns, or requests regarding this Privacy Policy or our data practices:
             </p>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <p className="font-bold text-gray-900 mb-2">Black Veterans Project</p>
-              <p className="text-gray-700 mb-4">Privacy Team</p>
+              <p className="font-bold text-gray-900 mb-4">Black Veterans Project</p>
               <p className="text-gray-700">
                 <strong>Email:</strong>{' '}
                 <a href="mailto:info@blackveteransproject.org" className="text-black underline hover:text-bvp-gold">
