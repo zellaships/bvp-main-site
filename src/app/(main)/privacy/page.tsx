@@ -138,7 +138,7 @@ export default function PrivacyPage() {
                   </tr>
                   <tr>
                     <td className="border border-gray-300 p-3 font-medium">Personal Experiences</td>
-                    <td className="border border-gray-300 p-3">Barriers to benefits, personal hardships, stories of service</td>
+                    <td className="border border-gray-300 p-3">Barriers to benefits, personal hardships</td>
                     <td className="border border-gray-300 p-3">Advocate/Veteran membership forms (optional)</td>
                   </tr>
                   <tr>
@@ -196,10 +196,6 @@ export default function PrivacyPage() {
                     <td className="border border-gray-300 p-3">Coordinating petition drives, call campaigns, town halls, and rapid-response moments</td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-300 p-3 font-medium">Storytelling & Narrative</td>
-                    <td className="border border-gray-300 p-3">With your consent, sharing veteran stories to support our mission</td>
-                  </tr>
-                  <tr>
                     <td className="border border-gray-300 p-3 font-medium">Legal Resources</td>
                     <td className="border border-gray-300 p-3">Connecting veterans with legal resources, including information about the Monk v. United States case</td>
                   </tr>
@@ -239,7 +235,7 @@ export default function PrivacyPage() {
                   <tr>
                     <td className="border border-gray-300 p-3 font-medium">Consent</td>
                     <td className="border border-gray-300 p-3">Art. 6(1)(a)</td>
-                    <td className="border border-gray-300 p-3">Newsletter signup, analytics cookies, marketing emails, sharing your story</td>
+                    <td className="border border-gray-300 p-3">Newsletter signup, analytics cookies, marketing emails</td>
                   </tr>
                   <tr>
                     <td className="border border-gray-300 p-3 font-medium">Explicit Consent</td>
