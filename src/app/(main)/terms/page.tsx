@@ -61,18 +61,6 @@ export default function TermsPage() {
           </p>
 
           <h2 className="text-2xl font-bold mb-4 font-display">
-            User Submissions
-          </h2>
-          <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            By submitting content to Black Veterans Project, including stories,
-            feedback, or other materials, you grant us a non-exclusive,
-            royalty-free, perpetual, and worldwide license to use, modify,
-            publish, and distribute such content in connection with our mission.
-            You represent that you own or have the necessary rights to submit
-            such content.
-          </p>
-
-          <h2 className="text-2xl font-bold mb-4 font-display">
             Limitation of Liability
           </h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
