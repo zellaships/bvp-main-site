@@ -421,7 +421,7 @@ export default function PillarsSection() {
     {
       number: '03',
       title: 'Impact Litigation',
-      description: 'We partner with Yale Law, Harvard Law, and Quinn Emanuel to turn evidence into legal precedent. Monk v. United States is one of the first reparative justice cases to survive a motion to dismiss.',
+      description: 'We work with legal partners to turn evidence into legal precedent. Monk v. United States is one of the first reparative justice cases to survive a motion to dismiss.',
       cta: 'See the legal strategy',
       href: '/our-work#litigation',
       bgColor: '#720C0C',
