@@ -41,12 +41,12 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
       // Styles: self + inline (needed for Tailwind/Framer Motion)
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      // Images: self + data URIs + common image CDNs
-      "img-src 'self' data: blob: https: http:",
+      // Images: self + data URIs + common image CDNs + Sanity
+      "img-src 'self' data: blob: https: http: https://cdn.sanity.io",
       // Fonts: self + Google Fonts
       "font-src 'self' https://fonts.gstatic.com data:",
-      // Connect: self + analytics + Vercel
-      "connect-src 'self' https://www.google-analytics.com https://vitals.vercel-insights.com https://*.vercel.app",
+      // Connect: self + analytics + Vercel + Sanity
+      "connect-src 'self' https://www.google-analytics.com https://vitals.vercel-insights.com https://*.vercel.app https://*.sanity.io https://*.api.sanity.io",
       // Frames: allow YouTube, Vimeo, and Donately embeds
       "frame-src 'self' https://www.youtube.com https://youtube.com https://player.vimeo.com https://cdn.donately.com",
       // Form actions: self only
@@ -94,12 +94,12 @@ const nextConfig: NextConfig = {
     // Image sizes for smaller images
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // Apply security headers to all routes
+  // Apply security headers to all routes except /studio
   async headers() {
     return [
       {
-        // Apply to all routes
-        source: '/:path*',
+        // Apply to all routes except studio
+        source: '/((?!studio).*)',
         headers: securityHeaders,
       },
     ];
