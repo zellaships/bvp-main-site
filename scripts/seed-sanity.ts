@@ -83,7 +83,7 @@ Over the past decade, Yolanda has built a career across the creative arts, worki
 
 She is a Magnum Foundation Fellow (2024), a BRICLab Artist-in-Residence, and the 2025 recipient of the International Photographic Council Rising Star Award, presented at the United Nations.`,
     initials: 'YH',
-    linkedin: null,
+    
     order: 5,
   },
   {
@@ -95,7 +95,7 @@ She is a Magnum Foundation Fellow (2024), a BRICLab Artist-in-Residence, and the
 
 As the niece of a U.S. Army veteran, Brianna brings a personal understanding of sacrifice, service, and generational impact to her role at Black Veterans Project. This connection fuels her commitment to advancing justice for Black veterans and their families. Through her work, she strives to help build an organization where operational excellence strengthens advocacy, research, and storytelling in pursuit of meaningful structural change.`,
     initials: 'BF',
-    linkedin: null,
+    
     order: 6,
   },
   {
@@ -387,6 +387,104 @@ const siteSettings = {
 }
 
 // ============================================
+// HOMEPAGE SETTINGS
+// ============================================
+const homepageSettings = {
+  _type: 'homepageSettings',
+  _id: 'homepageSettings', // Singleton
+  heroHeadline: 'Defend the Legacy. Fight for Equity. Protect Democracy.',
+  ourWorkTitle: 'Our Work',
+  ourWorkIntro: "BVP is the first comprehensive effort to build the collective power to demand federal accountability, advance policy change, and redress America's legacy of racism and discrimination against Black veterans and military families.",
+  pillars: [
+    {
+      _key: 'pillar-1',
+      title: 'Narrative Hub',
+      description: 'We collect, preserve, and amplify the records that prove what happened—millions of documents spanning decades of exclusion. Scholars, artists, and archivists turn evidence into public memory.',
+      cta: "Learn more about what we're preserving",
+      href: '/our-work#narrative',
+      imageAlt: 'Elderly veteran in conversation',
+    },
+    {
+      _key: 'pillar-2',
+      title: 'Movement Building',
+      description: "We're organizing Black veterans and military families into a national network with real power on the Hill. Stories become testimony. Members become advocates.",
+      cta: 'See how we organize',
+      href: '/our-work#movement-building',
+      imageAlt: 'Community gathering and organizing',
+    },
+    {
+      _key: 'pillar-3',
+      title: 'Impact Litigation',
+      description: 'We work with legal partners to turn evidence into legal precedent. Monk v. United States is one of the first reparative justice cases to survive a motion to dismiss.',
+      cta: 'See the legal strategy',
+      href: '/our-work#litigation',
+      imageAlt: 'Veterans embracing at community event',
+    },
+  ],
+  newsletterHeadline: 'Stay connected to the movement.',
+  newsletterSubheadline: 'Updates on the case, the archive, and the organizing.',
+}
+
+// ============================================
+// ABOUT PAGE SETTINGS
+// ============================================
+const aboutPageSettings = {
+  _type: 'aboutPageSettings',
+  _id: 'aboutPageSettings', // Singleton
+  heroSubtitle: 'Who We Are',
+  heroTitle: 'Building a Movement',
+  heroImageAlt: 'Black Army veterans proudly waving American flag',
+  missionParagraphs: [
+    "Founded in 2018, Black Veterans Project (BVP) leverages research, narrative strategies, and impact litigation to mobilize a movement for repair to redress the federal government's long history of discrimination against Black veterans and their families.",
+    "BVP represents the first comprehensive reparative justice effort for Black veterans and military families systematically denied veterans' benefits during and in the aftermath of Jim Crow segregation and through the persistence of institutionalized racism.",
+    "Join us as we build the collective power to demand accountability, advance policy change, and achieve reparations for Black veterans in America.",
+  ],
+  nonprofitText: 'BVP is a 501(c)(3) nonprofit organization.',
+  timelineTitle: 'Our History',
+  timelineEvents: [
+    {
+      _key: 'timeline-2020',
+      year: '2020',
+      title: 'Obtaining Historical Data',
+      description: 'BVP partners with Yale Law School Jerome N. Franklin Veterans Legal Services Clinic to obtain decades of government data demonstrating sustained and systemic racial inequities in veterans\' disability rates.',
+    },
+    {
+      _key: 'timeline-2021',
+      year: '2021',
+      title: 'Coalition Building',
+      description: 'BVP assists in building and convening a national coalition of Black veterans\' groups interfacing with the 117th Congress. BVP\'s work prompts the passage of a historic Government Accountability Office study on racial disparities in disability compensation.',
+    },
+    {
+      _key: 'timeline-2022',
+      year: '2022',
+      title: 'Legislative Reform',
+      description: 'BVP champions military justice reform, the PACT Act, and testifying before Congress to support the Sgt. Isaac Woodard, Jr. and Sgt. Joseph H. Maddox GI Bill Restoration Act.',
+    },
+    {
+      _key: 'timeline-2023',
+      year: '2023',
+      title: 'Monk v. United States is filed',
+      description: 'Monk v. United States is filed, becoming the first landmark case leveraging internal VA data to allege racial discrimination in the allocation of veterans\' benefits since 1945.',
+    },
+    {
+      _key: 'timeline-2024',
+      year: '2024',
+      title: 'A New Strategic Vision',
+      description: 'BVP undertakes a robust strategic planning process and collaborates with Harvard Kennedy School\'s Trotter Collaborative for Social Justice to develop a repair-and-reform strategy.',
+    },
+    {
+      _key: 'timeline-2025',
+      year: '2025',
+      title: 'Scaling for Impact',
+      description: 'BVP begins new strategic partnerships to scale impact, becoming one of the nation\'s preeminent voices on issues facing Black servicemembers, veterans, and military families.',
+    },
+  ],
+  pressCTATitle: 'Press & Media',
+  pressCTAText: 'For press inquiries, interview requests, or media resources:',
+  featuredInLogos: ['BBC', 'The New York Times', 'Politico', 'The Washington Post', 'CBS', 'CNN', 'TheGrio', 'Reuters', 'The Root', 'USA Today'],
+}
+
+// ============================================
 // SEED FUNCTION
 // ============================================
 async function seed() {
@@ -410,10 +508,20 @@ async function seed() {
     await client.createOrReplace(siteSettings)
     console.log('   ✓ Site Settings created\n')
 
+    // Create Homepage Settings (singleton)
+    console.log('🏠 Creating Homepage Settings...')
+    await client.createOrReplace(homepageSettings)
+    console.log('   ✓ Homepage Settings created\n')
+
+    // Create About Page Settings (singleton)
+    console.log('📄 Creating About Page Settings...')
+    await client.createOrReplace(aboutPageSettings)
+    console.log('   ✓ About Page Settings created\n')
+
     // Create Team Members
     console.log('👥 Creating Team Members...')
     for (const member of teamMembers) {
-      await client.create(member)
+      await client.create(member as any)
       console.log(`   ✓ ${member.name}`)
     }
     console.log('')
@@ -421,7 +529,7 @@ async function seed() {
     // Create Partners
     console.log('🤝 Creating Partners...')
     for (const partner of partners) {
-      await client.create(partner)
+      await client.create(partner as any)
       console.log(`   ✓ ${partner.name}`)
     }
     console.log('')
@@ -429,7 +537,7 @@ async function seed() {
     // Create FAQs
     console.log('❓ Creating FAQs...')
     for (const faq of faqs) {
-      await client.create(faq)
+      await client.create(faq as any)
       console.log(`   ✓ ${faq.question.substring(0, 50)}...`)
     }
     console.log('')
@@ -437,7 +545,7 @@ async function seed() {
     // Create Press Items
     console.log('📰 Creating Press Items...')
     for (const item of pressItems) {
-      await client.create(item)
+      await client.create(item as any)
       console.log(`   ✓ ${item.title.substring(0, 50)}...`)
     }
     console.log('')

@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import type { SanityPillar } from '@/sanity/lib/types';
 
 interface PillarCardProps {
   number: string;
@@ -15,6 +16,12 @@ interface PillarCardProps {
   patternImage?: string;
   image?: string;
   imageAlt?: string;
+}
+
+interface PillarsSectionProps {
+  title?: string;
+  intro?: string;
+  pillars?: SanityPillar[] | null;
 }
 
 const BLOCK_SIZE = 20;
@@ -390,48 +397,74 @@ function PillarCard({ number, title, description, cta, href, bgColor, accentColo
   );
 }
 
-export default function PillarsSection() {
-  const pillars = [
-    {
-      number: '01',
-      title: 'Narrative Hub',
-      description: 'We collect, preserve, and amplify the records that prove what happened\u2014millions of documents spanning decades of exclusion. Scholars, artists, and archivists turn evidence into public memory.',
-      cta: 'Learn more about what we\'re preserving',
-      href: '/our-work#narrative',
-      bgColor: '#1a1500',
-      accentColor: '#FDC500',
-      camoColors: ['#8B7500', '#FDC500', '#FEF3C7', '#0d0b00'],
-      patternImage: '/images/camo-yellow.png',
-      image: '/images/narrative-hub.jpg',
-      imageAlt: 'Elderly veteran in conversation',
-    },
-    {
-      number: '02',
-      title: 'Movement Building',
-      description: 'We\u2019re organizing Black veterans and military families into a national network with real power on the Hill. Stories become testimony. Members become advocates.',
-      cta: 'See how we organize',
-      href: '/our-work#movement-building',
-      bgColor: '#143601',
-      accentColor: '#56C035',
-      camoColors: ['#5A7A45', '#56C035', '#B8E5A8', '#0d2401'],
-      patternImage: '/images/camo-green.png',
-      image: '/images/movement-building.jpg',
-      imageAlt: 'Community gathering and organizing',
-    },
-    {
-      number: '03',
-      title: 'Impact Litigation',
-      description: 'We work with legal partners to turn evidence into legal precedent. Monk v. United States is one of the first reparative justice cases to survive a motion to dismiss.',
-      cta: 'See the legal strategy',
-      href: '/our-work#litigation',
-      bgColor: '#720C0C',
-      accentColor: '#F44708',
-      camoColors: ['#C47A7A', '#F44708', '#FCAB8F', '#4a0808'],
-      patternImage: '/images/camo-red.png',
-      image: '/images/impact-litigation.jpg',
-      imageAlt: 'Veterans embracing at community event',
-    },
-  ];
+// Default pillar styling - used when Sanity pillars don't have images
+const defaultPillarStyles = [
+  {
+    bgColor: '#1a1500',
+    accentColor: '#FDC500',
+    camoColors: ['#8B7500', '#FDC500', '#FEF3C7', '#0d0b00'],
+    patternImage: '/images/camo-yellow.png',
+  },
+  {
+    bgColor: '#143601',
+    accentColor: '#56C035',
+    camoColors: ['#5A7A45', '#56C035', '#B8E5A8', '#0d2401'],
+    patternImage: '/images/camo-green.png',
+  },
+  {
+    bgColor: '#720C0C',
+    accentColor: '#F44708',
+    camoColors: ['#C47A7A', '#F44708', '#FCAB8F', '#4a0808'],
+    patternImage: '/images/camo-red.png',
+  },
+];
+
+// Default pillar content (fallback when no Sanity data)
+const defaultPillars = [
+  {
+    title: 'Narrative Hub',
+    description: 'We collect, preserve, and amplify the records that prove what happened\u2014millions of documents spanning decades of exclusion. Scholars, artists, and archivists turn evidence into public memory.',
+    cta: 'Learn more about what we\'re preserving',
+    href: '/our-work#narrative',
+    image: '/images/narrative-hub.jpg',
+    imageAlt: 'Elderly veteran in conversation',
+  },
+  {
+    title: 'Movement Building',
+    description: 'We\u2019re organizing Black veterans and military families into a national network with real power on the Hill. Stories become testimony. Members become advocates.',
+    cta: 'See how we organize',
+    href: '/our-work#movement-building',
+    image: '/images/movement-building.jpg',
+    imageAlt: 'Community gathering and organizing',
+  },
+  {
+    title: 'Impact Litigation',
+    description: 'We work with legal partners to turn evidence into legal precedent. Monk v. United States is one of the first reparative justice cases to survive a motion to dismiss.',
+    cta: 'See the legal strategy',
+    href: '/our-work#litigation',
+    image: '/images/impact-litigation.jpg',
+    imageAlt: 'Veterans embracing at community event',
+  },
+];
+
+export default function PillarsSection({
+  title = 'Our Work',
+  intro = "BVP is the first comprehensive effort to build the collective power to demand federal accountability, advance policy change, and redress America's legacy of racism and discrimination against Black veterans and military families.",
+  pillars: sanityPillars,
+}: PillarsSectionProps) {
+  // Merge Sanity data with default styling
+  const pillarsData = (sanityPillars && sanityPillars.length > 0 ? sanityPillars : defaultPillars);
+
+  const pillars = pillarsData.map((pillar, index) => ({
+    number: String(index + 1).padStart(2, '0'),
+    title: pillar.title,
+    description: pillar.description,
+    cta: pillar.cta,
+    href: pillar.href,
+    image: pillar.image || defaultPillars[index]?.image,
+    imageAlt: pillar.imageAlt || defaultPillars[index]?.imageAlt,
+    ...defaultPillarStyles[index % defaultPillarStyles.length],
+  }));
 
   return (
     <section
@@ -455,7 +488,7 @@ export default function PillarsSection() {
             marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
           }}
         >
-          Our Work
+          {title}
         </h2>
 
         {/* Section Intro */}
@@ -464,7 +497,7 @@ export default function PillarsSection() {
             className="text-black/80 max-w-3xl leading-relaxed"
             style={{ fontSize: 'clamp(1.125rem, 1rem + 1vw, 1.5rem)' }}
           >
-            BVP is the first comprehensive effort to build the collective power to demand federal accountability, advance policy change, and redress America's legacy of racism and discrimination against Black veterans and military families.
+            {intro}
           </p>
         </div>
 

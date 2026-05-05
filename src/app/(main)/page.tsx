@@ -3,14 +3,14 @@ import PillarsSection from '@/components/sections/PillarsSection';
 import { NewsletterStrip } from '@/components/sections/NewsletterStrip';
 import { SubstackFeed } from '@/components/sections/SubstackFeed';
 import { client } from '@/sanity/lib/client';
-import { siteSettingsQuery } from '@/sanity/lib/queries';
-import type { SanitySiteSettings } from '@/sanity/lib/types';
+import { homepageSettingsQuery } from '@/sanity/lib/queries';
+import type { SanityHomepageSettings } from '@/sanity/lib/types';
 
 // Revalidate every 60 seconds
 export const revalidate = 60;
 
-async function getSiteSettings(): Promise<SanitySiteSettings | null> {
-  return client.fetch(siteSettingsQuery);
+async function getHomepageSettings(): Promise<SanityHomepageSettings | null> {
+  return client.fetch(homepageSettingsQuery);
 }
 
 /**
@@ -26,24 +26,33 @@ async function getSiteSettings(): Promise<SanitySiteSettings | null> {
  */
 
 export default async function Home() {
-  const settings = await getSiteSettings();
+  const settings = await getHomepageSettings();
 
-  // Use Sanity headline if available, otherwise use default
-  const headline = settings?.heroHeadline || "Defend the Legacy. Fight for Equity. Protect Democracy.";
+  // Use Sanity data if available, otherwise use defaults
+  const heroHeadline = settings?.heroHeadline || "Defend the Legacy. Fight for Equity. Protect Democracy.";
+  const heroImage = settings?.heroImage || "/images/hero-home.webp";
 
   return (
     <>
       {/* Hero Section */}
       <Hero
-        headline={headline}
+        headline={heroHeadline}
+        backgroundImage={heroImage}
         showDebugSpacing={false}
       />
 
       {/* Newsletter Strip - Stay Connected */}
-      <NewsletterStrip />
+      <NewsletterStrip
+        headline={settings?.newsletterHeadline || undefined}
+        subheadline={settings?.newsletterSubheadline || undefined}
+      />
 
       {/* Our Work / Pillars Section */}
-      <PillarsSection />
+      <PillarsSection
+        title={settings?.ourWorkTitle || undefined}
+        intro={settings?.ourWorkIntro || undefined}
+        pillars={settings?.pillars}
+      />
 
       {/* Substack Feed - Dynamic RSS */}
       <SubstackFeed />

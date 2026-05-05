@@ -2,9 +2,15 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import type { SanityTimelineEvent } from '@/sanity/lib/types';
 
-// Timeline data (historical - kept as static content)
-const timelineData = [
+interface TimelineProps {
+  title?: string;
+  events?: SanityTimelineEvent[] | null;
+}
+
+// Default timeline data (historical - kept as static content)
+const defaultTimelineData = [
   {
     year: '2020',
     title: 'Obtaining Historical Data',
@@ -63,10 +69,22 @@ const timelineData = [
   },
 ];
 
-export function Timeline() {
+export function Timeline({ title = 'Our History', events }: TimelineProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Use Sanity events if available, otherwise use defaults
+  // Transform Sanity events to match the expected format if provided
+  const timelineData = events && events.length > 0
+    ? events.map((event, index) => ({
+        year: event.year,
+        title: event.title,
+        summary: event.title,
+        image: defaultTimelineData[index]?.image || '',
+        details: [event.description],
+      }))
+    : defaultTimelineData;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,7 +100,7 @@ export function Timeline() {
       scrollEl.addEventListener('scroll', handleScroll, { passive: true });
       return () => scrollEl.removeEventListener('scroll', handleScroll);
     }
-  }, []);
+  }, [timelineData.length]);
 
   return (
     <section
@@ -99,7 +117,7 @@ export function Timeline() {
             marginBottom: 'clamp(2rem, 5vw, 4rem)',
           }}
         >
-          Our History
+          {title}
         </h2>
 
         {/* Mobile Timeline */}

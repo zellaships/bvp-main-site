@@ -125,3 +125,48 @@ export const allPagesQuery = groq`
     "slug": slug.current
   }
 `
+
+// ============================================
+// HOMEPAGE SETTINGS
+// ============================================
+export const homepageSettingsQuery = groq`
+  *[_type == "homepageSettings"][0] {
+    heroHeadline,
+    "heroImage": heroImage.asset->url,
+    ourWorkTitle,
+    ourWorkIntro,
+    pillars[] {
+      title,
+      description,
+      cta,
+      href,
+      "image": image.asset->url,
+      imageAlt
+    },
+    newsletterHeadline,
+    newsletterSubheadline
+  }
+`
+
+// ============================================
+// ABOUT PAGE SETTINGS
+// ============================================
+export const aboutPageSettingsQuery = groq`
+  *[_type == "aboutPageSettings"][0] {
+    heroSubtitle,
+    heroTitle,
+    "heroImage": heroImage.asset->url,
+    heroImageAlt,
+    missionParagraphs,
+    nonprofitText,
+    timelineTitle,
+    timelineEvents[] {
+      year,
+      title,
+      description
+    },
+    pressCTATitle,
+    pressCTAText,
+    featuredInLogos
+  }
+`
