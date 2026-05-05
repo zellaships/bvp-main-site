@@ -48,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Preload critical fonts for faster LCP */}
+        {/* Preload critical fonts for faster LCP - these are on the critical render path */}
         <link
           rel="preload"
           href="/fonts/linear-grotesk/LinearGrotesk-Regular.woff2"
@@ -59,6 +59,20 @@ export default function RootLayout({
         <link
           rel="preload"
           href="/fonts/gunterz/Gunterz-Bold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/gunterz/Gunterz-Medium.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/ontika/TBJOntika-Medium.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"
