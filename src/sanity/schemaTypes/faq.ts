@@ -24,9 +24,9 @@ export const faq = defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'General', value: 'general' },
+          { title: 'About BVP', value: 'about' },
+          { title: 'Get Involved', value: 'involvement' },
           { title: 'Donations', value: 'donations' },
-          { title: 'Volunteering', value: 'volunteering' },
           { title: 'Programs', value: 'programs' },
         ],
       },
