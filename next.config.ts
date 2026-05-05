@@ -94,12 +94,15 @@ const nextConfig: NextConfig = {
     // Image sizes for smaller images
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // Apply security headers to all routes except /studio
+  // Apply security headers to non-studio routes only
   async headers() {
     return [
       {
-        // Apply to all routes except studio
-        source: '/((?!studio).*)',
+        source: '/',
+        headers: securityHeaders,
+      },
+      {
+        source: '/:path((?!studio).*)',
         headers: securityHeaders,
       },
     ];
