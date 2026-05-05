@@ -68,3 +68,42 @@ export interface SanityPage {
   content: unknown[] | null
   seoDescription: string | null
 }
+
+export interface SanityPillar {
+  title: string
+  description: string
+  cta: string
+  href: string
+  image: string | null
+  imageAlt: string | null
+}
+
+export interface SanityHomepageSettings {
+  heroHeadline: string | null
+  heroImage: string | null
+  ourWorkTitle: string | null
+  ourWorkIntro: string | null
+  pillars: SanityPillar[] | null
+  newsletterHeadline: string | null
+  newsletterSubheadline: string | null
+}
+
+export interface SanityTimelineEvent {
+  year: string
+  title: string
+  description: string
+}
+
+export interface SanityAboutPageSettings {
+  heroSubtitle: string | null
+  heroTitle: string | null
+  heroImage: string | null
+  heroImageAlt: string | null
+  missionParagraphs: string[] | null
+  nonprofitText: string | null
+  timelineTitle: string | null
+  timelineEvents: SanityTimelineEvent[] | null
+  pressCTATitle: string | null
+  pressCTAText: string | null
+  featuredInLogos: string[] | null
+}

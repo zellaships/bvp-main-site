@@ -5,8 +5,8 @@ import { TeamSection } from '@/components/sections/TeamSection';
 import { PartnersSection } from '@/components/sections/PartnersSection';
 import { Timeline } from '@/components/sections/Timeline';
 import { client } from '@/sanity/lib/client';
-import { teamMembersQuery, partnersQuery } from '@/sanity/lib/queries';
-import type { SanityTeamMember, SanityPartner } from '@/sanity/lib/types';
+import { teamMembersQuery, partnersQuery, aboutPageSettingsQuery } from '@/sanity/lib/queries';
+import type { SanityTeamMember, SanityPartner, SanityAboutPageSettings } from '@/sanity/lib/types';
 
 // Revalidate every 60 seconds
 export const revalidate = 60;
@@ -19,11 +19,41 @@ async function getPartners(): Promise<SanityPartner[]> {
   return client.fetch(partnersQuery);
 }
 
+async function getAboutPageSettings(): Promise<SanityAboutPageSettings | null> {
+  return client.fetch(aboutPageSettingsQuery);
+}
+
+// Default mission paragraphs
+const defaultMissionParagraphs = [
+  "Founded in 2018, Black Veterans Project (BVP) leverages research, narrative strategies, and impact litigation to mobilize a movement for repair to redress the federal government's long history of discrimination against Black veterans and their families.",
+  "BVP represents the first comprehensive reparative justice effort for Black veterans and military families systematically denied veterans' benefits during and in the aftermath of Jim Crow segregation and through the persistence of institutionalized racism.",
+  "Join us as we build the collective power to demand accountability, advance policy change, and achieve reparations for Black veterans in America.",
+];
+
+// Default featured outlets
+const defaultFeaturedOutlets = ['BBC', 'The New York Times', 'Politico', 'The Washington Post', 'CBS', 'CNN', 'TheGrio', 'Reuters', 'The Root', 'USA Today'];
+
 export default async function AboutPage() {
-  const [team, partners] = await Promise.all([
+  const [team, partners, pageSettings] = await Promise.all([
     getTeamMembers(),
     getPartners(),
+    getAboutPageSettings(),
   ]);
+
+  // Use Sanity data if available, otherwise use defaults
+  const heroSubtitle = pageSettings?.heroSubtitle || 'Who We Are';
+  const heroTitle = pageSettings?.heroTitle || 'Building a Movement';
+  const heroImage = pageSettings?.heroImage || '/images/who-we-are.jpg';
+  const heroImageAlt = pageSettings?.heroImageAlt || 'Black Army veterans proudly waving American flag';
+  const missionParagraphs = pageSettings?.missionParagraphs && pageSettings.missionParagraphs.length > 0
+    ? pageSettings.missionParagraphs
+    : defaultMissionParagraphs;
+  const nonprofitText = pageSettings?.nonprofitText || 'BVP is a 501(c)(3) nonprofit organization.';
+  const pressCTATitle = pageSettings?.pressCTATitle || 'Press & Media';
+  const pressCTAText = pageSettings?.pressCTAText || 'For press inquiries, interview requests, or media resources:';
+  const featuredOutlets = pageSettings?.featuredInLogos && pageSettings.featuredInLogos.length > 0
+    ? pageSettings.featuredInLogos
+    : defaultFeaturedOutlets;
 
   return (
     <>
@@ -33,8 +63,8 @@ export default async function AboutPage() {
         className="relative h-screen min-h-[600px] max-h-[1200px] flex items-end scroll-mt-20 overflow-hidden bg-black"
       >
         <Image
-          src="/images/who-we-are.jpg"
-          alt="Black Army veterans proudly waving American flag"
+          src={heroImage}
+          alt={heroImageAlt}
           fill
           priority
           className="object-cover"
@@ -44,12 +74,12 @@ export default async function AboutPage() {
           className="relative z-10 max-w-[1400px] mx-auto w-full"
           style={{ padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 5.75rem)' }}
         >
-          <p className="text-sm uppercase tracking-widest mb-4 text-white/60">Who We Are</p>
+          <p className="text-sm uppercase tracking-widest mb-4 text-white/60">{heroSubtitle}</p>
           <h1
             className="font-gunterz font-bold text-white uppercase"
             style={{ fontSize: 'clamp(2rem, 1.5rem + 4vw, 3.75rem)' }}
           >
-            Building a Movement
+            {heroTitle}
           </h1>
         </div>
       </section>
@@ -58,36 +88,30 @@ export default async function AboutPage() {
       <section style={{ padding: 'clamp(3rem, 8vw, 5rem) clamp(1rem, 4vw, 5.75rem)' }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="max-w-4xl">
-            <p
-              className="leading-relaxed"
-              style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
-            >
-              Founded in 2018, Black Veterans Project (BVP) leverages research, narrative strategies, and impact litigation to mobilize a movement for repair to redress the federal government's long history of discrimination against Black veterans and their families.
-            </p>
-            <p
-              className="leading-relaxed"
-              style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
-            >
-              BVP represents the first comprehensive reparative justice effort for Black veterans and military families systematically denied veterans' benefits during and in the aftermath of Jim Crow segregation and through the persistence of institutionalized racism.
-            </p>
-            <p
-              className="leading-relaxed"
-              style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
-            >
-              Join us as we build the collective power to demand accountability, advance policy change, and achieve reparations for Black veterans in America.
-            </p>
+            {missionParagraphs.map((paragraph, index) => (
+              <p
+                key={index}
+                className="leading-relaxed"
+                style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
+              >
+                {paragraph}
+              </p>
+            ))}
             <p
               className="text-gray-600"
               style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.125rem)' }}
             >
-              BVP is a 501(c)(3) nonprofit organization.
+              {nonprofitText}
             </p>
           </div>
         </div>
       </section>
 
       {/* TIMELINE */}
-      <Timeline />
+      <Timeline
+        title={pageSettings?.timelineTitle || undefined}
+        events={pageSettings?.timelineEvents}
+      />
 
       {/* TEAM - Data from Sanity */}
       <TeamSection team={team} />
@@ -113,13 +137,13 @@ export default async function AboutPage() {
                 className="font-gunterz font-bold"
                 style={{ fontSize: 'clamp(1.75rem, 1rem + 3vw, 2.5rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}
               >
-                Press & Media
+                {pressCTATitle}
               </h2>
               <p
                 className="leading-relaxed opacity-80"
                 style={{ fontSize: 'clamp(1.125rem, 0.9rem + 1vw, 1.25rem)', marginBottom: 'clamp(1.5rem, 4vw, 2rem)' }}
               >
-                For press inquiries, interview requests, or media resources:
+                {pressCTAText}
               </p>
               <Button href="/contact" variant="white" size="lg">
                 Contact Us →
@@ -128,16 +152,11 @@ export default async function AboutPage() {
             <div>
               <h3 className="text-sm uppercase tracking-wide mb-6 opacity-70">Featured In</h3>
               <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                <span className="text-white/80 font-bold text-lg tracking-tight">BBC</span>
-                <span className="text-white/80 font-serif text-xl italic">The New York Times</span>
-                <span className="text-white/80 font-bold text-lg uppercase tracking-wider">Politico</span>
-                <span className="text-white/80 font-serif text-lg italic">The Washington Post</span>
-                <span className="text-white/80 font-bold text-xl">CBS</span>
-                <span className="text-white/80 font-bold text-xl tracking-tight">CNN</span>
-                <span className="text-white/80 font-bold text-lg">TheGrio</span>
-                <span className="text-white/80 font-bold text-lg uppercase tracking-widest">Reuters</span>
-                <span className="text-white/80 font-bold text-lg italic">The Root</span>
-                <span className="text-white/80 font-bold text-lg uppercase">USA Today</span>
+                {featuredOutlets.map((outlet, index) => (
+                  <span key={index} className="text-white/80 font-bold text-lg">
+                    {outlet}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

@@ -8,7 +8,15 @@ type FieldErrors = {
   email?: string;
 };
 
-export function NewsletterStrip() {
+interface NewsletterStripProps {
+  headline?: string;
+  subheadline?: string;
+}
+
+export function NewsletterStrip({
+  headline = 'Stay connected to the movement.',
+  subheadline = 'Updates on the case, the archive, and the organizing.',
+}: NewsletterStripProps) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -82,10 +90,10 @@ export function NewsletterStrip() {
           {/* Left: Copy */}
           <div className="lg:pt-2">
             <h2 className="font-gunterz font-bold text-2xl lg:text-3xl text-white mb-3">
-              Stay connected to the movement.
+              {headline}
             </h2>
             <p className="text-white/70 text-base lg:text-lg">
-              Updates on the case, the archive, and the organizing.
+              {subheadline}
             </p>
           </div>
 
