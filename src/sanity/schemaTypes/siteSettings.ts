@@ -21,6 +21,13 @@ export const siteSettings = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'heroHeadline',
+      title: 'Homepage Hero Headline',
+      type: 'text',
+      rows: 2,
+      description: 'Main headline displayed on the homepage hero section',
+    }),
+    defineField({
       name: 'contactEmail',
       title: 'Contact Email',
       type: 'string',

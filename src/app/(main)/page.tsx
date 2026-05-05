@@ -2,6 +2,16 @@ import { Hero } from '@/components/sections/Hero';
 import PillarsSection from '@/components/sections/PillarsSection';
 import { NewsletterStrip } from '@/components/sections/NewsletterStrip';
 import { SubstackFeed } from '@/components/sections/SubstackFeed';
+import { client } from '@/sanity/lib/client';
+import { siteSettingsQuery } from '@/sanity/lib/queries';
+import type { SanitySiteSettings } from '@/sanity/lib/types';
+
+// Revalidate every 60 seconds
+export const revalidate = 60;
+
+async function getSiteSettings(): Promise<SanitySiteSettings | null> {
+  return client.fetch(siteSettingsQuery);
+}
 
 /**
  * HOMEPAGE SPECIFICATIONS
@@ -15,12 +25,17 @@ import { SubstackFeed } from '@/components/sections/SubstackFeed';
  * 5. Footer
  */
 
-export default function Home() {
+export default async function Home() {
+  const settings = await getSiteSettings();
+
+  // Use Sanity headline if available, otherwise use default
+  const headline = settings?.heroHeadline || "Defend the Legacy. Fight for Equity. Protect Democracy.";
+
   return (
     <>
       {/* Hero Section */}
       <Hero
-        headline="Defend the Legacy. Fight for Equity. Protect Democracy."
+        headline={headline}
         showDebugSpacing={false}
       />
 

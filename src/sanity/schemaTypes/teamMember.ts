@@ -57,6 +57,13 @@ export const teamMember = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'initials',
+      title: 'Initials',
+      type: 'string',
+      description: 'Fallback initials when no photo is available (e.g., "RB")',
+      validation: (Rule) => Rule.max(3),
+    }),
+    defineField({
       name: 'order',
       title: 'Display Order',
       type: 'number',
