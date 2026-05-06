@@ -683,8 +683,8 @@ export default function OurWorkPage() {
                 ].map((item, index) => (
                   <div
                     key={item.number}
-                    className={`text-center py-6 md:py-0 ${
-                      index !== 2 ? 'border-b md:border-b-0 md:border-r border-black/20' : ''
+                    className={`text-center py-10 md:py-0 ${
+                      index !== 2 ? 'md:border-r border-black/20' : ''
                     }`}
                     style={{ padding: index === 1 ? '0 clamp(1rem, 3vw, 2rem)' : undefined }}
                   >
