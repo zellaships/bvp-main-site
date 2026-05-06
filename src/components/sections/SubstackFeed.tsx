@@ -204,7 +204,7 @@ export function SubstackFeed() {
         >
           {/* Featured Story */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-center">
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center order-2 md:order-1">
               <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
                 From Our Substack
               </p>
@@ -234,7 +234,7 @@ export function SubstackFeed() {
             {/* Featured Image */}
             <button
               onClick={() => setModalPost(featured)}
-              className="relative group cursor-pointer text-left"
+              className="relative group cursor-pointer text-left order-1 md:order-2"
             >
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
                 {featured.imageUrl ? (
