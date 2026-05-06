@@ -199,7 +199,7 @@ export function Hero({
               text-white
               leading-[1.15]
             "
-            style={{ fontSize: 'clamp(1.05rem, 0.7rem + 2.5vw, 3.5rem)' }}
+            style={{ fontSize: 'clamp(1.4rem, 0.85rem + 2.75vw, 3.5rem)' }}
           >
             {headline.split('. ').map((phrase, i, arr) => (
               <span key={i} className="block whitespace-nowrap">
