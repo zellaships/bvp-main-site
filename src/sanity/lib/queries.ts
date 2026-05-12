@@ -170,3 +170,150 @@ export const aboutPageSettingsQuery = groq`
     featuredInLogos
   }
 `
+
+// ============================================
+// DONATE PAGE SETTINGS
+// ============================================
+export const donatePageSettingsQuery = groq`
+  *[_type == "donatePageSettings"][0] {
+    heroSubtitle,
+    heroTitle,
+    "heroImage": heroImage.asset->url,
+    mainParagraphs,
+    taxNoticeTitle,
+    taxNoticeText,
+    donationFormUrl,
+    recurringDonationText
+  }
+`
+
+// ============================================
+// OUR WORK PAGE SETTINGS
+// ============================================
+export const ourWorkPageSettingsQuery = groq`
+  *[_type == "ourWorkPageSettings"][0] {
+    heroSubtitle,
+    heroTitle,
+    "heroImage": heroImage.asset->url,
+    heroImageAlt,
+    mainVideoUrl,
+    caseForRepairIntro,
+    statistics[] {
+      number,
+      label,
+      description
+    },
+    caseForRepairContinued,
+    howRepairHappensTitle,
+    howRepairHappensIntro,
+    repairBulletPoints,
+    theoryOfChangeTitle,
+    theoryOfChangeIntro,
+    litigationTitle,
+    litigationVideoUrl,
+    litigationParagraphs,
+    litigationCTA {
+      title,
+      buttonText,
+      href
+    },
+    narrativeTitle,
+    narrativeParagraphs,
+    narrativeCTA {
+      title,
+      buttonText,
+      href,
+      isExternal
+    },
+    mobilizationTitle,
+    mobilizationParagraphs,
+    mobilizationCTA {
+      title,
+      buttonText,
+      href
+    }
+  }
+`
+
+// ============================================
+// CONTACT PAGE SETTINGS
+// ============================================
+export const contactPageSettingsQuery = groq`
+  *[_type == "contactPageSettings"][0] {
+    heroSubtitle,
+    heroTitle,
+    heroDescription,
+    contactEmail,
+    contactPanelHeadline,
+    socialLinks[] {
+      platform,
+      handle,
+      url
+    },
+    formTitle,
+    topicOptions[] {
+      value,
+      label
+    },
+    successTitle,
+    successMessage
+  }
+`
+
+// ============================================
+// JOIN PAGE SETTINGS
+// ============================================
+export const joinPageSettingsQuery = groq`
+  *[_type == "joinPageSettings"][0] {
+    heroSubtitle,
+    heroTitle,
+    heroDescription,
+    "heroImage": heroImage.asset->url,
+    veteranCard {
+      title,
+      description,
+      buttonText
+    },
+    advocateCard {
+      title,
+      description,
+      buttonText
+    },
+    memberTypeOptions[] {
+      value,
+      label
+    },
+    veteranSuccessTitle,
+    veteranSuccessMessage,
+    advocateSuccessTitle,
+    advocateSuccessMessage,
+    privacyText
+  }
+`
+
+// ============================================
+// SUBSTACK ARTICLES
+// ============================================
+export const substackArticlesQuery = groq`
+  *[_type == "substackArticle" && isVisible == true] | order(displayOrder asc, publishedAt desc) {
+    _id,
+    title,
+    description,
+    substackUrl,
+    "featuredImage": featuredImage.asset->url,
+    publishedAt,
+    isFeatured,
+    displayOrder
+  }
+`
+
+export const featuredSubstackArticleQuery = groq`
+  *[_type == "substackArticle" && isVisible == true && isFeatured == true][0] {
+    _id,
+    title,
+    description,
+    substackUrl,
+    "featuredImage": featuredImage.asset->url,
+    publishedAt
+  }
+`

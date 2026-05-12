@@ -1,132 +1,43 @@
-"use client";
+import { client } from '@/sanity/lib/client';
+import { donatePageSettingsQuery } from '@/sanity/lib/queries';
+import { DonatePageClient } from './DonatePageClient';
 
-import { useState } from "react";
+// Revalidate every 60 seconds
+export const revalidate = 60;
 
-export default function DonatePage() {
-  const [isLoaded, setIsLoaded] = useState(false);
+// Default content (used as fallback)
+const defaults = {
+  heroSubtitle: 'Support Our Mission',
+  heroTitle: 'Help Us Secure the Legacy for Black Veterans',
+  mainParagraphs: [
+    "Your donation helps Black Veterans Project's mission to advocate for racial inclusion and justice across the United States military while ensuring the welfare of all Black veterans who've served.",
+    "By supporting us, you're helping to drive forward vital work that raises public awareness, addresses systemic inequities, and brings us closer to a future where all who have served are empowered with the resources and opportunities they've long been denied.",
+    "Every contribution, no matter the size, strengthens our ability to make lasting change and ensure Black veterans' voices are heard.",
+  ],
+  taxNoticeTitle: 'Tax Deductible:',
+  taxNoticeText: 'Black Veterans Project is a 501(c)(3) nonprofit organization. Your donation is tax-deductible to the extent allowed by law.',
+  donationFormUrl: 'https://cdn.donately.com/core/6.0/donate-form.html?form_id=frm_17bf7d7efced&account_id=act_1c9da0501869&stripe_key=pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd',
+  recurringDonationText: 'Monthly donations will be charged on the same date each month until cancelled. To cancel or modify your recurring donation, email info@blackveteransproject.org or manage your subscription through Donately.',
+};
 
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="bg-white border-b border-gray-200">
-        <div style={{ padding: 'clamp(6rem, 10vw, 8rem) clamp(1rem, 4vw, 5.75rem) clamp(2rem, 5vw, 3rem)' }}>
-          <div className="max-w-[1400px] mx-auto">
-            <p className="text-sm uppercase tracking-widest text-gray-600 mb-4">
-              Support Our Mission
-            </p>
-            <h1
-              className="font-gunterz font-bold leading-tight"
-              style={{ fontSize: 'clamp(1.75rem, 1rem + 3.5vw, 3rem)' }}
-            >
-              Help Us Secure the Legacy for Black Veterans
-            </h1>
-          </div>
-        </div>
-      </section>
+async function getDonatePageSettings() {
+  const settings = await client.fetch(donatePageSettingsQuery);
+  return settings;
+}
 
-      {/* Main Content */}
-      <section>
-        <div style={{ padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 5.75rem)' }}>
-          <div className="max-w-[1400px] mx-auto">
-            <div
-              className="grid"
-              style={{
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-                gap: 'clamp(2rem, 5vw, 4rem)',
-              }}
-            >
-              {/* Donately Form - First on mobile */}
-              <div className="order-1 md:order-2">
-                <div className="relative min-h-[600px]">
-                  {/* Loading skeleton */}
-                  {!isLoaded && (
-                    <div
-                      className="absolute inset-0 bg-gray-100 flex items-center justify-center"
-                      role="status"
-                      aria-live="polite"
-                      aria-busy="true"
-                    >
-                      <div className="text-center">
-                        <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full motion-safe:animate-spin mx-auto mb-3" aria-hidden="true" />
-                        <p className="text-sm text-gray-600">Loading donation form...</p>
-                      </div>
-                    </div>
-                  )}
-                  <iframe
-                    src="https://cdn.donately.com/core/6.0/donate-form.html?form_id=frm_17bf7d7efced&account_id=act_1c9da0501869&stripe_key=pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd"
-                    width="100%"
-                    height="1335"
-                    frameBorder="0"
-                    allow="payment *"
-                    title="Donation Form"
-                    loading="lazy"
-                    onLoad={() => setIsLoaded(true)}
-                    style={{
-                      backgroundColor: "transparent",
-                      border: "none",
-                      overflow: "hidden",
-                      opacity: isLoaded ? 1 : 0,
-                      transition: "opacity 0.3s ease",
-                    }}
-                  />
-                </div>
-              </div>
+export default async function DonatePage() {
+  const settings = await getDonatePageSettings();
 
-              {/* Copy - Second on mobile */}
-              <div className="order-2 md:order-1">
-                <h2 className="sr-only">Why Your Donation Matters</h2>
-                <div className="space-y-6">
-                  <p className="text-lg leading-relaxed text-gray-700">
-                    Your donation helps Black Veterans Project's mission to
-                    advocate for racial inclusion and justice across the United
-                    States military while ensuring the welfare of all Black
-                    veterans who've served.
-                  </p>
-                  <p className="text-lg leading-relaxed text-gray-700">
-                    By supporting us, you're helping to drive forward vital work
-                    that raises public awareness, addresses systemic inequities,
-                    and brings us closer to a future where all who have served
-                    are empowered with the resources and opportunities they've
-                    long been denied.
-                  </p>
-                  <p className="text-lg leading-relaxed text-gray-700">
-                    Every contribution, no matter the size, strengthens our
-                    ability to make lasting change and ensure Black veterans'
-                    voices are heard.
-                  </p>
-                </div>
+  // Merge with defaults
+  const content = {
+    heroSubtitle: settings?.heroSubtitle || defaults.heroSubtitle,
+    heroTitle: settings?.heroTitle || defaults.heroTitle,
+    mainParagraphs: settings?.mainParagraphs?.length > 0 ? settings.mainParagraphs : defaults.mainParagraphs,
+    taxNoticeTitle: settings?.taxNoticeTitle || defaults.taxNoticeTitle,
+    taxNoticeText: settings?.taxNoticeText || defaults.taxNoticeText,
+    donationFormUrl: settings?.donationFormUrl || defaults.donationFormUrl,
+    recurringDonationText: settings?.recurringDonationText || defaults.recurringDonationText,
+  };
 
-                {/* Tax deductible note */}
-                <div className="mt-8 p-4 bg-gray-50 border-l-4 border-bvp-gold">
-                  <p className="text-sm text-gray-600">
-                    <strong>Tax Deductible:</strong> Black Veterans Project is a
-                    501(c)(3) nonprofit organization. Your donation is
-                    tax-deductible to the extent allowed by law.
-                  </p>
-                </div>
-
-                {/* Privacy Notice */}
-                <p className="mt-4 text-xs text-gray-500 leading-relaxed">
-                  By making a donation, you agree to our{' '}
-                  <a href="/privacy" className="underline hover:text-black transition-colors">
-                    Privacy Policy
-                  </a>. Your payment is processed securely via Stripe through Donately.
-                </p>
-
-                {/* Recurring Donation Terms */}
-                <p className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  <strong>Recurring Donations:</strong> Monthly donations will be charged on the same date each month until cancelled.
-                  To cancel or modify your recurring donation, email{' '}
-                  <a href="mailto:info@blackveteransproject.org" className="underline hover:text-black transition-colors">
-                    info@blackveteransproject.org
-                  </a>{' '}
-                  or manage your subscription through Donately.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+  return <DonatePageClient content={content} />;
 }
