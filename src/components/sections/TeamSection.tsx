@@ -5,6 +5,23 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { SanityTeamMember } from '@/sanity/lib/types';
 
+// Local fallback photos mapping
+const localPhotos: Record<string, string> = {
+  'Richard Brookshire': '/images/team/richard-brookshire.jpg',
+  'Kyle Bibby': '/images/team/kyle-bibby.jpg',
+  'Zella Vanié': '/images/team/zella-vanie.webp',
+  'Daniele Anderson': '/images/team/daniele-anderson.jpg',
+  'Yolanda Hoskey': '/images/team/yolanda-hoskey.jpg',
+  'Brianna Fernandez': '/images/team/brianna-fernandez.jpg',
+  'MaCherie Dunbar': '/images/team/macherie-dunbar.jpg',
+};
+
+// Helper to get photo URL with local fallback
+function getPhotoUrl(member: SanityTeamMember): string | null {
+  if (member.photo) return member.photo;
+  return localPhotos[member.name] || null;
+}
+
 // ============================================
 // TEAM CARD COMPONENT
 // ============================================
@@ -44,9 +61,9 @@ function TeamCard({
     >
       {/* Photo */}
       <div className="absolute inset-0 overflow-hidden">
-        {member.photo ? (
+        {getPhotoUrl(member) ? (
           <Image
-            src={member.photo}
+            src={getPhotoUrl(member)!}
             alt={member.name}
             fill
             className="object-cover object-top grayscale-[15%] group-hover:grayscale-0 group-hover:scale-[1.04] transition-all duration-[600ms] ease-out"
@@ -267,9 +284,9 @@ function TeamDrawer({
           onTouchMove={(e) => handleDragMove(e.touches[0].clientY)}
           onTouchEnd={handleDragEnd}
         >
-          {member.photo ? (
+          {getPhotoUrl(member) ? (
             <Image
-              src={member.photo}
+              src={getPhotoUrl(member)!}
               alt={member.name}
               fill
               className="object-cover object-top"

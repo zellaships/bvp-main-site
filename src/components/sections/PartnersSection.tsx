@@ -3,6 +3,22 @@
 import Image from 'next/image';
 import type { SanityPartner } from '@/sanity/lib/types';
 
+// Local fallback logos mapping
+const localLogos: Record<string, string> = {
+  'Connecticut Veterans Legal Center': '/images/partners/cvlc.png',
+  'Legal Services Corporation': '/images/partners/lsc.png',
+  'Liberation Ventures': '/images/partners/lv.png',
+  'May & Stanley Smith Charitable Trust': '/images/partners/mssct.png',
+  'National Veterans Council for Legal Redress': '/images/partners/nvclr.png',
+  'Robert Wood Johnson Foundation': '/images/partners/rwjf.png',
+};
+
+// Helper to get logo URL with local fallback
+function getLogoUrl(partner: SanityPartner): string | null {
+  if (partner.logo) return partner.logo;
+  return localLogos[partner.name] || null;
+}
+
 interface PartnersSectionProps {
   partners: SanityPartner[];
 }
@@ -43,31 +59,34 @@ export function PartnersSection({ partners }: PartnersSectionProps) {
           className="grid grid-cols-2 md:grid-cols-3 items-center justify-items-center"
           style={{ gap: 'clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem)' }}
         >
-          {partners.map((partner) => (
-            <a
-              key={partner._id}
-              href={partner.website || '#'}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center h-28 w-full group"
-            >
-              {partner.logo ? (
-                <Image
-                  src={partner.logo}
-                  alt={partner.name}
-                  width={280}
-                  height={120}
-                  className="w-auto object-contain opacity-60 grayscale mix-blend-multiply group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 ease-out"
-                  style={{
-                    maxHeight: '100px',
-                    maxWidth: '220px'
-                  }}
-                />
-              ) : (
-                <span className="text-gray-500 font-medium">{partner.name}</span>
-              )}
-            </a>
-          ))}
+          {partners.map((partner) => {
+            const logoUrl = getLogoUrl(partner);
+            return (
+              <a
+                key={partner._id}
+                href={partner.website || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center h-28 w-full group"
+              >
+                {logoUrl ? (
+                  <Image
+                    src={logoUrl}
+                    alt={partner.name}
+                    width={280}
+                    height={120}
+                    className="w-auto object-contain opacity-60 grayscale mix-blend-multiply group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 ease-out"
+                    style={{
+                      maxHeight: '100px',
+                      maxWidth: '220px'
+                    }}
+                  />
+                ) : (
+                  <span className="text-gray-500 font-medium">{partner.name}</span>
+                )}
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>
