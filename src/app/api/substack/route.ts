@@ -230,6 +230,11 @@ function extractMediaInfo(itemContent: string, content: string): {
               lowerContent.includes('minutes)');
   }
 
+  // Use publication logo as fallback for posts without images (podcasts, etc.)
+  if (!imageUrl) {
+    imageUrl = 'https://substackcdn.com/image/fetch/w_800,c_limit,f_auto,q_auto:good/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffd2d3c74-4e77-47d5-817a-4b30c20cf9f4_1280x1280.png';
+  }
+
   return { imageUrl, videoThumbnails, isVideo };
 }
 
