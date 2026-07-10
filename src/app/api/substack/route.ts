@@ -6,6 +6,8 @@ export interface SubstackPost {
   link: string;
   pubDate: string;
   imageUrl: string | null;
+  videoThumbnails?: string[]; // Multiple frames for hover scrub
+  isVideo?: boolean;
 }
 
 // Cache the feed for 5 minutes to avoid hitting Substack too often
@@ -84,33 +86,12 @@ function parseRSS(xml: string): SubstackPost[] {
     const dateMatch = itemContent.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
     const pubDate = dateMatch ? dateMatch[1].trim() : '';
 
-    // Extract image from enclosure or content
-    let imageUrl: string | null = null;
+    // Get content for deeper extraction
+    const contentMatch = itemContent.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/);
+    const content = contentMatch ? contentMatch[1] : '';
 
-    // Try enclosure first
-    const enclosureMatch = itemContent.match(/<enclosure[^>]*url="([^"]*)"[^>]*type="image[^"]*"/);
-    if (enclosureMatch) {
-      imageUrl = enclosureMatch[1];
-    }
-
-    // Try media:content
-    if (!imageUrl) {
-      const mediaMatch = itemContent.match(/<media:content[^>]*url="([^"]*)"/);
-      if (mediaMatch) {
-        imageUrl = mediaMatch[1];
-      }
-    }
-
-    // Try to find image in content:encoded
-    if (!imageUrl) {
-      const contentMatch = itemContent.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/);
-      if (contentMatch) {
-        const imgMatch = contentMatch[1].match(/<img[^>]*src="([^"]*)"/);
-        if (imgMatch) {
-          imageUrl = imgMatch[1];
-        }
-      }
-    }
+    // Extract video info and thumbnails
+    const { imageUrl, videoThumbnails, isVideo } = extractMediaInfo(itemContent, content);
 
     if (title && link) {
       posts.push({
@@ -119,11 +100,109 @@ function parseRSS(xml: string): SubstackPost[] {
         link,
         pubDate,
         imageUrl,
+        videoThumbnails,
+        isVideo,
       });
     }
   }
 
   return posts.slice(0, 6); // Return max 6 posts
+}
+
+/**
+ * Extract media info including video thumbnails for hover scrub
+ */
+function extractMediaInfo(itemContent: string, content: string): {
+  imageUrl: string | null;
+  videoThumbnails: string[];
+  isVideo: boolean;
+} {
+  let imageUrl: string | null = null;
+  const videoThumbnails: string[] = [];
+  let isVideo = false;
+
+  // Check for Substack video URLs in content
+  // Pattern: https://substack-video.s3.amazonaws.com/video_upload/post/{postId}/{uuid}/...
+  const substackVideoMatch = content.match(
+    /https:\/\/substack-video\.s3\.amazonaws\.com\/video_upload\/post\/(\d+)\/([a-f0-9-]+)/
+  );
+
+  if (substackVideoMatch) {
+    isVideo = true;
+    const [, postId, uuid] = substackVideoMatch;
+    const baseUrl = `https://substack-video.s3.amazonaws.com/video_upload/post/${postId}/${uuid}`;
+
+    // Generate multiple frame thumbnails for hover scrub (frames 1-5)
+    for (let i = 1; i <= 5; i++) {
+      videoThumbnails.push(`${baseUrl}/transcoded-0000${i}.png`);
+    }
+
+    // Use first frame as main image
+    imageUrl = videoThumbnails[0];
+  }
+
+  // Check for YouTube videos
+  const youtubeMatch = content.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+
+  if (youtubeMatch && !imageUrl) {
+    isVideo = true;
+    const videoId = youtubeMatch[1];
+
+    // YouTube thumbnail URLs at different quality levels
+    // These are different frames/qualities, good for visual variety
+    videoThumbnails.push(
+      `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+      `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+      `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+      `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+      `https://img.youtube.com/vi/${videoId}/default.jpg`
+    );
+
+    imageUrl = videoThumbnails[0];
+  }
+
+  // Try enclosure for image
+  if (!imageUrl) {
+    const enclosureMatch = itemContent.match(/<enclosure[^>]*url="([^"]*)"[^>]*type="image[^"]*"/);
+    if (enclosureMatch) {
+      imageUrl = enclosureMatch[1];
+    }
+  }
+
+  // Try media:content
+  if (!imageUrl) {
+    const mediaMatch = itemContent.match(/<media:content[^>]*url="([^"]*)"/);
+    if (mediaMatch) {
+      imageUrl = mediaMatch[1];
+    }
+  }
+
+  // Try to find any image in content
+  if (!imageUrl && content) {
+    // Look for any image URL, prioritizing larger sizes
+    const imgMatches = content.matchAll(/<img[^>]*src="([^"]*)"/g);
+    for (const imgMatch of imgMatches) {
+      const src = imgMatch[1];
+      // Skip tiny tracking pixels and icons
+      if (!src.includes('tracking') && !src.includes('pixel') && !src.includes('icon')) {
+        imageUrl = src;
+        break;
+      }
+    }
+  }
+
+  // Check if title/description indicates video content
+  if (!isVideo) {
+    const lowerContent = (itemContent + content).toLowerCase();
+    isVideo = lowerContent.includes('watch now') ||
+              lowerContent.includes('video') ||
+              lowerContent.includes('mins)') ||
+              lowerContent.includes('minutes)');
+  }
+
+  return { imageUrl, videoThumbnails, isVideo };
 }
 
 function decodeHTMLEntities(text: string): string {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 
@@ -18,6 +18,117 @@ interface SubstackPost {
   link: string;
   pubDate: string;
   imageUrl: string | null;
+  videoThumbnails?: string[];
+  isVideo?: boolean;
+}
+
+/**
+ * VideoScrubPreview - Shows video stills on hover with scrub effect
+ */
+function VideoScrubPreview({
+  thumbnails,
+  alt,
+  isVideo,
+  fallbackImage,
+  priority = false,
+}: {
+  thumbnails: string[];
+  alt: string;
+  isVideo: boolean;
+  fallbackImage: string | null;
+  priority?: boolean;
+}) {
+  const [currentFrame, setCurrentFrame] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [loadedFrames, setLoadedFrames] = useState<Set<number>>(new Set([0]));
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Preload all frames when hovering
+  useEffect(() => {
+    if (isHovering && thumbnails.length > 1) {
+      thumbnails.forEach((src, index) => {
+        if (!loadedFrames.has(index)) {
+          const img = document.createElement('img');
+          img.src = src;
+          img.onload = () => setLoadedFrames(prev => new Set([...prev, index]));
+        }
+      });
+    }
+  }, [isHovering, thumbnails, loadedFrames]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || thumbnails.length <= 1) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = x / rect.width;
+    const frameIndex = Math.min(
+      Math.floor(percentage * thumbnails.length),
+      thumbnails.length - 1
+    );
+    setCurrentFrame(frameIndex);
+  };
+
+  const displaySrc = thumbnails.length > 0 ? thumbnails[currentFrame] : fallbackImage;
+  const hasScrub = thumbnails.length > 1;
+
+  if (!displaySrc) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center bg-black">
+        <p className="text-2xl font-gunterz font-bold text-white tracking-wide">BVP</p>
+        <p className="text-xs tracking-[2px] uppercase text-[#FDC500] mt-2">News</p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full h-full"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => {
+        setIsHovering(false);
+        setCurrentFrame(0);
+      }}
+      onMouseMove={handleMouseMove}
+    >
+      <Image
+        src={displaySrc}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover transition-all duration-200 ease-out"
+        priority={priority}
+        onError={(e) => {
+          // If current frame fails, try next or fallback
+          const target = e.target as HTMLImageElement;
+          if (fallbackImage && target.src !== fallbackImage) {
+            target.src = fallbackImage;
+          }
+        }}
+      />
+
+      {/* Video indicator */}
+      {isVideo && (
+        <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full">
+          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          <span className="text-xs font-medium text-white uppercase tracking-wide">Video</span>
+        </div>
+      )}
+
+      {/* Scrub indicator - shows when hovering and has multiple frames */}
+      {hasScrub && isHovering && (
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/30">
+          <div
+            className="h-full bg-[#FDC500] transition-all duration-75"
+            style={{ width: `${((currentFrame + 1) / thumbnails.length) * 100}%` }}
+          />
+        </div>
+      )}
+    </div>
+  );
 }
 
 function formatDate(dateString: string): string {
@@ -231,31 +342,22 @@ export function SubstackFeed() {
               </div>
             </div>
 
-            {/* Featured Image */}
+            {/* Featured Image with Video Scrub */}
             <button
               onClick={() => setModalPost(featured)}
               className="relative group cursor-pointer text-left order-1 md:order-2"
             >
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
-                {featured.imageUrl ? (
-                  <Image
-                    src={featured.imageUrl}
+                <div className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105">
+                  <VideoScrubPreview
+                    thumbnails={featured.videoThumbnails || []}
                     alt={featured.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-all duration-700 ease-out group-hover:scale-105"
+                    isVideo={featured.isVideo || false}
+                    fallbackImage={featured.imageUrl}
                     priority
                   />
-                ) : (
-                  <div
-                    className="w-full h-full flex flex-col items-center justify-center transition-all duration-700 ease-out group-hover:scale-105 bg-black"
-                  >
-                    <p className="text-2xl font-gunterz font-bold text-white tracking-wide">BVP</p>
-                    <p className="text-xs tracking-[2px] uppercase text-[#FDC500] mt-2">News</p>
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#FDC500] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </div>
             </button>
           </div>
@@ -271,26 +373,17 @@ export function SubstackFeed() {
                 onKeyDown={(e) => e.key === 'Enter' && setModalPost(post)}
                 className="group cursor-pointer transition-all duration-300 hover:-translate-y-1"
               >
-                {/* Image section - completely separate, no wrapper interference */}
+                {/* Image section with Video Scrub */}
                 <div className="relative overflow-hidden rounded-t-2xl shadow-lg group-hover:shadow-2xl transition-shadow duration-500">
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FDC500] z-10" />
-                  {getPostImage(post) ? (
-                    <div className="relative w-full h-72">
-                      <Image
-                        src={getPostImage(post)!}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-full h-72 flex flex-col items-center justify-center bg-black">
-                      <p className="text-xl font-gunterz font-bold text-white tracking-wide">BVP</p>
-                      <p className="text-[10px] tracking-[2px] uppercase text-[#FDC500] mt-2">News</p>
-                    </div>
-                  )}
+                  <div className="relative w-full h-72 transition-transform duration-500 group-hover:scale-105">
+                    <VideoScrubPreview
+                      thumbnails={post.videoThumbnails || []}
+                      alt={post.title}
+                      isVideo={post.isVideo || false}
+                      fallbackImage={getPostImage(post)}
+                    />
+                  </div>
                 </div>
                 {/* Content section - separate container */}
                 <div className="bg-white p-6 rounded-b-2xl border border-t-0 border-gray-100">
