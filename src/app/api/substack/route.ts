@@ -13,6 +13,7 @@ export interface SubstackPost {
 // Cache the feed for 5 minutes to avoid hitting Substack too often
 let cachedData: { posts: SubstackPost[]; timestamp: number } | null = null;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_VERSION = 2; // Bump to invalidate cache after code changes
 
 export async function GET() {
   try {
@@ -179,16 +180,43 @@ function extractMediaInfo(itemContent: string, content: string): {
     }
   }
 
-  // Try to find any image in content
+  // Try to find any image in content - handle HTML entities
   if (!imageUrl && content) {
-    // Look for any image URL, prioritizing larger sizes
-    const imgMatches = content.matchAll(/<img[^>]*src="([^"]*)"/g);
-    for (const imgMatch of imgMatches) {
-      const src = imgMatch[1];
-      // Skip tiny tracking pixels and icons
-      if (!src.includes('tracking') && !src.includes('pixel') && !src.includes('icon')) {
-        imageUrl = src;
-        break;
+    // Decode HTML entities first (Substack uses &amp; for &)
+    const decodedContent = content
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"');
+
+    // Look for Substack CDN images first (most reliable)
+    const substackCdnMatch = decodedContent.match(
+      /src="(https:\/\/substackcdn\.com\/image\/fetch\/[^"]+)"/
+    );
+    if (substackCdnMatch) {
+      imageUrl = substackCdnMatch[1];
+    }
+
+    // Try substack-post-media images
+    if (!imageUrl) {
+      const postMediaMatch = decodedContent.match(
+        /src="(https:\/\/substack-post-media\.s3\.amazonaws\.com\/[^"]+)"/
+      );
+      if (postMediaMatch) {
+        imageUrl = postMediaMatch[1];
+      }
+    }
+
+    // Look for any other image URL
+    if (!imageUrl) {
+      const imgMatches = decodedContent.matchAll(/<img[^>]*src="([^"]*)"/g);
+      for (const imgMatch of imgMatches) {
+        const src = imgMatch[1];
+        // Skip tiny tracking pixels and icons
+        if (!src.includes('tracking') && !src.includes('pixel') && !src.includes('icon')) {
+          imageUrl = src;
+          break;
+        }
       }
     }
   }
