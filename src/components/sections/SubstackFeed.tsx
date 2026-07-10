@@ -43,30 +43,45 @@ function VideoHoverPreview({
   priority?: boolean;
 }) {
   const [isHovering, setIsHovering] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Preload video on mount
+  useEffect(() => {
+    if (videoRef.current && videoUrl) {
+      videoRef.current.load();
+    }
+  }, [videoUrl]);
+
   // Handle video play/pause on hover
   useEffect(() => {
-    if (!videoRef.current) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    if (isHovering && videoLoaded) {
-      videoRef.current.play().catch(() => {
-        // Autoplay may be blocked, that's okay
-        setVideoError(true);
-      });
+    if (isHovering) {
+      // Try to play immediately - browsers allow muted autoplay
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch(() => {
+            // Autoplay blocked, that's okay - show thumbnail
+            setVideoError(true);
+          });
+      }
     } else {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+      video.pause();
+      video.currentTime = 0;
+      setIsPlaying(false);
     }
-  }, [isHovering, videoLoaded]);
+  }, [isHovering]);
 
-  const hasVideo = (videoUrl && !videoError) || youtubeId;
   const displayThumbnail = thumbnailUrl || null;
 
-  if (!displayThumbnail && !hasVideo) {
+  if (!displayThumbnail && !videoUrl && !youtubeId) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-black">
         <p className="text-2xl font-gunterz font-bold text-white tracking-wide">BVP</p>
@@ -89,26 +104,28 @@ function VideoHoverPreview({
           alt={alt}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
-          className={`object-cover transition-opacity duration-300 ${
-            isHovering && videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'
+          className={`object-cover transition-opacity duration-200 ${
+            isPlaying && !videoError ? 'opacity-0' : 'opacity-100'
           }`}
           priority={priority}
         />
       )}
 
-      {/* Silent video for Substack videos */}
-      {videoUrl && !youtubeId && (
+      {/* Silent video for Substack videos - preload aggressively */}
+      {videoUrl && !youtubeId && !videoError && (
         <video
           ref={videoRef}
           src={videoUrl}
           muted
           loop
           playsInline
-          preload="metadata"
-          onLoadedData={() => setVideoLoaded(true)}
+          preload="auto"
+          onCanPlay={() => setVideoReady(true)}
           onError={() => setVideoError(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-            isHovering && videoLoaded && !videoError ? 'opacity-100' : 'opacity-0'
+          onPlaying={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ${
+            isPlaying ? 'opacity-100' : 'opacity-0'
           }`}
         />
       )}
@@ -137,7 +154,7 @@ function VideoHoverPreview({
       )}
 
       {/* Hover gradient overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 ${
+      <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-200 ${
         isHovering ? 'opacity-100' : 'opacity-0'
       }`} />
     </div>
