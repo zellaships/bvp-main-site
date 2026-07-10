@@ -300,34 +300,8 @@ export function SubstackFeed() {
     return post.imageUrl || getFallbackImage(post.title);
   };
 
-  // Prioritize specific posts in preferred order
-  const sortPosts = (posts: SubstackPost[]) => {
-    const priority = [
-      'case for repair',      // Featured (main)
-      'reckoning in mississippi', // Secondary 1
-      'congressional testimony',  // Secondary 2
-    ];
-
-    return [...posts].sort((a, b) => {
-      const aTitle = a.title.toLowerCase();
-      const bTitle = b.title.toLowerCase();
-
-      const aIndex = priority.findIndex(p => aTitle.includes(p));
-      const bIndex = priority.findIndex(p => bTitle.includes(p));
-
-      // If both have priority, sort by priority order
-      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-      // If only a has priority, a comes first
-      if (aIndex !== -1) return -1;
-      // If only b has priority, b comes first
-      if (bIndex !== -1) return 1;
-      // Otherwise keep original order
-      return 0;
-    });
-  };
-
-  const sortedPosts = sortPosts(posts);
-  const [featured, ...rest] = sortedPosts;
+  // Use posts in natural order from RSS feed (newest first)
+  const [featured, ...rest] = posts;
   const secondaryPosts = rest.slice(0, 2);
 
   return (

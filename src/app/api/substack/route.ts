@@ -15,7 +15,7 @@ export interface SubstackPost {
 // Cache the feed for 5 minutes to avoid hitting Substack too often
 let cachedData: { posts: SubstackPost[]; timestamp: number } | null = null;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const CACHE_VERSION = 2; // Bump to invalidate cache after code changes
+const CACHE_VERSION = 3; // Bump to invalidate cache after code changes
 
 export async function GET() {
   try {
@@ -59,18 +59,29 @@ export async function GET() {
 
 /**
  * Fetch actual video thumbnails by scraping Substack article pages
+ * Only enriches posts that are missing good images (have fallback logo)
  */
 async function enrichPostsWithVideoThumbnails(posts: SubstackPost[]): Promise<SubstackPost[]> {
   const enrichedPosts = await Promise.all(
     posts.map(async (post) => {
-      // Always try to enrich posts that appear to be videos or have fallback logo
+      // Check if this post already has a good, unique image (not the fallback logo)
       const isLogoFallback = post.imageUrl?.includes('fd2d3c74-4e77-47d5-817a-4b30c20cf9f4');
-      const titleIndicatesVideo = post.title.toLowerCase().includes('watch') ||
-                                   post.description.toLowerCase().includes('watch') ||
-                                   post.description.toLowerCase().includes('mins)') ||
-                                   post.description.toLowerCase().includes('minutes)');
 
-      if (!post.isVideo && !isLogoFallback && !titleIndicatesVideo) {
+      // If post already has a real image (not logo), keep it and don't override
+      if (post.imageUrl && !isLogoFallback) {
+        // Still mark as video if title indicates it, but don't change the image
+        const titleIndicatesVideo = post.title.toLowerCase().includes('watch') ||
+                                     post.description.toLowerCase().includes('watch') ||
+                                     post.description.toLowerCase().includes('mins)') ||
+                                     post.description.toLowerCase().includes('minutes)');
+        if (titleIndicatesVideo && !post.isVideo) {
+          return { ...post, isVideo: true };
+        }
+        return post;
+      }
+
+      // Only fetch article page if we need a better image (currently has logo fallback)
+      if (!isLogoFallback && !post.isVideo) {
         return post;
       }
 
