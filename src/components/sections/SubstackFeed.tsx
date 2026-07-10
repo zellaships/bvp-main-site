@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 
@@ -25,11 +25,10 @@ interface SubstackPost {
 }
 
 /**
- * VideoHoverPreview - Plays silent video on hover (YouTube-style)
+ * VideoHoverPreview - Shows video thumbnail with hover effects
+ * Note: Silent video playback disabled due to CORS restrictions on Substack CDN
  */
 function VideoHoverPreview({
-  videoUrl,
-  youtubeId,
   thumbnailUrl,
   alt,
   isVideo,
@@ -43,45 +42,8 @@ function VideoHoverPreview({
   priority?: boolean;
 }) {
   const [isHovering, setIsHovering] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Preload video on mount
-  useEffect(() => {
-    if (videoRef.current && videoUrl) {
-      videoRef.current.load();
-    }
-  }, [videoUrl]);
-
-  // Handle video play/pause on hover
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (isHovering) {
-      // Try to play immediately - browsers allow muted autoplay
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setIsPlaying(true))
-          .catch(() => {
-            // Autoplay blocked, that's okay - show thumbnail
-            setVideoError(true);
-          });
-      }
-    } else {
-      video.pause();
-      video.currentTime = 0;
-      setIsPlaying(false);
-    }
-  }, [isHovering]);
-
-  const displayThumbnail = thumbnailUrl || null;
-
-  if (!displayThumbnail && !videoUrl && !youtubeId) {
+  if (!thumbnailUrl) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-black">
         <p className="text-2xl font-gunterz font-bold text-white tracking-wide">BVP</p>
@@ -92,60 +54,25 @@ function VideoHoverPreview({
 
   return (
     <div
-      ref={containerRef}
       className="relative w-full h-full cursor-pointer overflow-hidden"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Thumbnail image (always present as base layer) */}
-      {displayThumbnail && (
-        <Image
-          src={displayThumbnail}
-          alt={alt}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className={`object-cover transition-opacity duration-200 ${
-            isPlaying && !videoError ? 'opacity-0' : 'opacity-100'
-          }`}
-          priority={priority}
-        />
-      )}
-
-      {/* Silent video for Substack videos - preload aggressively */}
-      {videoUrl && !youtubeId && !videoError && (
-        <video
-          ref={videoRef}
-          src={videoUrl}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onCanPlay={() => setVideoReady(true)}
-          onError={() => setVideoError(true)}
-          onPlaying={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ${
-            isPlaying ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-      )}
-
-      {/* YouTube embed for YouTube videos (muted autoplay) */}
-      {youtubeId && isHovering && (
-        <iframe
-          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${youtubeId}&modestbranding=1&playsinline=1`}
-          allow="autoplay; encrypted-media"
-          allowFullScreen
-          className="absolute inset-0 w-full h-full border-0"
-          style={{ pointerEvents: 'none' }}
-        />
-      )}
+      {/* Thumbnail image */}
+      <Image
+        src={thumbnailUrl}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className={`object-cover transition-transform duration-500 ${
+          isHovering ? 'scale-105' : 'scale-100'
+        }`}
+        priority={priority}
+      />
 
       {/* Video indicator badge */}
       {isVideo && (
-        <div className={`absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full z-10 transition-opacity duration-200 ${
-          isHovering ? 'opacity-0' : 'opacity-100'
-        }`}>
+        <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full z-10">
           <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
@@ -154,7 +81,7 @@ function VideoHoverPreview({
       )}
 
       {/* Hover gradient overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-200 ${
+      <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 ${
         isHovering ? 'opacity-100' : 'opacity-0'
       }`} />
     </div>
@@ -286,18 +213,37 @@ export function SubstackFeed() {
     );
   }
 
-  // Fallback images for posts that might not have images in RSS
-  const getFallbackImage = (title: string): string | null => {
+  // Hardcoded unique thumbnails for video posts (Substack's HTML structure makes auto-detection unreliable)
+  const getUniqueVideoThumbnail = (title: string): string | null => {
     const lowerTitle = title.toLowerCase();
-    if (lowerTitle.includes('congressional') || lowerTitle.includes('testimony') || lowerTitle.includes('testifies')) {
+
+    // Each video post has a unique video ID - these are manually mapped
+    if (lowerTitle.includes('kyle bibby')) {
+      return 'https://substack-video.s3.amazonaws.com/video_upload/post/205756958/090a140a-c077-418f-aa37-c54b0c13868a/transcoded-00001.png';
+    }
+    if (lowerTitle.includes('daniele anderson')) {
+      return 'https://substack-video.s3.amazonaws.com/video_upload/post/205675826/d15a4d33-7cd5-48c2-90b6-c1b0af2c6aef/transcoded-00001.png';
+    }
+    if (lowerTitle.includes('zella vanie')) {
+      return 'https://substack-video.s3.amazonaws.com/video_upload/post/205701936/78e36313-dedc-4a36-b9d4-5b72bb91c36b/transcoded-00001.png';
+    }
+    if (lowerTitle.includes('rich brookshire')) {
+      return 'https://substack-video.s3.amazonaws.com/video_upload/post/204565342/e00af18f-de75-4033-b60a-af01beab8968/transcoded-00001.png';
+    }
+    if (lowerTitle.includes('congressional') || lowerTitle.includes('testimony')) {
       return 'https://substack-video.s3.amazonaws.com/video_upload/post/189895249/bfad24c4-b3be-422f-b983-393f3840145c/transcoded-00001.png';
     }
     return null;
   };
 
-  // Get the image for a post with fallback support
+  // Get the image for a post - prioritize unique video thumbnails
   const getPostImage = (post: SubstackPost): string | null => {
-    return post.imageUrl || getFallbackImage(post.title);
+    // First try hardcoded unique thumbnails for known video posts
+    const uniqueThumb = getUniqueVideoThumbnail(post.title);
+    if (uniqueThumb) return uniqueThumb;
+
+    // Otherwise use the post's image
+    return post.imageUrl;
   };
 
   // Use posts in natural order from RSS feed (newest first)
@@ -356,7 +302,7 @@ export function SubstackFeed() {
                   <VideoHoverPreview
                     videoUrl={featured.videoUrl}
                     youtubeId={featured.youtubeId}
-                    thumbnailUrl={featured.imageUrl}
+                    thumbnailUrl={getPostImage(featured)}
                     alt={featured.title}
                     isVideo={featured.isVideo || false}
                     priority
