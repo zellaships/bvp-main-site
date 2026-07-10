@@ -31,7 +31,10 @@ export async function GET() {
     }
 
     const xml = await response.text();
-    const posts = parseRSS(xml);
+    let posts = parseRSS(xml);
+
+    // Fetch actual video thumbnails from Substack pages for posts without good images
+    posts = await enrichPostsWithVideoThumbnails(posts);
 
     // Update cache
     cachedData = { posts, timestamp: Date.now() };
@@ -50,6 +53,133 @@ export async function GET() {
       { status: 500 }
     );
   }
+}
+
+/**
+ * Fetch actual video thumbnails by scraping Substack article pages
+ */
+async function enrichPostsWithVideoThumbnails(posts: SubstackPost[]): Promise<SubstackPost[]> {
+  const enrichedPosts = await Promise.all(
+    posts.map(async (post) => {
+      // Always try to enrich posts that appear to be videos or have fallback logo
+      const isLogoFallback = post.imageUrl?.includes('fd2d3c74-4e77-47d5-817a-4b30c20cf9f4');
+      const titleIndicatesVideo = post.title.toLowerCase().includes('watch') ||
+                                   post.description.toLowerCase().includes('watch') ||
+                                   post.description.toLowerCase().includes('mins)') ||
+                                   post.description.toLowerCase().includes('minutes)');
+
+      if (!post.isVideo && !isLogoFallback && !titleIndicatesVideo) {
+        return post;
+      }
+
+      try {
+        // Fetch the actual article page
+        const pageResponse = await fetch(post.link, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BVPBot/1.0)' },
+        });
+
+        if (!pageResponse.ok) return post;
+
+        const html = await pageResponse.text();
+
+        // Try multiple patterns for Substack video thumbnails
+        // Pattern 1: Standard transcoded PNG with timestamp
+        let videoThumbMatch = html.match(
+          /https:\/\/substack-video\.s3\.amazonaws\.com\/video_upload\/post\/(\d+)\/([a-f0-9-]+)\/transcoded-(\d+)\.png/
+        );
+
+        // Pattern 2: Without timestamp (just transcoded.png or similar)
+        if (!videoThumbMatch) {
+          videoThumbMatch = html.match(
+            /https:\/\/substack-video\.s3\.amazonaws\.com\/video_upload\/post\/(\d+)\/([a-f0-9-]+)/
+          );
+        }
+
+        if (videoThumbMatch) {
+          const postId = videoThumbMatch[1];
+          const uuid = videoThumbMatch[2];
+          const baseUrl = `https://substack-video.s3.amazonaws.com/video_upload/post/${postId}/${uuid}`;
+
+          // Generate frame thumbnails - Substack generates frames at these positions
+          const videoThumbnails: string[] = [];
+
+          // Add standard frame positions (00001 through 00010)
+          for (let i = 1; i <= 10; i++) {
+            const frameNum = i.toString().padStart(5, '0');
+            videoThumbnails.push(`${baseUrl}/transcoded-${frameNum}.png`);
+          }
+
+          // If original match had a timestamp, add it too
+          if (videoThumbMatch[3]) {
+            videoThumbnails.unshift(`${baseUrl}/transcoded-${videoThumbMatch[3]}.png`);
+          }
+
+          return {
+            ...post,
+            imageUrl: videoThumbnails[0],
+            videoThumbnails,
+            isVideo: true,
+          };
+        }
+
+        // Check for YouTube embeds (multiple patterns)
+        const youtubePatterns = [
+          /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+          /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+          /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+          /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
+        ];
+
+        let youtubeVideoId: string | null = null;
+        for (const pattern of youtubePatterns) {
+          const match = html.match(pattern);
+          if (match) {
+            youtubeVideoId = match[1];
+            break;
+          }
+        }
+
+        if (youtubeVideoId) {
+          // YouTube provides thumbnails at different timestamps/qualities
+          const videoThumbnails = [
+            `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`,
+            `https://img.youtube.com/vi/${youtubeVideoId}/sddefault.jpg`,
+            `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`,
+            `https://img.youtube.com/vi/${youtubeVideoId}/mqdefault.jpg`,
+            `https://img.youtube.com/vi/${youtubeVideoId}/0.jpg`,
+            `https://img.youtube.com/vi/${youtubeVideoId}/1.jpg`,
+            `https://img.youtube.com/vi/${youtubeVideoId}/2.jpg`,
+            `https://img.youtube.com/vi/${youtubeVideoId}/3.jpg`,
+          ];
+
+          return {
+            ...post,
+            imageUrl: videoThumbnails[0],
+            videoThumbnails,
+            isVideo: true,
+          };
+        }
+
+        // Check for Vimeo embeds
+        const vimeoMatch = html.match(/player\.vimeo\.com\/video\/(\d+)/);
+        if (vimeoMatch) {
+          // For Vimeo, we'll just mark as video - thumbnails require API
+          return {
+            ...post,
+            isVideo: true,
+          };
+        }
+
+        return post;
+      } catch (e) {
+        console.error(`Error enriching post: ${post.title}`, e);
+        // If fetching fails, return original post
+        return post;
+      }
+    })
+  );
+
+  return enrichedPosts;
 }
 
 function parseRSS(xml: string): SubstackPost[] {

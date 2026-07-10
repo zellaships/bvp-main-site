@@ -41,36 +41,47 @@ function VideoScrubPreview({
   const [currentFrame, setCurrentFrame] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [loadedFrames, setLoadedFrames] = useState<Set<number>>(new Set([0]));
+  const [failedFrames, setFailedFrames] = useState<Set<number>>(new Set());
+  const [validThumbnails, setValidThumbnails] = useState<string[]>(thumbnails);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Filter out failed frames and update valid thumbnails
+  useEffect(() => {
+    if (thumbnails.length > 0) {
+      const valid = thumbnails.filter((_, i) => !failedFrames.has(i));
+      setValidThumbnails(valid.length > 0 ? valid : (fallbackImage ? [fallbackImage] : []));
+    }
+  }, [thumbnails, failedFrames, fallbackImage]);
 
   // Preload all frames when hovering
   useEffect(() => {
     if (isHovering && thumbnails.length > 1) {
       thumbnails.forEach((src, index) => {
-        if (!loadedFrames.has(index)) {
+        if (!loadedFrames.has(index) && !failedFrames.has(index)) {
           const img = document.createElement('img');
           img.src = src;
           img.onload = () => setLoadedFrames(prev => new Set([...prev, index]));
+          img.onerror = () => setFailedFrames(prev => new Set([...prev, index]));
         }
       });
     }
-  }, [isHovering, thumbnails, loadedFrames]);
+  }, [isHovering, thumbnails, loadedFrames, failedFrames]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current || thumbnails.length <= 1) return;
+    if (!containerRef.current || validThumbnails.length <= 1) return;
 
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percentage = x / rect.width;
     const frameIndex = Math.min(
-      Math.floor(percentage * thumbnails.length),
-      thumbnails.length - 1
+      Math.floor(percentage * validThumbnails.length),
+      validThumbnails.length - 1
     );
     setCurrentFrame(frameIndex);
   };
 
-  const displaySrc = thumbnails.length > 0 ? thumbnails[currentFrame] : fallbackImage;
-  const hasScrub = thumbnails.length > 1;
+  const displaySrc = validThumbnails.length > 0 ? validThumbnails[currentFrame] : fallbackImage;
+  const hasScrub = validThumbnails.length > 1;
 
   if (!displaySrc) {
     return (
@@ -84,7 +95,7 @@ function VideoScrubPreview({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full"
+      className="relative w-full h-full cursor-pointer"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => {
         setIsHovering(false);
@@ -97,10 +108,14 @@ function VideoScrubPreview({
         alt={alt}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover transition-all duration-200 ease-out"
+        className="object-cover transition-opacity duration-150 ease-out"
         priority={priority}
         onError={(e) => {
-          // If current frame fails, try next or fallback
+          // Mark this frame as failed and try fallback
+          const currentIndex = validThumbnails.indexOf(displaySrc);
+          if (currentIndex !== -1) {
+            setFailedFrames(prev => new Set([...prev, currentIndex]));
+          }
           const target = e.target as HTMLImageElement;
           if (fallbackImage && target.src !== fallbackImage) {
             target.src = fallbackImage;
@@ -110,7 +125,7 @@ function VideoScrubPreview({
 
       {/* Video indicator */}
       {isVideo && (
-        <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full">
+        <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full z-10">
           <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
@@ -118,14 +133,36 @@ function VideoScrubPreview({
         </div>
       )}
 
-      {/* Scrub indicator - shows when hovering and has multiple frames */}
+      {/* Hover scrub hint - shows briefly to indicate scrub is available */}
       {hasScrub && isHovering && (
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/30">
-          <div
-            className="h-full bg-[#FDC500] transition-all duration-75"
-            style={{ width: `${((currentFrame + 1) / thumbnails.length) * 100}%` }}
-          />
+        <div className="absolute inset-x-0 bottom-0 pointer-events-none">
+          {/* Scrub progress bar */}
+          <div className="h-1.5 bg-black/40">
+            <div
+              className="h-full bg-[#FDC500] transition-all duration-75 ease-linear"
+              style={{ width: `${((currentFrame + 1) / validThumbnails.length) * 100}%` }}
+            />
+          </div>
+          {/* Frame indicator dots */}
+          <div className="absolute bottom-3 right-3 flex gap-1">
+            {validThumbnails.slice(0, 8).map((_, i) => (
+              <div
+                key={i}
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-75 ${
+                  i === currentFrame ? 'bg-[#FDC500] scale-125' : 'bg-white/60'
+                }`}
+              />
+            ))}
+            {validThumbnails.length > 8 && (
+              <span className="text-[10px] text-white/80 ml-1">+{validThumbnails.length - 8}</span>
+            )}
+          </div>
         </div>
+      )}
+
+      {/* Hover overlay gradient */}
+      {isHovering && (
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
       )}
     </div>
   );
