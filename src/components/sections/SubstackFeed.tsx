@@ -19,71 +19,54 @@ interface SubstackPost {
   pubDate: string;
   imageUrl: string | null;
   videoThumbnails?: string[];
+  videoUrl?: string;
+  youtubeId?: string;
   isVideo?: boolean;
 }
 
 /**
- * VideoScrubPreview - Shows video stills on hover with scrub effect
+ * VideoHoverPreview - Plays silent video on hover (YouTube-style)
  */
-function VideoScrubPreview({
-  thumbnails,
+function VideoHoverPreview({
+  videoUrl,
+  youtubeId,
+  thumbnailUrl,
   alt,
   isVideo,
-  fallbackImage,
   priority = false,
 }: {
-  thumbnails: string[];
+  videoUrl?: string;
+  youtubeId?: string;
+  thumbnailUrl: string | null;
   alt: string;
   isVideo: boolean;
-  fallbackImage: string | null;
   priority?: boolean;
 }) {
-  const [currentFrame, setCurrentFrame] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
-  const [loadedFrames, setLoadedFrames] = useState<Set<number>>(new Set([0]));
-  const [failedFrames, setFailedFrames] = useState<Set<number>>(new Set());
-  const [validThumbnails, setValidThumbnails] = useState<string[]>(thumbnails);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Filter out failed frames and update valid thumbnails
+  // Handle video play/pause on hover
   useEffect(() => {
-    if (thumbnails.length > 0) {
-      const valid = thumbnails.filter((_, i) => !failedFrames.has(i));
-      setValidThumbnails(valid.length > 0 ? valid : (fallbackImage ? [fallbackImage] : []));
-    }
-  }, [thumbnails, failedFrames, fallbackImage]);
+    if (!videoRef.current) return;
 
-  // Preload all frames when hovering
-  useEffect(() => {
-    if (isHovering && thumbnails.length > 1) {
-      thumbnails.forEach((src, index) => {
-        if (!loadedFrames.has(index) && !failedFrames.has(index)) {
-          const img = document.createElement('img');
-          img.src = src;
-          img.onload = () => setLoadedFrames(prev => new Set([...prev, index]));
-          img.onerror = () => setFailedFrames(prev => new Set([...prev, index]));
-        }
+    if (isHovering && videoLoaded) {
+      videoRef.current.play().catch(() => {
+        // Autoplay may be blocked, that's okay
+        setVideoError(true);
       });
+    } else {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
     }
-  }, [isHovering, thumbnails, loadedFrames, failedFrames]);
+  }, [isHovering, videoLoaded]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current || validThumbnails.length <= 1) return;
+  const hasVideo = (videoUrl && !videoError) || youtubeId;
+  const displayThumbnail = thumbnailUrl || null;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = x / rect.width;
-    const frameIndex = Math.min(
-      Math.floor(percentage * validThumbnails.length),
-      validThumbnails.length - 1
-    );
-    setCurrentFrame(frameIndex);
-  };
-
-  const displaySrc = validThumbnails.length > 0 ? validThumbnails[currentFrame] : fallbackImage;
-  const hasScrub = validThumbnails.length > 1;
-
-  if (!displaySrc) {
+  if (!displayThumbnail && !hasVideo) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-black">
         <p className="text-2xl font-gunterz font-bold text-white tracking-wide">BVP</p>
@@ -95,37 +78,57 @@ function VideoScrubPreview({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full cursor-pointer"
+      className="relative w-full h-full cursor-pointer overflow-hidden"
       onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => {
-        setIsHovering(false);
-        setCurrentFrame(0);
-      }}
-      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setIsHovering(false)}
     >
-      <Image
-        src={displaySrc}
-        alt={alt}
-        fill
-        sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover transition-opacity duration-150 ease-out"
-        priority={priority}
-        onError={(e) => {
-          // Mark this frame as failed and try fallback
-          const currentIndex = validThumbnails.indexOf(displaySrc);
-          if (currentIndex !== -1) {
-            setFailedFrames(prev => new Set([...prev, currentIndex]));
-          }
-          const target = e.target as HTMLImageElement;
-          if (fallbackImage && target.src !== fallbackImage) {
-            target.src = fallbackImage;
-          }
-        }}
-      />
+      {/* Thumbnail image (always present as base layer) */}
+      {displayThumbnail && (
+        <Image
+          src={displayThumbnail}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className={`object-cover transition-opacity duration-300 ${
+            isHovering && videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'
+          }`}
+          priority={priority}
+        />
+      )}
 
-      {/* Video indicator */}
+      {/* Silent video for Substack videos */}
+      {videoUrl && !youtubeId && (
+        <video
+          ref={videoRef}
+          src={videoUrl}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onLoadedData={() => setVideoLoaded(true)}
+          onError={() => setVideoError(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            isHovering && videoLoaded && !videoError ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+
+      {/* YouTube embed for YouTube videos (muted autoplay) */}
+      {youtubeId && isHovering && (
+        <iframe
+          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${youtubeId}&modestbranding=1&playsinline=1`}
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+          className="absolute inset-0 w-full h-full border-0"
+          style={{ pointerEvents: 'none' }}
+        />
+      )}
+
+      {/* Video indicator badge */}
       {isVideo && (
-        <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full z-10">
+        <div className={`absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full z-10 transition-opacity duration-200 ${
+          isHovering ? 'opacity-0' : 'opacity-100'
+        }`}>
           <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
@@ -133,37 +136,10 @@ function VideoScrubPreview({
         </div>
       )}
 
-      {/* Hover scrub hint - shows briefly to indicate scrub is available */}
-      {hasScrub && isHovering && (
-        <div className="absolute inset-x-0 bottom-0 pointer-events-none">
-          {/* Scrub progress bar */}
-          <div className="h-1.5 bg-black/40">
-            <div
-              className="h-full bg-[#FDC500] transition-all duration-75 ease-linear"
-              style={{ width: `${((currentFrame + 1) / validThumbnails.length) * 100}%` }}
-            />
-          </div>
-          {/* Frame indicator dots */}
-          <div className="absolute bottom-3 right-3 flex gap-1">
-            {validThumbnails.slice(0, 8).map((_, i) => (
-              <div
-                key={i}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-75 ${
-                  i === currentFrame ? 'bg-[#FDC500] scale-125' : 'bg-white/60'
-                }`}
-              />
-            ))}
-            {validThumbnails.length > 8 && (
-              <span className="text-[10px] text-white/80 ml-1">+{validThumbnails.length - 8}</span>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Hover overlay gradient */}
-      {isHovering && (
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-      )}
+      {/* Hover gradient overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 ${
+        isHovering ? 'opacity-100' : 'opacity-0'
+      }`} />
     </div>
   );
 }
@@ -379,22 +355,22 @@ export function SubstackFeed() {
               </div>
             </div>
 
-            {/* Featured Image with Video Scrub */}
+            {/* Featured Image with Video Hover */}
             <button
               onClick={() => setModalPost(featured)}
               className="relative group cursor-pointer text-left order-1 md:order-2"
             >
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
-                <div className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105">
-                  <VideoScrubPreview
-                    thumbnails={featured.videoThumbnails || []}
+                <div className="w-full h-full">
+                  <VideoHoverPreview
+                    videoUrl={featured.videoUrl}
+                    youtubeId={featured.youtubeId}
+                    thumbnailUrl={featured.imageUrl}
                     alt={featured.title}
                     isVideo={featured.isVideo || false}
-                    fallbackImage={featured.imageUrl}
                     priority
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </div>
             </button>
           </div>
@@ -410,15 +386,16 @@ export function SubstackFeed() {
                 onKeyDown={(e) => e.key === 'Enter' && setModalPost(post)}
                 className="group cursor-pointer transition-all duration-300 hover:-translate-y-1"
               >
-                {/* Image section with Video Scrub */}
+                {/* Image section with Video Hover */}
                 <div className="relative overflow-hidden rounded-t-2xl shadow-lg group-hover:shadow-2xl transition-shadow duration-500">
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FDC500] z-10" />
-                  <div className="relative w-full h-72 transition-transform duration-500 group-hover:scale-105">
-                    <VideoScrubPreview
-                      thumbnails={post.videoThumbnails || []}
+                  <div className="relative w-full h-72">
+                    <VideoHoverPreview
+                      videoUrl={post.videoUrl}
+                      youtubeId={post.youtubeId}
+                      thumbnailUrl={getPostImage(post)}
                       alt={post.title}
                       isVideo={post.isVideo || false}
-                      fallbackImage={getPostImage(post)}
                     />
                   </div>
                 </div>

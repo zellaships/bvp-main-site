@@ -7,6 +7,8 @@ export interface SubstackPost {
   pubDate: string;
   imageUrl: string | null;
   videoThumbnails?: string[]; // Multiple frames for hover scrub
+  videoUrl?: string; // Actual video URL for silent hover playback
+  youtubeId?: string; // YouTube video ID for embed
   isVideo?: boolean;
 }
 
@@ -114,10 +116,18 @@ async function enrichPostsWithVideoThumbnails(posts: SubstackPost[]): Promise<Su
             videoThumbnails.unshift(`${baseUrl}/transcoded-${videoThumbMatch[3]}.png`);
           }
 
+          // Extract actual video URL for hover playback
+          // Substack videos are available at 720p.mp4 or 1080p.mp4
+          const videoUrlMatch = html.match(
+            /https:\/\/substack-video\.s3\.amazonaws\.com\/video_upload\/post\/\d+\/[a-f0-9-]+\/(?:720p|1080p|480p)\.mp4/
+          );
+          const videoUrl = videoUrlMatch ? videoUrlMatch[0] : `${baseUrl}/720p.mp4`;
+
           return {
             ...post,
             imageUrl: videoThumbnails[0],
             videoThumbnails,
+            videoUrl,
             isVideo: true,
           };
         }
@@ -156,6 +166,7 @@ async function enrichPostsWithVideoThumbnails(posts: SubstackPost[]): Promise<Su
             ...post,
             imageUrl: videoThumbnails[0],
             videoThumbnails,
+            youtubeId: youtubeVideoId,
             isVideo: true,
           };
         }
