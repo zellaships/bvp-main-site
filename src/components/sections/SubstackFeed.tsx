@@ -1,16 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import Image from 'next/image';
+import { VideoHoverPlayer } from '@/components/ui/VideoHoverPlayer';
 
 // Dark Green Report brand colors
 const CREAM = "#F0E8D0";
 const CREAM_DARK = "#E5DCBF";
 const GREEN_DARK = "#1A3A1A";
 const GREEN_MID = "#2D5A2D";
-const GREEN_LIGHT = "#4A8A4A";
-
 
 interface SubstackPost {
   title: string;
@@ -24,68 +22,20 @@ interface SubstackPost {
   isVideo?: boolean;
 }
 
-/**
- * VideoHoverPreview - Shows video thumbnail with hover effects
- * Note: Silent video playback disabled due to CORS restrictions on Substack CDN
- */
-function VideoHoverPreview({
-  thumbnailUrl,
-  alt,
-  isVideo,
-  priority = false,
-}: {
-  videoUrl?: string;
-  youtubeId?: string;
-  thumbnailUrl: string | null;
-  alt: string;
-  isVideo: boolean;
-  priority?: boolean;
-}) {
-  const [isHovering, setIsHovering] = useState(false);
-
-  if (!thumbnailUrl) {
-    return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-black">
-        <p className="text-2xl font-gunterz font-bold text-white tracking-wide">BVP</p>
-        <p className="text-xs tracking-[2px] uppercase text-[#FDC500] mt-2">News</p>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className="relative w-full h-full cursor-pointer overflow-hidden"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      {/* Thumbnail image */}
-      <Image
-        src={thumbnailUrl}
-        alt={alt}
-        fill
-        sizes="(max-width: 768px) 100vw, 50vw"
-        className={`object-cover transition-transform duration-500 ${
-          isHovering ? 'scale-105' : 'scale-100'
-        }`}
-        priority={priority}
-      />
-
-      {/* Video indicator badge */}
-      {isVideo && (
-        <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full z-10">
-          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-          <span className="text-xs font-medium text-white uppercase tracking-wide">Video</span>
-        </div>
-      )}
-
-      {/* Hover gradient overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 ${
-        isHovering ? 'opacity-100' : 'opacity-0'
-      }`} />
-    </div>
-  );
+interface VideoPreviewData {
+  postId: string;
+  videoId: string;
+  thumbnails: {
+    default: string;
+    frames: string[];
+  };
+  video: {
+    preview: string;
+    standard: string;
+    high: string;
+  };
+  previewStartTime?: number;
+  previewEndTime?: number;
 }
 
 function formatDate(dateString: string): string {
@@ -120,6 +70,24 @@ export function SubstackFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [modalPost, setModalPost] = useState<SubstackPost | null>(null);
+  const [videoPreviewData, setVideoPreviewData] = useState<Record<string, VideoPreviewData | null>>({});
+
+  // Fetch video preview data for all posts
+  const fetchVideoPreviewData = useCallback(async (titles: string[]) => {
+    try {
+      const res = await fetch('/api/video-preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ titles }),
+      });
+      const data = await res.json();
+      if (data.videos) {
+        setVideoPreviewData(data.videos);
+      }
+    } catch (err) {
+      console.warn('Failed to fetch video preview data:', err);
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -128,6 +96,11 @@ export function SubstackFeed() {
         const data = await res.json();
         if (data.posts && data.posts.length > 0) {
           setPosts(data.posts);
+          // Fetch video preview data for video posts
+          const videoPosts = data.posts.filter((p: SubstackPost) => p.isVideo);
+          if (videoPosts.length > 0) {
+            fetchVideoPreviewData(videoPosts.map((p: SubstackPost) => p.title));
+          }
         } else {
           setError(true);
         }
@@ -139,7 +112,7 @@ export function SubstackFeed() {
     }
 
     fetchPosts();
-  }, []);
+  }, [fetchVideoPreviewData]);
 
   // Show loading skeleton
   if (loading) {
@@ -213,11 +186,16 @@ export function SubstackFeed() {
     );
   }
 
-  // Hardcoded unique thumbnails for video posts (Substack's HTML structure makes auto-detection unreliable)
-  const getUniqueVideoThumbnail = (title: string): string | null => {
-    const lowerTitle = title.toLowerCase();
+  // Get thumbnail for a post - use video preview data if available
+  const getPostThumbnail = (post: SubstackPost): string | null => {
+    // First check if we have video preview data
+    const previewData = videoPreviewData[post.title];
+    if (previewData?.thumbnails?.default) {
+      return previewData.thumbnails.default;
+    }
 
-    // Each video post has a unique video ID - these are manually mapped
+    // Fallback to hardcoded thumbnails for known video posts
+    const lowerTitle = post.title.toLowerCase();
     if (lowerTitle.includes('kyle bibby')) {
       return 'https://substack-video.s3.amazonaws.com/video_upload/post/205756958/090a140a-c077-418f-aa37-c54b0c13868a/transcoded-00001.png';
     }
@@ -233,17 +211,35 @@ export function SubstackFeed() {
     if (lowerTitle.includes('congressional') || lowerTitle.includes('testimony')) {
       return 'https://substack-video.s3.amazonaws.com/video_upload/post/189895249/bfad24c4-b3be-422f-b983-393f3840145c/transcoded-00001.png';
     }
-    return null;
-  };
-
-  // Get the image for a post - prioritize unique video thumbnails
-  const getPostImage = (post: SubstackPost): string | null => {
-    // First try hardcoded unique thumbnails for known video posts
-    const uniqueThumb = getUniqueVideoThumbnail(post.title);
-    if (uniqueThumb) return uniqueThumb;
 
     // Otherwise use the post's image
     return post.imageUrl;
+  };
+
+  // Get video URL for preview playback
+  const getVideoPreviewUrl = (post: SubstackPost): string | undefined => {
+    const previewData = videoPreviewData[post.title];
+    if (previewData?.video?.preview) {
+      return previewData.video.preview;
+    }
+
+    // Fallback to building URL from known video IDs
+    const lowerTitle = post.title.toLowerCase();
+    const videoMappings: Record<string, { postId: string; uuid: string }> = {
+      'kyle bibby': { postId: '205756958', uuid: '090a140a-c077-418f-aa37-c54b0c13868a' },
+      'daniele anderson': { postId: '205701935', uuid: '9efe6ebe-08bd-4e2e-9794-5f7d7b19fefc' },
+      'zella vanie': { postId: '205701936', uuid: '78e36313-dedc-4a36-b9d4-5b72bb91c36b' },
+      'rich brookshire': { postId: '204565342', uuid: 'e00af18f-de75-4033-b60a-af01beab8968' },
+      'congressional': { postId: '189895249', uuid: 'bfad24c4-b3be-422f-b983-393f3840145c' },
+    };
+
+    for (const [key, mapping] of Object.entries(videoMappings)) {
+      if (lowerTitle.includes(key)) {
+        return `https://substack-video.s3.amazonaws.com/video_upload/post/${mapping.postId}/${mapping.uuid}/720p.mp4`;
+      }
+    }
+
+    return undefined;
   };
 
   // Use posts in natural order from RSS feed (newest first)
@@ -299,13 +295,14 @@ export function SubstackFeed() {
             >
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1">
                 <div className="w-full h-full">
-                  <VideoHoverPreview
-                    videoUrl={featured.videoUrl}
-                    youtubeId={featured.youtubeId}
-                    thumbnailUrl={getPostImage(featured)}
+                  <VideoHoverPlayer
+                    thumbnailUrl={getPostThumbnail(featured)}
                     alt={featured.title}
+                    videoUrl={featured.isVideo ? getVideoPreviewUrl(featured) : undefined}
                     isVideo={featured.isVideo || false}
                     priority
+                    previewStartTime={0}
+                    previewEndTime={8}
                   />
                 </div>
               </div>
@@ -327,12 +324,13 @@ export function SubstackFeed() {
                 <div className="relative overflow-hidden rounded-t-2xl shadow-lg group-hover:shadow-2xl transition-shadow duration-500">
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FDC500] z-10" />
                   <div className="relative w-full h-72">
-                    <VideoHoverPreview
-                      videoUrl={post.videoUrl}
-                      youtubeId={post.youtubeId}
-                      thumbnailUrl={getPostImage(post)}
+                    <VideoHoverPlayer
+                      thumbnailUrl={getPostThumbnail(post)}
                       alt={post.title}
+                      videoUrl={post.isVideo ? getVideoPreviewUrl(post) : undefined}
                       isVideo={post.isVideo || false}
+                      previewStartTime={0}
+                      previewEndTime={8}
                     />
                   </div>
                 </div>
