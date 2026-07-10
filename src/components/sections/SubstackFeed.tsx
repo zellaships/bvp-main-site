@@ -222,7 +222,7 @@ export function SubstackFeed() {
       return 'https://substack-video.s3.amazonaws.com/video_upload/post/205756958/090a140a-c077-418f-aa37-c54b0c13868a/transcoded-00001.png';
     }
     if (lowerTitle.includes('daniele anderson')) {
-      return 'https://substack-video.s3.amazonaws.com/video_upload/post/205675826/d15a4d33-7cd5-48c2-90b6-c1b0af2c6aef/transcoded-00001.png';
+      return 'https://substack-video.s3.amazonaws.com/video_upload/post/205701935/9efe6ebe-08bd-4e2e-9794-5f7d7b19fefc/transcoded-00001.png';
     }
     if (lowerTitle.includes('zella vanie')) {
       return 'https://substack-video.s3.amazonaws.com/video_upload/post/205701936/78e36313-dedc-4a36-b9d4-5b72bb91c36b/transcoded-00001.png';
