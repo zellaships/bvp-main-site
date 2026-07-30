@@ -12,6 +12,11 @@ import { donatePageSettings } from './donatePageSettings'
 import { ourWorkPageSettings } from './ourWorkPageSettings'
 import { contactPageSettings } from './contactPageSettings'
 import { joinPageSettings } from './joinPageSettings'
+import { sharedContent } from './sharedContent'
+import { navigation } from './navigation'
+import { faqPageSettings } from './faqPageSettings'
+import { pressPageSettings } from './pressPageSettings'
+import { newsletterSettings } from './newsletterSettings'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -30,5 +35,11 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     ourWorkPageSettings,
     contactPageSettings,
     joinPageSettings,
+    faqPageSettings,
+    pressPageSettings,
+    newsletterSettings,
+    // Shared Content
+    sharedContent,
+    navigation,
   ],
 }

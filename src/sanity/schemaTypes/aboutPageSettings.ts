@@ -19,6 +19,7 @@ export const aboutPageSettings = defineType({
       type: 'string',
       description: 'Main hero headline',
       initialValue: 'Building a Movement',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroImage',
@@ -62,9 +63,9 @@ export const aboutPageSettings = defineType({
         {
           type: 'object',
           fields: [
-            { name: 'year', title: 'Year', type: 'string' },
-            { name: 'title', title: 'Title', type: 'string' },
-            { name: 'description', title: 'Description', type: 'text', rows: 4 },
+            { name: 'year', title: 'Year', type: 'string', validation: (Rule) => Rule.required() },
+            { name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() },
+            { name: 'description', title: 'Description', type: 'text', rows: 4, validation: (Rule) => Rule.required() },
           ],
           preview: {
             select: { title: 'year', subtitle: 'title' },

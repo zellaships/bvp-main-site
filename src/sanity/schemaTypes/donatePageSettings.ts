@@ -19,6 +19,7 @@ export const donatePageSettings = defineType({
       type: 'string',
       description: 'Main hero headline',
       initialValue: 'Help Us Secure the Legacy for Black Veterans',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroImage',
@@ -61,6 +62,7 @@ export const donatePageSettings = defineType({
       type: 'url',
       description: 'Donately iframe embed URL',
       initialValue: 'https://cdn.donately.com/core/6.0/donate-form.html?form_id=frm_17bf7d7efced&account_id=act_1c9da0501869&stripe_key=pk_live_51EciVsFvVHN4GQU4Cyxh9ZfzIYeJQ9VXDHj4LqCHlU4XCB2cDI8vxhDzxXOJwCw5TjK89kwvuDuXEz3XeugfdcSr00nNgvHMYd',
+      validation: (Rule) => Rule.required().uri({ scheme: ['http', 'https'] }),
     }),
     // Recurring Donation Info
     defineField({

@@ -1,9 +1,22 @@
-import { client } from '@/sanity/lib/client';
+import { safeFetch } from '@/sanity/lib/client';
 import { ourWorkPageSettingsQuery } from '@/sanity/lib/queries';
 import { OurWorkPageClient } from './OurWorkPageClient';
 
 // Revalidate every 60 seconds
 export const revalidate = 60;
+
+interface OurWorkPageSettings {
+  heroSubtitle?: string;
+  heroTitle?: string;
+  heroImage?: string;
+  heroImageAlt?: string;
+  mainVideoUrl?: string;
+  statistics?: Array<{ number: string; label: string; description: string }>;
+  litigationVideoUrl?: string;
+  litigationCTA?: { title: string; buttonText: string; href: string };
+  narrativeCTA?: { title: string; buttonText: string; href: string; isExternal?: boolean };
+  mobilizationCTA?: { title: string; buttonText: string; href: string };
+}
 
 // Default content
 const defaults = {
@@ -48,9 +61,8 @@ const defaults = {
   },
 };
 
-async function getOurWorkPageSettings() {
-  const settings = await client.fetch(ourWorkPageSettingsQuery);
-  return settings;
+async function getOurWorkPageSettings(): Promise<OurWorkPageSettings | null> {
+  return await safeFetch<OurWorkPageSettings>(ourWorkPageSettingsQuery);
 }
 
 export default async function OurWorkPage() {
@@ -63,7 +75,7 @@ export default async function OurWorkPage() {
     heroImage: settings?.heroImage || defaults.heroImage,
     heroImageAlt: settings?.heroImageAlt || defaults.heroImageAlt,
     mainVideoUrl: settings?.mainVideoUrl || defaults.mainVideoUrl,
-    statistics: settings?.statistics?.length > 0 ? settings.statistics : defaults.statistics,
+    statistics: (settings?.statistics && settings.statistics.length > 0) ? settings.statistics : defaults.statistics,
     litigationVideoUrl: settings?.litigationVideoUrl || defaults.litigationVideoUrl,
     litigationCTA: settings?.litigationCTA || defaults.litigationCTA,
     narrativeCTA: settings?.narrativeCTA || defaults.narrativeCTA,

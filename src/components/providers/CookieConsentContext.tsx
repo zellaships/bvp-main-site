@@ -31,7 +31,19 @@ interface CookieConsentContextValue {
   resetConsent: () => void;
 }
 
-const CookieConsentContext = createContext<CookieConsentContextValue | null>(null);
+// Default context value for when outside provider (e.g., during static generation)
+const defaultContextValue: CookieConsentContextValue = {
+  consentState: { status: 'pending' },
+  hasAnalyticsConsent: false,
+  hasMarketingConsent: false,
+  showBanner: false,
+  setShowBanner: () => {},
+  openPreferences: () => {},
+  savePreferences: () => {},
+  resetConsent: () => {},
+};
+
+const CookieConsentContext = createContext<CookieConsentContextValue>(defaultContextValue);
 
 export function CookieConsentProvider({ children }: { children: ReactNode }) {
   const [consentState, setConsentState] = useState<ConsentState>({ status: 'pending' });
@@ -107,10 +119,6 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useCookieConsent() {
-  const context = useContext(CookieConsentContext);
-  if (!context) {
-    throw new Error('useCookieConsent must be used within CookieConsentProvider');
-  }
-  return context;
+export function useCookieConsent(): CookieConsentContextValue {
+  return useContext(CookieConsentContext);
 }

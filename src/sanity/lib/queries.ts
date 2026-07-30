@@ -1,9 +1,9 @@
-import { groq } from 'next-sanity'
+import { defineQuery } from 'next-sanity'
 
 // ============================================
 // TEAM MEMBERS
 // ============================================
-export const teamMembersQuery = groq`
+export const teamMembersQuery = defineQuery(`
   *[_type == "teamMember"] | order(order asc) {
     _id,
     name,
@@ -14,12 +14,12 @@ export const teamMembersQuery = groq`
     linkedin,
     "photo": photo.asset->url
   }
-`
+`)
 
 // ============================================
 // PARTNERS
 // ============================================
-export const partnersQuery = groq`
+export const partnersQuery = defineQuery(`
   *[_type == "partner"] | order(order asc) {
     _id,
     name,
@@ -27,12 +27,12 @@ export const partnersQuery = groq`
     category,
     "logo": logo.asset->url
   }
-`
+`)
 
 // ============================================
 // PRESS / NEWS
 // ============================================
-export const pressQuery = groq`
+export const pressQuery = defineQuery(`
   *[_type == "press"] | order(date desc) {
     _id,
     title,
@@ -46,9 +46,9 @@ export const pressQuery = groq`
     featured,
     "image": image.asset->url
   }
-`
+`)
 
-export const featuredPressQuery = groq`
+export const featuredPressQuery = defineQuery(`
   *[_type == "press" && featured == true] | order(date desc)[0...3] {
     _id,
     title,
@@ -58,33 +58,33 @@ export const featuredPressQuery = groq`
     excerpt,
     "image": image.asset->url
   }
-`
+`)
 
 // ============================================
 // FAQS
 // ============================================
-export const faqsQuery = groq`
+export const faqsQuery = defineQuery(`
   *[_type == "faq"] | order(order asc) {
     _id,
     question,
     answer,
     category
   }
-`
+`)
 
-export const faqsByCategoryQuery = groq`
+export const faqsByCategoryQuery = defineQuery(`
   *[_type == "faq"] | order(order asc) {
     _id,
     question,
     answer,
     category
   }
-`
+`)
 
 // ============================================
 // SITE SETTINGS
 // ============================================
-export const siteSettingsQuery = groq`
+export const siteSettingsQuery = defineQuery(`
   *[_type == "siteSettings"][0] {
     siteName,
     tagline,
@@ -100,12 +100,12 @@ export const siteSettingsQuery = groq`
       youtube
     }
   }
-`
+`)
 
 // ============================================
 // PAGES
 // ============================================
-export const pageBySlugQuery = groq`
+export const pageBySlugQuery = defineQuery(`
   *[_type == "page" && slug.current == $slug][0] {
     _id,
     title,
@@ -116,20 +116,20 @@ export const pageBySlugQuery = groq`
     content,
     seoDescription
   }
-`
+`)
 
-export const allPagesQuery = groq`
+export const allPagesQuery = defineQuery(`
   *[_type == "page"] {
     _id,
     title,
     "slug": slug.current
   }
-`
+`)
 
 // ============================================
 // HOMEPAGE SETTINGS
 // ============================================
-export const homepageSettingsQuery = groq`
+export const homepageSettingsQuery = defineQuery(`
   *[_type == "homepageSettings"][0] {
     heroHeadline,
     "heroImage": heroImage.asset->url,
@@ -146,12 +146,12 @@ export const homepageSettingsQuery = groq`
     newsletterHeadline,
     newsletterSubheadline
   }
-`
+`)
 
 // ============================================
 // ABOUT PAGE SETTINGS
 // ============================================
-export const aboutPageSettingsQuery = groq`
+export const aboutPageSettingsQuery = defineQuery(`
   *[_type == "aboutPageSettings"][0] {
     heroSubtitle,
     heroTitle,
@@ -169,12 +169,12 @@ export const aboutPageSettingsQuery = groq`
     pressCTAText,
     featuredInLogos
   }
-`
+`)
 
 // ============================================
 // DONATE PAGE SETTINGS
 // ============================================
-export const donatePageSettingsQuery = groq`
+export const donatePageSettingsQuery = defineQuery(`
   *[_type == "donatePageSettings"][0] {
     heroSubtitle,
     heroTitle,
@@ -185,12 +185,12 @@ export const donatePageSettingsQuery = groq`
     donationFormUrl,
     recurringDonationText
   }
-`
+`)
 
 // ============================================
 // OUR WORK PAGE SETTINGS
 // ============================================
-export const ourWorkPageSettingsQuery = groq`
+export const ourWorkPageSettingsQuery = defineQuery(`
   *[_type == "ourWorkPageSettings"][0] {
     heroSubtitle,
     heroTitle,
@@ -233,12 +233,12 @@ export const ourWorkPageSettingsQuery = groq`
       href
     }
   }
-`
+`)
 
 // ============================================
 // CONTACT PAGE SETTINGS
 // ============================================
-export const contactPageSettingsQuery = groq`
+export const contactPageSettingsQuery = defineQuery(`
   *[_type == "contactPageSettings"][0] {
     heroSubtitle,
     heroTitle,
@@ -258,12 +258,12 @@ export const contactPageSettingsQuery = groq`
     successTitle,
     successMessage
   }
-`
+`)
 
 // ============================================
 // JOIN PAGE SETTINGS
 // ============================================
-export const joinPageSettingsQuery = groq`
+export const joinPageSettingsQuery = defineQuery(`
   *[_type == "joinPageSettings"][0] {
     heroSubtitle,
     heroTitle,
@@ -289,12 +289,12 @@ export const joinPageSettingsQuery = groq`
     advocateSuccessMessage,
     privacyText
   }
-`
+`)
 
 // ============================================
 // SUBSTACK ARTICLES
 // ============================================
-export const substackArticlesQuery = groq`
+export const substackArticlesQuery = defineQuery(`
   *[_type == "substackArticle" && isVisible == true] | order(displayOrder asc, publishedAt desc) {
     _id,
     title,
@@ -305,9 +305,9 @@ export const substackArticlesQuery = groq`
     isFeatured,
     displayOrder
   }
-`
+`)
 
-export const featuredSubstackArticleQuery = groq`
+export const featuredSubstackArticleQuery = defineQuery(`
   *[_type == "substackArticle" && isVisible == true && isFeatured == true][0] {
     _id,
     title,
@@ -316,4 +316,111 @@ export const featuredSubstackArticleQuery = groq`
     "featuredImage": featuredImage.asset->url,
     publishedAt
   }
-`
+`)
+
+// ============================================
+// SHARED CONTENT (Statistics, CTAs, Legal)
+// ============================================
+export const sharedContentQuery = defineQuery(`
+  *[_type == "sharedContent"][0] {
+    statistics[] {
+      key,
+      number,
+      label,
+      description
+    },
+    primaryCTA {
+      text,
+      href,
+      description
+    },
+    donateCTA {
+      text,
+      href,
+      description
+    },
+    copyrightText,
+    nonprofitDisclaimer,
+    privacyNotice
+  }
+`)
+
+// ============================================
+// NAVIGATION (Header & Footer)
+// ============================================
+export const navigationQuery = defineQuery(`
+  *[_type == "navigation"][0] {
+    headerNav[] {
+      label,
+      href,
+      children[] {
+        label,
+        href
+      }
+    },
+    footerColumns[] {
+      title,
+      links[] {
+        label,
+        href,
+        isExternal
+      }
+    },
+    legalLinks[] {
+      label,
+      href
+    },
+    socialLinks[] {
+      platform,
+      url,
+      label
+    }
+  }
+`)
+
+// ============================================
+// NEWSLETTER SETTINGS
+// ============================================
+export const newsletterSettingsQuery = defineQuery(`
+  *[_type == "newsletterSettings"][0] {
+    stripHeadline,
+    stripSubheadline,
+    sectionTitle,
+    sectionDescription,
+    nameLabel,
+    emailLabel,
+    emailPlaceholder,
+    substackCheckboxLabel,
+    substackCheckboxHint,
+    legalNotice,
+    buttonDefault,
+    buttonLoading,
+    buttonSuccess,
+    errorNameRequired,
+    errorEmailInvalid,
+    errorGeneric
+  }
+`)
+
+// ============================================
+// FAQ PAGE SETTINGS
+// ============================================
+export const faqPageSettingsQuery = defineQuery(`
+  *[_type == "faqPageSettings"][0] {
+    heroSubtitle,
+    heroTitle,
+    contactCTAText,
+    contactCTAHref
+  }
+`)
+
+// ============================================
+// PRESS PAGE SETTINGS
+// ============================================
+export const pressPageSettingsQuery = defineQuery(`
+  *[_type == "pressPageSettings"][0] {
+    heroSubtitle,
+    heroTitle,
+    heroDescription
+  }
+`)

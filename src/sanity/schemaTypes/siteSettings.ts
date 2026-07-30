@@ -9,6 +9,7 @@ export const siteSettings = defineType({
       name: 'siteName',
       title: 'Site Name',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'logo',
@@ -31,6 +32,7 @@ export const siteSettings = defineType({
       name: 'contactEmail',
       title: 'Contact Email',
       type: 'string',
+      validation: (Rule) => Rule.email(),
     }),
     defineField({
       name: 'socialLinks',

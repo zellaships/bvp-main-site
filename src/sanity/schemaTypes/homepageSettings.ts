@@ -12,6 +12,7 @@ export const homepageSettings = defineType({
       type: 'text',
       rows: 2,
       description: 'Main headline on homepage hero',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroImage',
@@ -40,10 +41,10 @@ export const homepageSettings = defineType({
         {
           type: 'object',
           fields: [
-            { name: 'title', title: 'Title', type: 'string' },
-            { name: 'description', title: 'Description', type: 'text', rows: 3 },
-            { name: 'cta', title: 'CTA Text', type: 'string' },
-            { name: 'href', title: 'Link URL', type: 'string' },
+            { name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() },
+            { name: 'description', title: 'Description', type: 'text', rows: 3, validation: (Rule) => Rule.required() },
+            { name: 'cta', title: 'CTA Text', type: 'string', validation: (Rule) => Rule.required() },
+            { name: 'href', title: 'Link URL', type: 'string', validation: (Rule) => Rule.required() },
             { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
             { name: 'imageAlt', title: 'Image Alt Text', type: 'string' },
           ],

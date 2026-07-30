@@ -24,6 +24,7 @@ export const joinPageSettings = defineType({
       type: 'string',
       group: 'hero',
       initialValue: 'Build With Us',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroDescription',

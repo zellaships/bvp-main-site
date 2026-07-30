@@ -9,6 +9,11 @@ const singletonTypes = new Set([
   'ourWorkPageSettings',
   'contactPageSettings',
   'joinPageSettings',
+  'faqPageSettings',
+  'pressPageSettings',
+  'newsletterSettings',
+  'sharedContent',
+  'navigation',
 ])
 
 // Helper to create singleton list items
@@ -23,6 +28,23 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Content')
     .items([
+      // ==================== GLOBAL SETTINGS ====================
+      S.listItem()
+        .title('Global Settings')
+        .icon(() => '🌐')
+        .child(
+          S.list()
+            .title('Global Settings')
+            .items([
+              singletonListItem(S, 'siteSettings', 'Site Settings'),
+              singletonListItem(S, 'sharedContent', 'Shared Content (Stats, CTAs)'),
+              singletonListItem(S, 'navigation', 'Navigation (Header & Footer)'),
+              singletonListItem(S, 'newsletterSettings', 'Newsletter Settings'),
+            ])
+        ),
+
+      S.divider(),
+
       // ==================== PAGE SETTINGS ====================
       S.listItem()
         .title('Page Settings')
@@ -31,14 +53,14 @@ export const structure: StructureResolver = (S) =>
           S.list()
             .title('Page Settings')
             .items([
-              singletonListItem(S, 'siteSettings', 'Site Settings'),
-              S.divider(),
               singletonListItem(S, 'homepageSettings', 'Homepage'),
               singletonListItem(S, 'aboutPageSettings', 'About Page'),
               singletonListItem(S, 'ourWorkPageSettings', 'Our Work Page'),
               singletonListItem(S, 'donatePageSettings', 'Donate Page'),
               singletonListItem(S, 'contactPageSettings', 'Contact Page'),
               singletonListItem(S, 'joinPageSettings', 'Join Page'),
+              singletonListItem(S, 'faqPageSettings', 'FAQ Page'),
+              singletonListItem(S, 'pressPageSettings', 'Press Page'),
             ])
         ),
 

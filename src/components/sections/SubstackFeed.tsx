@@ -298,11 +298,8 @@ export function SubstackFeed() {
                   <VideoHoverPlayer
                     thumbnailUrl={getPostThumbnail(featured)}
                     alt={featured.title}
-                    videoUrl={featured.isVideo ? getVideoPreviewUrl(featured) : undefined}
                     isVideo={featured.isVideo || false}
                     priority
-                    previewStartTime={0}
-                    previewEndTime={8}
                   />
                 </div>
               </div>
@@ -327,10 +324,7 @@ export function SubstackFeed() {
                     <VideoHoverPlayer
                       thumbnailUrl={getPostThumbnail(post)}
                       alt={post.title}
-                      videoUrl={post.isVideo ? getVideoPreviewUrl(post) : undefined}
                       isVideo={post.isVideo || false}
-                      previewStartTime={0}
-                      previewEndTime={8}
                     />
                   </div>
                 </div>

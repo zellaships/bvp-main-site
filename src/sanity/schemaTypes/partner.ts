@@ -36,6 +36,7 @@ export const partner = defineType({
           { title: 'Media Partner', value: 'media' },
         ],
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'order',

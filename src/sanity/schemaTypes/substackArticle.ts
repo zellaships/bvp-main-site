@@ -37,6 +37,7 @@ export const substackArticle = defineType({
       title: 'Published Date',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'isFeatured',

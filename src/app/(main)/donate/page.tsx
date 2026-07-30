@@ -1,9 +1,19 @@
-import { client } from '@/sanity/lib/client';
+import { safeFetch } from '@/sanity/lib/client';
 import { donatePageSettingsQuery } from '@/sanity/lib/queries';
 import { DonatePageClient } from './DonatePageClient';
 
 // Revalidate every 60 seconds
 export const revalidate = 60;
+
+interface DonatePageSettings {
+  heroSubtitle?: string;
+  heroTitle?: string;
+  mainParagraphs?: string[];
+  taxNoticeTitle?: string;
+  taxNoticeText?: string;
+  donationFormUrl?: string;
+  recurringDonationText?: string;
+}
 
 // Default content (used as fallback)
 const defaults = {
@@ -20,9 +30,8 @@ const defaults = {
   recurringDonationText: 'Monthly donations will be charged on the same date each month until cancelled. To cancel or modify your recurring donation, email info@blackveteransproject.org or manage your subscription through Donately.',
 };
 
-async function getDonatePageSettings() {
-  const settings = await client.fetch(donatePageSettingsQuery);
-  return settings;
+async function getDonatePageSettings(): Promise<DonatePageSettings | null> {
+  return await safeFetch<DonatePageSettings>(donatePageSettingsQuery);
 }
 
 export default async function DonatePage() {
@@ -32,7 +41,7 @@ export default async function DonatePage() {
   const content = {
     heroSubtitle: settings?.heroSubtitle || defaults.heroSubtitle,
     heroTitle: settings?.heroTitle || defaults.heroTitle,
-    mainParagraphs: settings?.mainParagraphs?.length > 0 ? settings.mainParagraphs : defaults.mainParagraphs,
+    mainParagraphs: (settings?.mainParagraphs && settings.mainParagraphs.length > 0) ? settings.mainParagraphs : defaults.mainParagraphs,
     taxNoticeTitle: settings?.taxNoticeTitle || defaults.taxNoticeTitle,
     taxNoticeText: settings?.taxNoticeText || defaults.taxNoticeText,
     donationFormUrl: settings?.donationFormUrl || defaults.donationFormUrl,

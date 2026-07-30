@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { useNavigation } from "@/components/providers/SiteDataContext";
 
 // ============================================
 // BVP HEADER COMPONENT
@@ -15,7 +16,8 @@ import { Button } from "@/components/ui/Button";
 // Full ARIA support + Focus Trap for iOS Accessibility
 // ============================================
 
-const navigation = [
+// Default navigation (fallback when Sanity data is unavailable)
+const defaultNavigation = [
   {
     name: "About Us",
     href: "/about",
@@ -166,6 +168,23 @@ export function Header() {
   const [atTop, setAtTop] = useState(true);
   const pathname = usePathname();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Get navigation from Sanity context
+  const sanityNav = useNavigation();
+
+  // Transform Sanity nav data to component format, with fallback to defaults
+  const navigation = useMemo(() => {
+    if (!sanityNav?.headerNav) return defaultNavigation;
+
+    return sanityNav.headerNav.map(item => ({
+      name: item.label,
+      href: item.href,
+      children: item.children?.map(child => ({
+        name: child.label,
+        href: child.href,
+      })),
+    }));
+  }, [sanityNav]);
 
   // Determine if current page has light background
   const isLightBackground = lightBackgroundPages.some(page => pathname?.startsWith(page));

@@ -7,4 +7,14 @@ import { defineCliConfig } from 'sanity/cli'
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
 
-export default defineCliConfig({ api: { projectId, dataset } })
+export default defineCliConfig({
+  api: { projectId, dataset },
+  // TypeGen configuration for auto-generating TypeScript types
+  typegen: {
+    enabled: true,
+    path: './src/**/*.{ts,tsx}',
+    schema: 'schema.json',
+    generates: './src/sanity/sanity.types.ts',
+    overloadClientMethods: true,
+  },
+})

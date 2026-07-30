@@ -22,6 +22,7 @@ export const press = defineType({
       title: 'Source / Publication',
       type: 'string',
       description: 'e.g., "New York Times", "CNN"',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'author',

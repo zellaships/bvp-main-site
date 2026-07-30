@@ -30,6 +30,7 @@ export const faq = defineType({
           { title: 'Programs', value: 'programs' },
         ],
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'order',

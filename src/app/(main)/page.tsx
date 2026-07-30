@@ -2,7 +2,7 @@ import { Hero } from '@/components/sections/Hero';
 import PillarsSection from '@/components/sections/PillarsSection';
 import { NewsletterStrip } from '@/components/sections/NewsletterStrip';
 import { SubstackFeed } from '@/components/sections/SubstackFeed';
-import { client } from '@/sanity/lib/client';
+import { safeFetch } from '@/sanity/lib/client';
 import { homepageSettingsQuery } from '@/sanity/lib/queries';
 import type { SanityHomepageSettings } from '@/sanity/lib/types';
 
@@ -10,7 +10,7 @@ import type { SanityHomepageSettings } from '@/sanity/lib/types';
 export const revalidate = 60;
 
 async function getHomepageSettings(): Promise<SanityHomepageSettings | null> {
-  return client.fetch(homepageSettingsQuery);
+  return safeFetch<SanityHomepageSettings>(homepageSettingsQuery);
 }
 
 /**

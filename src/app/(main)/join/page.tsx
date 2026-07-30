@@ -1,9 +1,24 @@
-import { client } from '@/sanity/lib/client';
+import { safeFetch } from '@/sanity/lib/client';
 import { joinPageSettingsQuery } from '@/sanity/lib/queries';
 import { JoinPageClient } from './JoinPageClient';
 
 // Revalidate every 60 seconds
 export const revalidate = 60;
+
+interface JoinPageSettings {
+  heroSubtitle?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  heroImage?: string;
+  veteranCard?: { title: string; description: string; buttonText: string };
+  advocateCard?: { title: string; description: string; buttonText: string };
+  memberTypeOptions?: Array<{ value: string; label: string }>;
+  veteranSuccessTitle?: string;
+  veteranSuccessMessage?: string;
+  advocateSuccessTitle?: string;
+  advocateSuccessMessage?: string;
+  privacyText?: string;
+}
 
 // Default content
 const defaults = {
@@ -33,9 +48,8 @@ const defaults = {
   privacyText: "By submitting, you agree to our Privacy Policy and consent to receive email communications from Black Veterans Project.",
 };
 
-async function getJoinPageSettings() {
-  const settings = await client.fetch(joinPageSettingsQuery);
-  return settings;
+async function getJoinPageSettings(): Promise<JoinPageSettings | null> {
+  return await safeFetch<JoinPageSettings>(joinPageSettingsQuery);
 }
 
 export default async function JoinPage() {
@@ -49,7 +63,7 @@ export default async function JoinPage() {
     heroImage: settings?.heroImage || null,
     veteranCard: settings?.veteranCard || defaults.veteranCard,
     advocateCard: settings?.advocateCard || defaults.advocateCard,
-    memberTypeOptions: settings?.memberTypeOptions?.length > 0 ? settings.memberTypeOptions : defaults.memberTypeOptions,
+    memberTypeOptions: (settings?.memberTypeOptions && settings.memberTypeOptions.length > 0) ? settings.memberTypeOptions : defaults.memberTypeOptions,
     veteranSuccessTitle: settings?.veteranSuccessTitle || defaults.veteranSuccessTitle,
     veteranSuccessMessage: settings?.veteranSuccessMessage || defaults.veteranSuccessMessage,
     advocateSuccessTitle: settings?.advocateSuccessTitle || defaults.advocateSuccessTitle,

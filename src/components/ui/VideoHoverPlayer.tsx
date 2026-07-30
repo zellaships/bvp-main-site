@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  memo,
-} from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import Image from 'next/image';
 
 interface VideoHoverPlayerProps {
@@ -14,232 +8,45 @@ interface VideoHoverPlayerProps {
   thumbnailUrl: string | null;
   /** Alt text for the thumbnail */
   alt: string;
-  /** URL of the preview video (480p or 720p) */
-  videoUrl?: string;
   /** Whether this is a video post */
   isVideo: boolean;
   /** Use priority loading for above-fold content */
   priority?: boolean;
-  /** Optional preview start time in seconds */
-  previewStartTime?: number;
-  /** Optional preview end time in seconds */
-  previewEndTime?: number;
   /** Custom aspect ratio class */
   aspectRatio?: string;
-  /** Called when video starts playing */
-  onPlayStart?: () => void;
-  /** Called when video fails to play */
-  onPlayError?: (error: Error) => void;
 }
 
-// Hover delay before starting video (ms) - matches YouTube behavior
-const HOVER_DELAY = 400;
-
-// Preload strategy: distance from viewport to start preloading
-const PRELOAD_THRESHOLD = '200px';
-
 /**
- * VideoHoverPlayer - Enterprise-grade video hover preview component
+ * VideoHoverPlayer - Static thumbnail with polished hover effects
  *
  * Features:
- * - Silent autoplay on hover (like YouTube)
- * - Graceful fallback for browsers blocking autoplay
- * - Thumbnail shown while loading/paused
- * - Progress bar indicator
- * - Touch device support (long press to preview)
+ * - Smooth scale effect on hover (1.05x zoom)
+ * - Gradient overlay fade-in
+ * - VIDEO badge with play icon
  * - Intersection Observer for lazy loading
- * - Memory-efficient video loading/unloading
  */
 function VideoHoverPlayerComponent({
   thumbnailUrl,
   alt,
-  videoUrl,
   isVideo,
   priority = false,
-  previewStartTime = 0,
-  previewEndTime,
   aspectRatio,
-  onPlayStart,
-  onPlayError,
 }: VideoHoverPlayerProps) {
-  // State
   const [isHovering, setIsHovering] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [hasError, setHasError] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-
-  // Refs
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Cleanup function
-  const cleanup = useCallback(() => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current);
-      hoverTimerRef.current = null;
-    }
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-      progressIntervalRef.current = null;
-    }
-    if (touchTimerRef.current) {
-      clearTimeout(touchTimerRef.current);
-      touchTimerRef.current = null;
-    }
-  }, []);
 
   // Intersection Observer for lazy loading
   useEffect(() => {
     if (!containerRef.current) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      {
-        rootMargin: PRELOAD_THRESHOLD,
-        threshold: 0,
-      }
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: '200px', threshold: 0 }
     );
 
     observer.observe(containerRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      cleanup();
-      // Ensure video is paused and unloaded
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.src = '';
-        videoRef.current.load();
-      }
-    };
-  }, [cleanup]);
-
-  // Handle video time update for progress bar
-  const handleTimeUpdate = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const duration = previewEndTime
-      ? previewEndTime - previewStartTime
-      : video.duration - previewStartTime;
-    const currentTime = video.currentTime - previewStartTime;
-    const newProgress = Math.min((currentTime / duration) * 100, 100);
-    setProgress(newProgress);
-
-    // Loop back to start if we reach the end
-    if (previewEndTime && video.currentTime >= previewEndTime) {
-      video.currentTime = previewStartTime;
-    }
-  }, [previewStartTime, previewEndTime]);
-
-  // Start video playback
-  const startPlayback = useCallback(async () => {
-    const video = videoRef.current;
-    if (!video || !videoUrl || hasError) return;
-
-    setIsLoading(true);
-
-    try {
-      // Set start time
-      video.currentTime = previewStartTime;
-
-      // Ensure video is muted (required for autoplay)
-      video.muted = true;
-
-      // Attempt to play
-      await video.play();
-
-      setIsPlaying(true);
-      setIsLoading(false);
-      onPlayStart?.();
-
-      // Start progress tracking
-      progressIntervalRef.current = setInterval(() => {
-        handleTimeUpdate();
-      }, 100);
-    } catch (error) {
-      console.warn('Video autoplay failed:', error);
-      setIsLoading(false);
-      setHasError(true);
-      onPlayError?.(error as Error);
-    }
-  }, [videoUrl, previewStartTime, hasError, onPlayStart, onPlayError, handleTimeUpdate]);
-
-  // Stop video playback
-  const stopPlayback = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    cleanup();
-
-    video.pause();
-    video.currentTime = previewStartTime;
-    setIsPlaying(false);
-    setProgress(0);
-  }, [cleanup, previewStartTime]);
-
-  // Mouse enter handler
-  const handleMouseEnter = useCallback(() => {
-    if (!isVideo || !videoUrl || hasError) return;
-
-    setIsHovering(true);
-
-    // Delay before starting playback (like YouTube)
-    hoverTimerRef.current = setTimeout(() => {
-      startPlayback();
-    }, HOVER_DELAY);
-  }, [isVideo, videoUrl, hasError, startPlayback]);
-
-  // Mouse leave handler
-  const handleMouseLeave = useCallback(() => {
-    setIsHovering(false);
-    cleanup();
-    stopPlayback();
-  }, [cleanup, stopPlayback]);
-
-  // Touch start handler (for mobile - long press to preview)
-  const handleTouchStart = useCallback(() => {
-    if (!isVideo || !videoUrl || hasError) return;
-
-    touchTimerRef.current = setTimeout(() => {
-      setIsHovering(true);
-      startPlayback();
-    }, 500); // 500ms long press
-  }, [isVideo, videoUrl, hasError, startPlayback]);
-
-  // Touch end handler
-  const handleTouchEnd = useCallback(() => {
-    if (touchTimerRef.current) {
-      clearTimeout(touchTimerRef.current);
-      touchTimerRef.current = null;
-    }
-    // Don't stop playback on touch end - let user watch
-  }, []);
-
-  // Video loaded handler
-  const handleVideoLoaded = useCallback(() => {
-    setVideoLoaded(true);
-  }, []);
-
-  // Video error handler
-  const handleVideoError = useCallback(() => {
-    setHasError(true);
-    setIsLoading(false);
-    setIsPlaying(false);
+    return () => observer.disconnect();
   }, []);
 
   // Fallback for no thumbnail
@@ -252,16 +59,12 @@ function VideoHoverPlayerComponent({
     );
   }
 
-  const showVideo = isVisible && isVideo && videoUrl && !hasError;
-
   return (
     <div
       ref={containerRef}
       className={`relative w-full h-full cursor-pointer overflow-hidden ${aspectRatio || ''}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
       {/* Thumbnail Image */}
       <Image
@@ -269,88 +72,55 @@ function VideoHoverPlayerComponent({
         alt={alt}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
-        className={`object-cover transition-all duration-500 ${
-          isHovering ? 'scale-105' : 'scale-100'
-        } ${isPlaying ? 'opacity-0' : 'opacity-100'}`}
+        className={`object-cover transition-transform duration-700 ease-out ${
+          isHovering ? 'scale-[1.05]' : 'scale-100'
+        }`}
         priority={priority}
       />
 
-      {/* Video Element (lazy loaded when visible) */}
-      {showVideo && (
-        <video
-          ref={videoRef}
-          src={videoUrl}
-          muted
-          playsInline
-          preload={isVisible ? 'metadata' : 'none'}
-          onLoadedData={handleVideoLoaded}
-          onError={handleVideoError}
-          onEnded={() => {
-            if (videoRef.current) {
-              videoRef.current.currentTime = previewStartTime;
-              videoRef.current.play();
-            }
-          }}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-            isPlaying && videoLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
-          aria-hidden="true"
-        />
-      )}
+      {/* Hover Gradient Overlay */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none transition-opacity duration-500 ${
+          isHovering ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
 
-      {/* Loading Indicator */}
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px]">
-          <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-        </div>
-      )}
-
-      {/* Video Indicator Badge */}
+      {/* Video Badge */}
       {isVideo && (
         <div
-          className={`absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1.5 bg-black/80 backdrop-blur-sm rounded-full z-10 transition-opacity duration-300 ${
-            isPlaying ? 'opacity-0' : 'opacity-100'
+          className={`absolute bottom-4 left-4 flex items-center gap-2 px-3 py-2 bg-black/80 backdrop-blur-sm rounded-full transition-all duration-300 ${
+            isHovering ? 'bg-[#FDC500] text-black' : 'text-white'
           }`}
         >
-          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <svg
+            className={`w-4 h-4 transition-transform duration-300 ${isHovering ? 'scale-110' : 'scale-100'}`}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
             <path d="M8 5v14l11-7z" />
           </svg>
-          <span className="text-xs font-medium text-white uppercase tracking-wide">
+          <span className="text-xs font-bold uppercase tracking-wider">
             Video
           </span>
         </div>
       )}
 
-      {/* Progress Bar (shown during playback) */}
-      {isPlaying && (
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/30 z-10">
-          <div
-            className="h-full bg-[#FDC500] transition-all duration-100 ease-linear"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      )}
-
-      {/* Hover Gradient Overlay */}
-      <div
-        className={`absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none transition-opacity duration-300 ${
-          isHovering && !isPlaying ? 'opacity-100' : 'opacity-0'
-        }`}
-      />
-
-      {/* Playing State Indicator (subtle) */}
-      {isPlaying && (
-        <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-full z-10">
-          <span className="flex gap-0.5">
-            <span className="w-0.5 h-2 bg-white rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
-            <span className="w-0.5 h-3 bg-white rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
-            <span className="w-0.5 h-2 bg-white rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
-          </span>
+      {/* Play Button Overlay (appears on hover) */}
+      {isVideo && (
+        <div
+          className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${
+            isHovering ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg transform transition-transform duration-300 hover:scale-110">
+            <svg className="w-6 h-6 text-black ml-1" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-// Memoize to prevent unnecessary re-renders
 export const VideoHoverPlayer = memo(VideoHoverPlayerComponent);

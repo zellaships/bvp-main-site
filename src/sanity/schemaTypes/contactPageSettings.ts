@@ -17,6 +17,7 @@ export const contactPageSettings = defineType({
       title: 'Hero Title',
       type: 'string',
       initialValue: 'Contact Us',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroDescription',
@@ -30,6 +31,7 @@ export const contactPageSettings = defineType({
       title: 'Contact Email',
       type: 'string',
       initialValue: 'info@blackveteransproject.org',
+      validation: (Rule) => Rule.required().email(),
     }),
     defineField({
       name: 'contactPanelHeadline',

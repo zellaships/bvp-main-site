@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button';
 import { TeamSection } from '@/components/sections/TeamSection';
 import { PartnersSection } from '@/components/sections/PartnersSection';
 import { Timeline } from '@/components/sections/Timeline';
-import { client } from '@/sanity/lib/client';
+import { safeFetch } from '@/sanity/lib/client';
 import { teamMembersQuery, partnersQuery, aboutPageSettingsQuery } from '@/sanity/lib/queries';
 import type { SanityTeamMember, SanityPartner, SanityAboutPageSettings } from '@/sanity/lib/types';
 
@@ -12,15 +12,15 @@ import type { SanityTeamMember, SanityPartner, SanityAboutPageSettings } from '@
 export const revalidate = 60;
 
 async function getTeamMembers(): Promise<SanityTeamMember[]> {
-  return client.fetch(teamMembersQuery);
+  return (await safeFetch<SanityTeamMember[]>(teamMembersQuery)) ?? [];
 }
 
 async function getPartners(): Promise<SanityPartner[]> {
-  return client.fetch(partnersQuery);
+  return (await safeFetch<SanityPartner[]>(partnersQuery)) ?? [];
 }
 
 async function getAboutPageSettings(): Promise<SanityAboutPageSettings | null> {
-  return client.fetch(aboutPageSettingsQuery);
+  return safeFetch<SanityAboutPageSettings>(aboutPageSettingsQuery);
 }
 
 // Default mission paragraphs

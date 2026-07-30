@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import "./globals.css";
 import { DebugOverlay } from "@/components/ui/DebugOverlay";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 import { CookieConsentProvider } from "@/components/providers/CookieConsentContext";
 import { ConsentAwareAnalytics } from "@/components/providers/ConsentAwareAnalytics";
+import { SanityLive } from "@/sanity/lib/live";
+import { VisualEditing } from "next-sanity/visual-editing";
+import { DisableDraftMode } from "@/components/sanity/DisableDraftMode";
 
 export const metadata: Metadata = {
   title: "Black Veterans Project — Reparative Justice for Black Veterans",
@@ -40,11 +44,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isDraftMode = (await draftMode()).isEnabled;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -85,6 +91,15 @@ export default function RootLayout({
           <ConsentAwareAnalytics />
         </CookieConsentProvider>
         <DebugOverlay />
+        {/* Sanity Live Content API for real-time updates */}
+        <SanityLive />
+        {/* Visual Editing overlay when in draft mode */}
+        {isDraftMode && (
+          <>
+            <DisableDraftMode />
+            <VisualEditing />
+          </>
+        )}
       </body>
     </html>
   );

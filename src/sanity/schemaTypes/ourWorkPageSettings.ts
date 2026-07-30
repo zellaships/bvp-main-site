@@ -29,6 +29,7 @@ export const ourWorkPageSettings = defineType({
       type: 'string',
       group: 'hero',
       initialValue: 'The Case for Repair',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroImage',
@@ -72,9 +73,9 @@ export const ourWorkPageSettings = defineType({
         {
           type: 'object',
           fields: [
-            { name: 'number', title: 'Number/Value', type: 'string', description: 'e.g., "$100B", "32X", "33%"' },
-            { name: 'label', title: 'Label', type: 'string', description: 'e.g., "DENIED", "WEALTH GAP"' },
-            { name: 'description', title: 'Description', type: 'text', rows: 3 },
+            { name: 'number', title: 'Number/Value', type: 'string', description: 'e.g., "$100B", "32X", "33%"', validation: (Rule) => Rule.required() },
+            { name: 'label', title: 'Label', type: 'string', description: 'e.g., "DENIED", "WEALTH GAP"', validation: (Rule) => Rule.required() },
+            { name: 'description', title: 'Description', type: 'text', rows: 3, validation: (Rule) => Rule.required() },
           ],
           preview: {
             select: { title: 'number', subtitle: 'label' },

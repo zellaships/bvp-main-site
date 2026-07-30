@@ -12,6 +12,8 @@ export interface VideoPreviewData {
     standard: string;   // Standard quality (720p)
     high: string;       // High quality (1080p)
   };
+  /** Whether direct video playback is available (false for Substack due to CORS) */
+  videoAccessible: boolean;
   duration?: number;
   previewStartTime?: number;
   previewEndTime?: number;
@@ -72,7 +74,7 @@ function buildSubstackVideoUrls(postId: string, uuid: string) {
   };
 }
 
-async function verifyVideoUrl(url: string): Promise<boolean> {
+async function verifyThumbnailUrl(url: string): Promise<boolean> {
   try {
     const response = await fetch(url, { method: 'HEAD' });
     return response.ok;
@@ -80,6 +82,11 @@ async function verifyVideoUrl(url: string): Promise<boolean> {
     return false;
   }
 }
+
+// Note: Substack video files (.mp4) return 403 Forbidden when accessed directly
+// Videos must be played through Substack's embedded player
+// We can still provide the URLs for reference, but direct playback won't work
+// Thumbnails (.png) are accessible and work fine
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -121,26 +128,26 @@ export async function GET(request: Request) {
 
   const urls = buildSubstackVideoUrls(mapping.postId, mapping.uuid);
 
-  // Verify at least the preview video exists
-  const previewExists = await verifyVideoUrl(urls.video.preview);
-  const standardExists = previewExists || await verifyVideoUrl(urls.video.standard);
+  // Verify thumbnail exists (videos return 403 but thumbnails work)
+  const thumbnailExists = await verifyThumbnailUrl(urls.thumbnails.default);
 
-  if (!previewExists && !standardExists) {
+  if (!thumbnailExists) {
     return NextResponse.json(
-      { error: 'Video files not accessible' },
+      { error: 'Video content not found' },
       { status: 404 }
     );
   }
+
+  // Note: videoAccessible is false because Substack blocks direct video access
+  // The URLs are provided for reference but won't work for direct playback
 
   const data: VideoPreviewData = {
     postId: mapping.postId,
     videoId: mapping.uuid,
     thumbnails: urls.thumbnails,
-    video: {
-      preview: previewExists ? urls.video.preview : urls.video.standard,
-      standard: urls.video.standard,
-      high: urls.video.high,
-    },
+    video: urls.video,
+    // Substack blocks direct video access - set to false
+    videoAccessible: false,
     // Default preview window: first 6 seconds
     previewStartTime: 0,
     previewEndTime: 6,
@@ -197,6 +204,7 @@ export async function POST(request: Request) {
           videoId: mapping.uuid,
           thumbnails: urls.thumbnails,
           video: urls.video,
+          videoAccessible: false, // Substack blocks direct video access
           previewStartTime: 0,
           previewEndTime: 6,
         };
