@@ -53,7 +53,7 @@ const VIDEO_MAPPINGS: VideoMapping = {
 };
 
 // Cache for video metadata
-let metadataCache: Map<string, { data: VideoPreviewData; timestamp: number }> = new Map();
+const metadataCache: Map<string, { data: VideoPreviewData; timestamp: number }> = new Map();
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 function buildSubstackVideoUrls(postId: string, uuid: string) {
