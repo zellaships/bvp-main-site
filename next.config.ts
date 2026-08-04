@@ -48,7 +48,7 @@ const securityHeaders = [
       // Connect: self + analytics + Vercel + Sanity
       "connect-src 'self' https://www.google-analytics.com https://vitals.vercel-insights.com https://*.vercel.app https://*.sanity.io https://*.api.sanity.io",
       // Frames: allow YouTube, Vimeo, and Donately embeds
-      "frame-src 'self' https://www.youtube.com https://youtube.com https://player.vimeo.com https://cdn.donately.com",
+      "frame-src 'self' https://www.youtube.com https://youtube.com https://player.vimeo.com https://cdn.donately.com https://embed.donately.com https://*.donately.com",
       // Form actions: self only
       "form-action 'self'",
       // Base URI: self only
