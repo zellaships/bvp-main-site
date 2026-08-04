@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface DonatePageContent {
   heroSubtitle: string;
@@ -14,6 +14,14 @@ interface DonatePageContent {
 
 export function DonatePageClient({ content }: { content: DonatePageContent }) {
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Fallback: show iframe after 3 seconds even if onLoad doesn't fire
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -69,7 +77,6 @@ export function DonatePageClient({ content }: { content: DonatePageContent }) {
                     frameBorder="0"
                     allow="payment *"
                     title="Donation Form"
-                    loading="lazy"
                     onLoad={() => setIsLoaded(true)}
                     style={{
                       backgroundColor: "transparent",
