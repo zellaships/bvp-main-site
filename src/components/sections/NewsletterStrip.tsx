@@ -56,15 +56,23 @@ export function NewsletterStrip({
     setStatus('loading');
 
     try {
-      // Add your newsletter signup API call here
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('/api/newsletter-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Subscription failed');
+      }
+
       setStatus('success');
       setFormData({ firstName: '', lastName: '', email: '', zipCode: '', substack: false });
       setErrors({});
-      setTimeout(() => setStatus('idle'), 3000);
+      setTimeout(() => setStatus('idle'), 5000);
     } catch {
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 3000);
+      setTimeout(() => setStatus('idle'), 5000);
     }
   };
 
