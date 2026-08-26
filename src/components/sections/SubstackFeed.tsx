@@ -38,6 +38,33 @@ interface VideoPreviewData {
   previewEndTime?: number;
 }
 
+// Decode HTML entities like &#8221; &#8217; etc.
+function decodeHtmlEntities(text: string): string {
+  if (typeof window === 'undefined') {
+    // Server-side: manual decode common entities
+    return text
+      .replace(/&#8220;/g, '"')  // left double quote
+      .replace(/&#8221;/g, '"')  // right double quote
+      .replace(/&#8216;/g, "'")  // left single quote
+      .replace(/&#8217;/g, "'")  // right single quote
+      .replace(/&#8211;/g, '–')  // en dash
+      .replace(/&#8212;/g, '—')  // em dash
+      .replace(/&#038;/g, '&')   // ampersand
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+      .replace(/&hellip;/g, '…')
+      .replace(/&#8230;/g, '…');
+  }
+  // Client-side: use textarea trick
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
 function formatDate(dateString: string): string {
   try {
     const date = new Date(dateString);
@@ -269,10 +296,10 @@ export function SubstackFeed() {
                 className="font-gunterz font-bold leading-tight mb-3"
                 style={{ fontSize: 'clamp(1.5rem, 0.75rem + 3vw, 2.5rem)' }}
               >
-                {featured.title}
+                {decodeHtmlEntities(featured.title)}
               </h2>
               <p className="text-gray-600 mb-4" style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1rem)' }}>
-                {featured.description}
+                {decodeHtmlEntities(featured.description)}
               </p>
               <div className="flex items-center gap-4">
                 <button
@@ -337,10 +364,10 @@ export function SubstackFeed() {
                     Substack
                   </span>
                   <h3 className="font-ontika font-medium text-xl leading-tight mt-3 mb-3" style={{ color: '#0D0D0B' }}>
-                    {post.title}
+                    {decodeHtmlEntities(post.title)}
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    {post.description}
+                    {decodeHtmlEntities(post.description)}
                   </p>
                   <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
                     <span className="text-sm" style={{ color: '#767670' }}>{formatDate(post.pubDate)}</span>
@@ -448,7 +475,7 @@ export function SubstackFeed() {
                     fontWeight: 400,
                   }}
                 >
-                  {modalPost.title}
+                  {decodeHtmlEntities(modalPost.title)}
                 </h2>
 
                 {/* Description */}

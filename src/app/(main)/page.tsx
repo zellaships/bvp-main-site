@@ -1,7 +1,7 @@
 import { Hero } from '@/components/sections/Hero';
 import PillarsSection from '@/components/sections/PillarsSection';
-import { NewsletterStrip } from '@/components/sections/NewsletterStrip';
 import { SubstackFeed } from '@/components/sections/SubstackFeed';
+import { DonatePopup } from '@/components/ui/DonatePopup';
 import { safeFetch } from '@/sanity/lib/client';
 import { homepageSettingsQuery } from '@/sanity/lib/queries';
 import type { SanityHomepageSettings } from '@/sanity/lib/types';
@@ -20,9 +20,9 @@ async function getHomepageSettings(): Promise<SanityHomepageSettings | null> {
  * SECTIONS:
  * 1. Hero (100vh) - Mission, CTAs
  * 2. Pillars - Our Work
- * 3. Newsletter Strip - Stay Connected
- * 4. Blog Feed (white bg) - Substack RSS, dynamic
- * 5. Footer
+ * 3. Blog Feed (white bg) - Substack RSS, dynamic
+ * 4. Newsletter Strip - (added by layout)
+ * 5. Footer - (added by layout)
  */
 
 export default async function Home() {
@@ -41,12 +41,6 @@ export default async function Home() {
         showDebugSpacing={false}
       />
 
-      {/* Newsletter Strip - Stay Connected */}
-      <NewsletterStrip
-        headline={settings?.newsletterHeadline || undefined}
-        subheadline={settings?.newsletterSubheadline || undefined}
-      />
-
       {/* Our Work / Pillars Section */}
       <PillarsSection
         title={settings?.ourWorkTitle || undefined}
@@ -56,6 +50,9 @@ export default async function Home() {
 
       {/* Substack Feed - Dynamic RSS */}
       <SubstackFeed />
+
+      {/* Donate Popup - triggers on scroll */}
+      <DonatePopup scrollThreshold={200} />
     </>
   );
 }

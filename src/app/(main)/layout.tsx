@@ -6,8 +6,8 @@ import { Footer } from "@/components/layout/Footer";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { NewsletterStrip } from "@/components/sections/NewsletterStrip";
 
-// Pages that should not show the newsletter strip (homepage has its own positioned one)
-const PAGES_WITHOUT_NEWSLETTER = ['/', '/donate'];
+// Pages that should not show the newsletter strip (v2 pages handle their own)
+const PAGES_WITHOUT_NEWSLETTER = ['/donate', '/join', '/join-v2', '/our-work-v2', '/home-v2'];
 
 export default function MainLayout({
   children,
