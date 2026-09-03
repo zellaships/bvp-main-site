@@ -76,8 +76,8 @@ export default async function HomeV2() {
       {/* Substack Feed */}
       <SubstackFeed />
 
-      {/* Donate Popup - triggers on scroll */}
-      <DonatePopup scrollThreshold={200} />
+      {/* Donate Popup - DISABLED */}
+      {/* <DonatePopup scrollThreshold={200} /> */}
     </>
   );
 }

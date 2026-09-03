@@ -52,7 +52,7 @@ export default async function Home() {
       <SubstackFeed />
 
       {/* Donate Popup - triggers on scroll */}
-      <DonatePopup scrollThreshold={200} />
+      {/* TEMPORARILY DISABLED: <DonatePopup scrollThreshold={200} /> */}
     </>
   );
 }
