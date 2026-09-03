@@ -25,6 +25,9 @@ export function DonatePopup({
   scrollThreshold = 200,
   donationFormUrl = DEFAULT_DONATION_URL,
 }: DonatePopupProps) {
+  // DISABLED - return null immediately
+  return null;
+
   const [isOpen, setIsOpen] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
   const [isFormLoaded, setIsFormLoaded] = useState(false);
